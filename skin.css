@@ -106,7 +106,7 @@
 :root[data-skin="green"] .skin-panel-title { color: #4d6b59 !important; }
 :root[data-skin="green"] .skin-option { border-color: #b9e8cc !important; background: #dcf7e6 !important; color: #123524 !important; }
 
-/* V1.7.3 — Green skin readability: use dark ink on the light research surface. */
+/* V1.7.3 — Green skin Portfolio hierarchy */
 :root[data-skin="green"] .portfolio-title-wrap h1,
 :root[data-skin="green"] .research-overview h2 { color: #123524 !important; }
 :root[data-skin="green"] .portfolio-title-wrap p,
@@ -115,6 +115,30 @@
 :root[data-skin="green"] .research-work-copy strong { color: #123524 !important; }
 :root[data-skin="green"] .research-work-copy small { color: #4d6b59 !important; }
 :root[data-skin="green"] .research-work-number { color: #12b76a !important; }
+
+/* V1.7.3 — Green skin Academy + Video hierarchy */
+:root[data-skin="green"] .dashboard-header h1,
+:root[data-skin="green"] .welcome-copy h2,
+:root[data-skin="green"] .blueprint-topline h2,
+:root[data-skin="green"] .path-heading h2,
+:root[data-skin="green"] .academy-section h2,
+:root[data-skin="green"] .video-header h1,
+:root[data-skin="green"] .video-section h2,
+:root[data-skin="green"] .video-lab h2,
+:root[data-skin="green"] .video-feature-copy h2 { color: #123524 !important; }
+
+:root[data-skin="green"] .dashboard-header p,
+:root[data-skin="green"] .welcome-copy p,
+:root[data-skin="green"] .video-header p,
+:root[data-skin="green"] .video-feature-copy p,
+:root[data-skin="green"] .video-card p { color: #4d6b59 !important; }
+
+:root[data-skin="green"] .video-card strong,
+:root[data-skin="green"] .video-card h3,
+:root[data-skin="green"] .video-feature-copy strong { color: #123524 !important; }
+
+:root[data-skin="green"] .video-card small,
+:root[data-skin="green"] .video-card .video-meta { color: #4d6b59 !important; }
 
 .home-gei-logo { display: block; width: clamp(88px, 22vw, 118px); height: auto; max-height: 46px; object-fit: contain; object-position: left center; margin: 0; }
 .dashboard-header h1:has(.home-gei-logo) { min-height: 46px; margin: 6px 0 7px; }
