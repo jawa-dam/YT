@@ -45,6 +45,10 @@
     const output = document.getElementById(OUTPUT_ID);
     if (!output) return;
 
+    const statusCopy = output.closest(".member-status-copy");
+    const heading = statusCopy ? statusCopy.querySelector("strong") : null;
+    if (heading) heading.textContent = "GEI MEMBER SINCE";
+
     const memberDate = readOrCreateMemberDate();
     const days = daysWithMember(memberDate);
     const dayLabel = days === 1 ? "1 day with GEI" : `${days} days with GEI`;
