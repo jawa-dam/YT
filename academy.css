@@ -116,17 +116,18 @@
 
 .academy-hero {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) 124px;
-  gap: 8px;
-  align-items: stretch;
-  min-height: 156px;
-  padding: 16px;
-  border: 1px solid rgba(255,255,255,0.1);
+  grid-template-columns: minmax(0, 1fr) 150px;
+  gap: 6px;
+  align-items: center;
+  min-height: 168px;
+  padding: 13px 12px 10px 16px;
+  border: 1px solid rgba(47,210,255,0.48);
   border-radius: 26px;
   background:
-    linear-gradient(135deg, rgba(47,210,255,0.1), rgba(61,61,234,0.04) 50%, rgba(243,16,186,0.06)),
-    rgba(10, 13, 23, 0.85);
-  box-shadow: 0 18px 46px rgba(0,0,0,0.32), inset 0 1px 0 rgba(255,255,255,0.05);
+    radial-gradient(circle at 76% 78%, rgba(47,210,255,0.18), transparent 32%),
+    linear-gradient(135deg, rgba(47,210,255,0.1), rgba(61,61,234,0.08) 52%, rgba(243,16,186,0.06)),
+    rgba(10, 13, 23, 0.9);
+  box-shadow: 0 18px 46px rgba(0,0,0,0.24), inset 0 1px 0 rgba(255,255,255,0.08);
   overflow: hidden;
 }
 
@@ -139,17 +140,19 @@
 
 .academy-hero-copy h2 {
   margin: 5px 0 7px;
-  font-size: clamp(25px, 7.5vw, 35px);
-  line-height: 0.98;
+  color: #f6f8ff !important;
+  font-size: clamp(23px, 6.8vw, 31px);
+  line-height: 1;
   letter-spacing: -0.045em;
+  text-shadow: 0 2px 12px rgba(0,0,0,.3);
 }
 
 .academy-hero-copy p {
-  margin: 0 0 12px;
-  max-width: 235px;
-  color: var(--muted);
+  margin: 0 0 11px;
+  max-width: 230px;
+  color: #d8e3f1;
   font-size: 11px;
-  line-height: 1.45;
+  line-height: 1.4;
 }
 
 .academy-primary-action {
@@ -160,9 +163,9 @@
   width: min(100%, 190px);
   min-height: 42px;
   padding: 0 13px;
-  border: 1px solid rgba(47,210,255,0.55);
+  border: 1px solid rgba(47,210,255,0.6);
   border-radius: 14px;
-  background: linear-gradient(135deg, rgba(47,210,255,0.16), rgba(61,61,234,0.18));
+  background: linear-gradient(135deg, rgba(47,210,255,0.18), rgba(61,61,234,0.22));
   color: #fff;
   font-size: 11px;
   font-weight: 900;
@@ -182,61 +185,58 @@
   outline-offset: 3px;
 }
 
-.academy-mascot-wrap {
+.academy-waterwheel-wrap {
   position: relative;
   display: grid;
-  place-items: end center;
+  place-items: center;
+  align-self: stretch;
   min-width: 0;
-  overflow: hidden;
 }
 
-.academy-mascot-glow {
+.academy-waterwheel-glow {
   position: absolute;
-  width: 120px;
-  height: 120px;
-  right: -8px;
-  bottom: -12px;
+  width: 142px;
+  height: 142px;
+  right: -4px;
+  top: 5px;
   border-radius: 50%;
-  background: radial-gradient(circle, rgba(47,210,255,0.28), transparent 68%);
-  filter: blur(10px);
+  background: radial-gradient(circle, rgba(47,210,255,.28), transparent 68%);
+  filter: blur(12px);
 }
 
-.academy-mascot {
+.academy-waterwheel {
   position: relative;
   z-index: 1;
   display: block;
-  width: 116px;
+  width: 150px;
   max-width: 100%;
-  max-height: 145px;
-  object-fit: contain;
-  object-position: center bottom;
-  filter: drop-shadow(0 14px 22px rgba(0,0,0,0.38));
-  transform: translateY(8px);
+  height: auto;
+  overflow: visible;
+  filter: drop-shadow(0 12px 18px rgba(0,0,0,.3));
 }
 
-.academy-mascot-name,
-.academy-mascot-role {
+.academy-wheel-tap {
   position: absolute;
-  left: 50%;
-  z-index: 2;
-  transform: translateX(-50%);
-  white-space: nowrap;
-}
-
-.academy-mascot-name {
-  bottom: 4px;
+  right: 9px;
+  bottom: 5px;
+  z-index: 3;
+  min-width: 48px;
+  min-height: 32px;
+  padding: 0 10px;
+  border: 1px solid rgba(255,255,255,.5);
+  border-radius: 999px;
+  background: rgba(7,12,22,.82);
   color: #fff;
-  font-size: 10px;
+  font-size: 8px;
   font-weight: 900;
-  letter-spacing: 0.16em;
+  letter-spacing: .12em;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
 }
 
-.academy-mascot-role {
-  bottom: -9px;
-  color: #86a0ba;
-  font-size: 6px;
-  font-weight: 900;
-  letter-spacing: 0.12em;
+.academy-wheel-tap.is-active {
+  border-color: var(--cyan);
+  box-shadow: 0 0 0 4px rgba(47,210,255,.12);
 }
 
 .academy-path {
@@ -347,12 +347,22 @@
   }
 
   .academy-hero {
-    grid-template-columns: minmax(0, 1fr) 96px;
-    padding: 12px;
+    grid-template-columns: minmax(0, 1fr) 112px;
+    min-height: 154px;
+    padding: 11px 10px 9px 13px;
   }
 
-  .academy-mascot {
-    width: 92px;
+  .academy-waterwheel {
+    width: 116px;
+  }
+
+  .academy-waterwheel-glow {
+    width: 112px;
+    height: 112px;
+  }
+
+  .academy-hero-copy h2 {
+    font-size: 22px;
   }
 
   .academy-hero-copy p {
@@ -366,7 +376,8 @@
 
 @media (prefers-reduced-motion: reduce) {
   .academy-primary-action,
-  .academy-mascot {
+  .academy-mascot,
+  .academy-wheel-rotor {
     transition: none !important;
   }
 }
