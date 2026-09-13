@@ -25,16 +25,9 @@
   cursor: pointer;
 }
 
-.skin-trigger-icon {
-  color: var(--cyan);
-  font-size: 15px;
-}
-
+.skin-trigger-icon { color: var(--cyan); font-size: 15px; }
 .skin-trigger:focus-visible,
-.skin-option:focus-visible {
-  outline: 3px solid var(--pink);
-  outline-offset: 3px;
-}
+.skin-option:focus-visible { outline: 3px solid var(--pink); outline-offset: 3px; }
 
 .skin-panel {
   position: absolute;
@@ -50,51 +43,11 @@
   -webkit-backdrop-filter: blur(18px);
 }
 
-.skin-panel-title {
-  padding: 2px 4px 9px;
-  color: #8e9db5;
-  font-size: 8px;
-  font-weight: 900;
-  letter-spacing: .15em;
-  text-transform: uppercase;
-}
-
-.skin-options {
-  display: grid;
-  gap: 7px;
-}
-
-.skin-option {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  width: 100%;
-  min-height: 42px;
-  padding: 7px 9px;
-  border: 1px solid rgba(255,255,255,.08);
-  border-radius: 13px;
-  background: rgba(255,255,255,.035);
-  color: #eaf0fb;
-  font-size: 11px;
-  font-weight: 800;
-  text-align: left;
-  cursor: pointer;
-}
-
-.skin-option.is-active {
-  border-color: color-mix(in srgb, var(--skin-accent) 60%, white 10%);
-  background: color-mix(in srgb, var(--skin-accent) 12%, transparent);
-}
-
-.skin-swatch {
-  width: 26px;
-  height: 26px;
-  flex: 0 0 26px;
-  border-radius: 9px;
-  border: 1px solid rgba(255,255,255,.15);
-  box-shadow: inset 0 1px 0 rgba(255,255,255,.1);
-}
-
+.skin-panel-title { padding: 2px 4px 9px; color: #8e9db5; font-size: 8px; font-weight: 900; letter-spacing: .15em; text-transform: uppercase; }
+.skin-options { display: grid; gap: 7px; }
+.skin-option { display: flex; align-items: center; gap: 10px; width: 100%; min-height: 42px; padding: 7px 9px; border: 1px solid rgba(255,255,255,.08); border-radius: 13px; background: rgba(255,255,255,.035); color: #eaf0fb; font-size: 11px; font-weight: 800; text-align: left; cursor: pointer; }
+.skin-option.is-active { border-color: color-mix(in srgb, var(--skin-accent) 60%, white 10%); background: color-mix(in srgb, var(--skin-accent) 12%, transparent); }
+.skin-swatch { width: 26px; height: 26px; flex: 0 0 26px; border-radius: 9px; border: 1px solid rgba(255,255,255,.15); box-shadow: inset 0 1px 0 rgba(255,255,255,.1); }
 .skin-swatch-academic { background: linear-gradient(135deg, #2fd2ff, #3d3dea 52%, #f310ba); }
 .skin-swatch-dark { background: linear-gradient(135deg, #181b24, #06070d); }
 .skin-swatch-pink { background: linear-gradient(135deg, #ff9df2, #ff1493 55%, #b50065); }
@@ -110,66 +63,66 @@
 
 :root[data-skin="dark"] body { background: #05060a; }
 :root[data-skin="dark"] .app-shell { filter: saturate(.82); }
-
-:root[data-skin="pink"] body {
-  background:
-    radial-gradient(circle at 18% 20%, rgba(255,157,242,.14), transparent 30%),
-    radial-gradient(circle at 84% 76%, rgba(243,16,186,.12), transparent 32%),
-    #0b060d;
-}
-
+:root[data-skin="pink"] body { background: radial-gradient(circle at 18% 20%, rgba(255,157,242,.14), transparent 30%), radial-gradient(circle at 84% 76%, rgba(243,16,186,.12), transparent 32%), #0b060d; }
 :root[data-skin="pink"] .shell-glow-cyan { background: var(--pink); }
 :root[data-skin="pink"] .shell-glow-magenta { background: var(--magenta); }
 :root[data-skin="pink"] .eyebrow,
 :root[data-skin="pink"] .card-label,
 :root[data-skin="pink"] .cta-kicker { color: var(--pink); }
 
-:root[data-skin="blue"] body {
-  background:
-    radial-gradient(circle at 16% 16%, rgba(0,87,255,.13), transparent 30%),
-    radial-gradient(circle at 88% 78%, rgba(20,99,255,.13), transparent 34%),
-    #050a16;
-}
-
+:root[data-skin="blue"] body { background: radial-gradient(circle at 16% 16%, rgba(0,87,255,.13), transparent 30%), radial-gradient(circle at 88% 78%, rgba(20,99,255,.13), transparent 34%), #050a16; }
 :root[data-skin="blue"] .shell-glow-cyan { background: #0057ff; }
 :root[data-skin="blue"] .shell-glow-magenta { background: #2f82ff; }
 :root[data-skin="blue"] .eyebrow,
 :root[data-skin="blue"] .card-label,
 :root[data-skin="blue"] .cta-kicker { color: #0057ff; }
 
-:root[data-skin="green"] body {
-  background:
-    radial-gradient(circle at 16% 16%, rgba(18,183,106,.14), transparent 30%),
-    radial-gradient(circle at 88% 78%, rgba(9,133,74,.12), transparent 34%),
-    #06120c;
-}
-
+:root[data-skin="green"] body { background: radial-gradient(circle at 16% 16%, rgba(18,183,106,.14), transparent 30%), radial-gradient(circle at 88% 78%, rgba(9,133,74,.12), transparent 34%), #06120c; }
 :root[data-skin="green"] .shell-glow-cyan { background: #12b76a; }
 :root[data-skin="green"] .shell-glow-magenta { background: #0a8f50; }
 :root[data-skin="green"] .eyebrow,
 :root[data-skin="green"] .card-label,
 :root[data-skin="green"] .cta-kicker { color: #12b76a; }
 
-.home-gei-logo {
-  display: block;
-  width: clamp(88px, 22vw, 118px);
-  height: auto;
-  max-height: 46px;
-  object-fit: contain;
-  object-position: left center;
-  margin: 0;
-}
+/* V1.7.2: strong Electric Blue identity */
+:root[data-skin="blue"] .app-frame,
+:root[data-skin="blue"] .app-shell,
+:root[data-skin="blue"] .app-screen { background: #edf3ff !important; }
+:root[data-skin="blue"] .welcome-card,
+:root[data-skin="blue"] .blueprint-card { background: #fff !important; border-color: #b8cdf7 !important; box-shadow: 0 18px 45px rgba(20,99,255,.14) !important; }
+:root[data-skin="blue"] .welcome-card { background: linear-gradient(135deg,#fff,#d9e7ff) !important; }
+:root[data-skin="blue"] .day-pill { background: #dbe7ff !important; border-color: #b8cdf7 !important; color: #4d6487 !important; }
+:root[data-skin="blue"] .day-pill.is-current { border-color: #0057ff !important; background: rgba(0,87,255,.13) !important; color: #0050d8 !important; }
+:root[data-skin="blue"] .academy-cta { border-color: rgba(0,87,255,.58) !important; background: linear-gradient(135deg,rgba(0,87,255,.18),rgba(47,130,255,.11)) !important; color: #10254d !important; }
+:root[data-skin="blue"] .cta-arrow { background: #fff !important; border-color: #b8cdf7 !important; color: #10254d !important; }
+:root[data-skin="blue"] .member-status { border-color: #b8cdf7 !important; background: rgba(255,255,255,.92) !important; color: #10254d !important; }
+:root[data-skin="blue"] .bottom-navigation { border-color: #b8cdf7 !important; background: rgba(255,255,255,.95) !important; }
+:root[data-skin="blue"] .nav-item.is-active { background: rgba(0,87,255,.12) !important; color: #0750d8 !important; }
 
-.dashboard-header h1:has(.home-gei-logo) {
-  min-height: 46px;
-  margin: 6px 0 7px;
-}
+/* V1.7.2: new Green identity */
+:root[data-skin="green"] .app-frame,
+:root[data-skin="green"] .app-shell,
+:root[data-skin="green"] .app-screen { background: #effaf3 !important; }
+:root[data-skin="green"] .app-shell::after { border-color: #b9e8cc !important; }
+:root[data-skin="green"] .welcome-card,
+:root[data-skin="green"] .blueprint-card { background: #fff !important; border-color: #b9e8cc !important; box-shadow: 0 18px 45px rgba(18,183,106,.14) !important; }
+:root[data-skin="green"] .welcome-card { background: linear-gradient(135deg,#fff,#dcf7e6) !important; }
+:root[data-skin="green"] .day-pill { background: #dcf7e6 !important; border-color: #b9e8cc !important; color: #4d6b59 !important; }
+:root[data-skin="green"] .day-pill.is-current { border-color: #12b76a !important; background: rgba(18,183,106,.13) !important; color: #087a45 !important; }
+:root[data-skin="green"] .academy-cta { border-color: rgba(18,183,106,.58) !important; background: linear-gradient(135deg,rgba(18,183,106,.18),rgba(10,143,80,.10)) !important; color: #123524 !important; }
+:root[data-skin="green"] .cta-arrow { background: #fff !important; border-color: #b9e8cc !important; color: #123524 !important; }
+:root[data-skin="green"] .member-status { border-color: #b9e8cc !important; background: rgba(255,255,255,.92) !important; color: #123524 !important; }
+:root[data-skin="green"] .bottom-navigation { border-color: #b9e8cc !important; background: rgba(255,255,255,.95) !important; }
+:root[data-skin="green"] .nav-item.is-active { background: rgba(18,183,106,.12) !important; color: #087a45 !important; }
+:root[data-skin="green"] .video-feature,
+:root[data-skin="green"] .video-card { border-color: #b9e8cc !important; background: #fff !important; }
+
+.home-gei-logo { display: block; width: clamp(88px, 22vw, 118px); height: auto; max-height: 46px; object-fit: contain; object-position: left center; margin: 0; }
+.dashboard-header h1:has(.home-gei-logo) { min-height: 46px; margin: 6px 0 7px; }
 
 @media (max-width: 360px) {
   .home-gei-logo { width: 96px; max-height: 40px; }
   .dashboard-header h1:has(.home-gei-logo) { min-height: 40px; }
 }
 
-@media (max-width: 430px) {
-  #skin-control { right: 12px; }
-}
+@media (max-width: 430px) { #skin-control { right: 12px; } }
