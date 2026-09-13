@@ -4,6 +4,8 @@
   const root = document.getElementById('video-root');
   if (!root) return;
 
+  const VIDEO_ADAM_URL = 'https://assets.zyrosite.com/YZ9jg46Bljs5wOZR/yalltoo-beaver-p8oCrzuwdz7fwcXd.png';
+
   const videos = [
     { title: 'Genesis Engineered Interpretations', meta: 'GEI • Featured', description: 'A guided media space for exploring the GEI framework.' },
     { title: 'Water & Engineering', meta: 'GEI • Lesson Media', description: 'Visual learning resources connecting water systems and engineering ideas.' },
@@ -35,6 +37,11 @@
         <div><span class="video-eyebrow">GENESIS ENGINEERED INTERPRETATIONS</span><h1>Video Lab</h1><p>Explore GEI through visual learning, guided media, and sound.</p></div>
         <div class="video-logo" aria-label="G.E.I. logo">G.E.I.</div>
       </header>
+      <button class="video-adam-guide" id="video-adam-open" type="button" aria-label="Open Adam Video Lab guide" aria-controls="video-adam-modal">
+        <span class="video-adam-ring" aria-hidden="true"></span>
+        <img src="${VIDEO_ADAM_URL}" alt="Adam, the YallToo Video Lab mascot" class="video-adam-image">
+        <span class="video-adam-copy"><small>ADAM • VIDEO GUIDE</small><strong>Tap Adam for help</strong></span>
+      </button>
       <article class="video-feature">
         <div class="video-feature-art" aria-hidden="true"><span>GEI</span></div>
         <div class="video-feature-copy"><span class="video-label">FEATURED MEDIA</span><h2>See the blueprint.</h2><p>Video lessons will become playable here as the media system expands.</p><button class="video-primary" type="button" disabled>Coming Soon <span>▶</span></button></div>
@@ -44,6 +51,17 @@
         <div class="video-cards">${videos.map((item,index)=>`<article class="video-card"><div class="video-thumb" aria-hidden="true"><span>${String(index+1).padStart(2,'0')}</span><b>▶</b></div><div><span class="video-card-meta">${item.meta}</span><h3>${item.title}</h3><p>${item.description}</p></div></article>`).join('')}</div>
       </section>
       <button class="music-lab-entry" id="music-lab-open" type="button"><span><small>GEI MEDIA</small><strong>GEI Dam Music</strong></span><b>Open Lab ›</b></button>
+    </div>
+
+    <div class="video-adam-modal" id="video-adam-modal" hidden>
+      <div class="video-adam-panel" role="dialog" aria-modal="true" aria-labelledby="video-adam-title">
+        <button class="video-adam-close" id="video-adam-close" type="button" aria-label="Close Adam Video Lab guide">×</button>
+        <div class="video-adam-hero"><img src="${VIDEO_ADAM_URL}" alt="Adam, the YallToo Video Lab mascot"></div>
+        <span class="video-adam-kicker">ADAM • VIDEO GUIDE</span>
+        <h2 id="video-adam-title">Welcome to the Video Lab.</h2>
+        <p>Explore GEI through visual lessons, media experiments, and the sounds of the dam. Video lessons will unlock here as the library grows.</p>
+        <button class="video-adam-action" id="video-adam-done" type="button">EXPLORE THE LAB →</button>
+      </div>
     </div>
 
     <div class="music-lab-modal" id="music-lab-modal" hidden>
@@ -59,7 +77,11 @@
     </div>
   `;
 
-  const modal=root.querySelector('#music-lab-modal');
+  const adamModal=root.querySelector('#video-adam-modal');
+  const adamOpen=root.querySelector('#video-adam-open');
+  const adamClose=root.querySelector('#video-adam-close');
+  const adamDone=root.querySelector('#video-adam-done');
+  const musicModal=root.querySelector('#music-lab-modal');
   const audio=root.querySelector('#gei-audio');
   const title=root.querySelector('#music-title');
   const group=root.querySelector('#music-group');
@@ -74,6 +96,14 @@
   const fmt=(s)=>{if(!Number.isFinite(s))return '0:00';const m=Math.floor(s/60);return `${m}:${String(Math.floor(s%60)).padStart(2,'0')}`};
   const visible=()=>tracks.map((t,i)=>({...t,i})).filter(t=>activeGroup==='ALL'||t.group===activeGroup);
 
+  function openAdam(){adamModal.hidden=false;document.body.classList.add('video-adam-open');adamClose.focus()}
+  function closeAdam(){adamModal.hidden=true;document.body.classList.remove('video-adam-open');adamOpen.focus()}
+
+  adamOpen.addEventListener('click',openAdam);
+  adamClose.addEventListener('click',closeAdam);
+  adamDone.addEventListener('click',closeAdam);
+  adamModal.addEventListener('click',e=>{if(e.target===adamModal)closeAdam()});
+
   function render(){
     list.innerHTML=visible().map(t=>`<button class="music-track ${t.i===current?'is-current':''}" data-track="${t.i}"><span class="music-track-num">${String(t.i+1).padStart(2,'0')}</span><span><strong>${t.title}</strong><small>${t.group}</small></span><b>${t.i===current&&!audio.paused?'EQ':'▶'}</b></button>`).join('');
     list.querySelectorAll('[data-track]').forEach(btn=>btn.addEventListener('click',()=>load(Number(btn.dataset.track),true)));
@@ -83,9 +113,9 @@
     current=(i+tracks.length)%tracks.length; const t=tracks[current]; audio.src=t.src; title.textContent=t.title; group.textContent=t.group; seek.value=0; render(); if(autoplay) audio.play().catch(()=>{}); updatePlay(); }
   function updatePlay(){play.textContent=audio.paused?'▶':'Ⅱ'; play.setAttribute('aria-label',audio.paused?'Play':'Pause'); render();}
 
-  root.querySelector('#music-lab-open').addEventListener('click',()=>{modal.hidden=false;load(current,false);root.querySelector('#music-lab-close').focus()});
-  root.querySelector('#music-lab-close').addEventListener('click',()=>{modal.hidden=true;audio.pause()});
-  modal.addEventListener('click',e=>{if(e.target===modal){modal.hidden=true;audio.pause()}});
+  root.querySelector('#music-lab-open').addEventListener('click',()=>{musicModal.hidden=false;load(current,false);root.querySelector('#music-lab-close').focus()});
+  root.querySelector('#music-lab-close').addEventListener('click',()=>{musicModal.hidden=true;audio.pause()});
+  musicModal.addEventListener('click',e=>{if(e.target===musicModal){musicModal.hidden=true;audio.pause()}});
   root.querySelector('#music-play').addEventListener('click',()=>{if(!audio.src)load(current,false); audio.paused?audio.play().catch(()=>{}):audio.pause()});
   root.querySelector('#music-prev').addEventListener('click',()=>load(current-1,true));
   root.querySelector('#music-next').addEventListener('click',()=>load(current+1,true));
@@ -94,6 +124,6 @@
   audio.addEventListener('timeupdate',()=>{time.textContent=fmt(audio.currentTime);seek.value=audio.duration?(audio.currentTime/audio.duration)*100:0});
   seek.addEventListener('input',()=>{if(audio.duration)audio.currentTime=(Number(seek.value)/100)*audio.duration});
   root.querySelectorAll('[data-group]').forEach(btn=>btn.addEventListener('click',()=>{activeGroup=btn.dataset.group;root.querySelectorAll('[data-group]').forEach(b=>b.classList.toggle('is-active',b===btn));render()}));
-  document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!modal.hidden){modal.hidden=true;audio.pause()}});
+  document.addEventListener('keydown',e=>{if(e.key==='Escape'){if(!adamModal.hidden)closeAdam();if(!musicModal.hidden){musicModal.hidden=true;audio.pause()}}});
   render();
 })();
