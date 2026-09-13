@@ -2,12 +2,12 @@
   "use strict";
 
   const ACADEMY_DAYS = [
-    { id: 1, label: "DAY 1", title: "Water & Light", status: "START HERE", active: true },
-    { id: 2, label: "DAY 2", title: "The Firmament", status: "COMING NEXT", active: false },
-    { id: 3, label: "DAY 3", title: "Reservoir & Dry Land", status: "LOCKED", active: false },
-    { id: 4, label: "DAY 4", title: "The Sluice", status: "LOCKED", active: false },
-    { id: 5, label: "DAY 5", title: "The Waterwheel", status: "LOCKED", active: false },
-    { id: 6, label: "DAY 6", title: "The Beast System", status: "LOCKED", active: false }
+    { id: 1, label: "DAY 1", title: "Water & Light", status: "START HERE", active: true, url: "https://www.yalltoo.com/genesis-engineered-day-1" },
+    { id: 2, label: "DAY 2", title: "The Firmament", status: "COMING NEXT", active: false, url: "https://www.yalltoo.com/genesis-engineered-day-2-firmament-dam-wall" },
+    { id: 3, label: "DAY 3", title: "Reservoir & Dry Land", status: "LOCKED", active: false, url: "https://www.yalltoo.com/genesis-engineered-day-3-waters-land" },
+    { id: 4, label: "DAY 4", title: "The Sluice", status: "LOCKED", active: false, url: "https://www.yalltoo.com/day-4-mill-of-the-dam" },
+    { id: 5, label: "DAY 5", title: "The Waterwheel", status: "LOCKED", active: false, url: "https://www.yalltoo.com/day-5-mill-activation" },
+    { id: 6, label: "DAY 6", title: "The Beast System", status: "LOCKED", active: false, url: "https://www.yalltoo.com/genesis-engineered-day-6-final-operator" }
   ];
 
   function wheelMarkup() {
@@ -56,6 +56,8 @@
     const screen = document.getElementById("screen-academy");
     if (!screen) return;
 
+    const dayOneUrl = ACADEMY_DAYS[0].url;
+
     screen.innerHTML = `
       <div class="academy-view">
         <header class="academy-topbar">
@@ -75,10 +77,10 @@
             <span class="academy-section-label">EXPLORE THE WATER BLUEPRINT</span>
             <h2 id="academy-hero-title">6-Day Water Blueprint</h2>
             <p>Turn the wheel and enter the first stage of the Genesis Engineered Interpretations learning path.</p>
-            <button class="academy-primary-action" type="button">
+            <a class="academy-primary-action" href="${dayOneUrl}" target="_blank" rel="noopener noreferrer">
               <span>Begin Day 1</span>
               <strong aria-hidden="true">→</strong>
-            </button>
+            </a>
           </div>
           ${wheelMarkup()}
         </section>
@@ -94,18 +96,18 @@
 
           <div class="academy-day-grid">
             ${ACADEMY_DAYS.map((day) => `
-              <article class="academy-day-card${day.active ? " is-active" : ""}${day.id > 1 ? " is-locked" : ""}" data-day="${day.id}">
+              <a class="academy-day-card${day.active ? " is-active" : ""}${day.id > 1 ? " is-locked" : ""}" data-day="${day.id}" href="${day.url}" target="_blank" rel="noopener noreferrer" aria-label="Open ${day.label}: ${day.title}">
                 <span class="academy-day-number">${day.label}</span>
                 <h3>${day.title}</h3>
                 <span class="academy-day-status">${day.status}</span>
-              </article>
+              </a>
             `).join("")}
           </div>
         </section>
 
         <div class="academy-foundation-note" role="note">
           <span class="academy-note-mark">GEI</span>
-          <span>Foundation mode • lessons and progress systems arrive in later milestones.</span>
+          <span>Each stage opens its corresponding GEI lesson on YallToo.com.</span>
         </div>
       </div>
     `;
