@@ -104,11 +104,6 @@
             `).join("")}
           </div>
         </section>
-
-        <div class="academy-foundation-note" role="note">
-          <span class="academy-note-mark">GEI</span>
-          <span>Each stage opens its corresponding GEI lesson on YallToo.com.</span>
-        </div>
       </div>
     `;
 
