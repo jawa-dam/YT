@@ -87,12 +87,18 @@
     const homeScreen = document.getElementById("screen-home");
     const show = Boolean(
       document.getElementById("app-frame")?.classList.contains("splash-done") &&
-      homeScreen?.classList.contains("is-active")
+      homeScreen?.classList.contains("active")
     );
 
     host.hidden = !show;
     host.style.display = show ? "" : "none";
     host.setAttribute("aria-hidden", show ? "false" : "true");
+
+    if (!show) {
+      const trigger = host.querySelector("#skin-trigger");
+      const panel = host.querySelector("#skin-panel");
+      if (trigger && panel && !panel.hidden) closePanel(panel, trigger);
+    }
   }
 
   function watchScreenChanges() {
@@ -107,6 +113,13 @@
     });
 
     observer.observe(appFrame, { subtree: true, attributes: true, attributeFilter: ["class"] });
+
+    window.addEventListener("gei:navigation", (event) => {
+      const id = event.detail?.id;
+      const home = document.getElementById("screen-home");
+      if (home) home.classList.toggle("active", id === "home");
+      syncSkinControlVisibility();
+    });
   }
 
   function buildSkinControl() {
