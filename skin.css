@@ -97,14 +97,16 @@
 
 .skin-swatch-academic { background: linear-gradient(135deg, #2fd2ff, #3d3dea 52%, #f310ba); }
 .skin-swatch-dark { background: linear-gradient(135deg, #181b24, #06070d); }
-.skin-swatch-pink { background: linear-gradient(135deg, #ff9df2, #f310ba 55%, #66125e); }
-.skin-swatch-blue { background: linear-gradient(135deg, #9deaff, #2fd2ff 52%, #223d9e); }
+.skin-swatch-pink { background: linear-gradient(135deg, #ff9df2, #ff1493 55%, #b50065); }
+.skin-swatch-blue { background: linear-gradient(135deg, #7ea5ff, #0057ff 55%, #0636a8); }
+.skin-swatch-green { background: linear-gradient(135deg, #8ff0bd, #12b76a 55%, #087a45); }
 
 :root,
 :root[data-skin="academic"] { --skin-accent: #2fd2ff; }
 :root[data-skin="dark"] { --skin-accent: #aeb8cb; }
-:root[data-skin="pink"] { --skin-accent: #ff9df2; }
-:root[data-skin="blue"] { --skin-accent: #2fd2ff; }
+:root[data-skin="pink"] { --skin-accent: #ff1493; }
+:root[data-skin="blue"] { --skin-accent: #0057ff; }
+:root[data-skin="green"] { --skin-accent: #12b76a; }
 
 :root[data-skin="dark"] body { background: #05060a; }
 :root[data-skin="dark"] .app-shell { filter: saturate(.82); }
@@ -124,16 +126,49 @@
 
 :root[data-skin="blue"] body {
   background:
-    radial-gradient(circle at 16% 16%, rgba(47,210,255,.16), transparent 30%),
-    radial-gradient(circle at 88% 78%, rgba(61,61,234,.16), transparent 34%),
-    #050a13;
+    radial-gradient(circle at 16% 16%, rgba(0,87,255,.13), transparent 30%),
+    radial-gradient(circle at 88% 78%, rgba(20,99,255,.13), transparent 34%),
+    #050a16;
 }
 
-:root[data-skin="blue"] .shell-glow-cyan { background: var(--cyan); }
-:root[data-skin="blue"] .shell-glow-magenta { background: var(--indigo); }
+:root[data-skin="blue"] .shell-glow-cyan { background: #0057ff; }
+:root[data-skin="blue"] .shell-glow-magenta { background: #2f82ff; }
 :root[data-skin="blue"] .eyebrow,
 :root[data-skin="blue"] .card-label,
-:root[data-skin="blue"] .cta-kicker { color: #79e4ff; }
+:root[data-skin="blue"] .cta-kicker { color: #0057ff; }
+
+:root[data-skin="green"] body {
+  background:
+    radial-gradient(circle at 16% 16%, rgba(18,183,106,.14), transparent 30%),
+    radial-gradient(circle at 88% 78%, rgba(9,133,74,.12), transparent 34%),
+    #06120c;
+}
+
+:root[data-skin="green"] .shell-glow-cyan { background: #12b76a; }
+:root[data-skin="green"] .shell-glow-magenta { background: #0a8f50; }
+:root[data-skin="green"] .eyebrow,
+:root[data-skin="green"] .card-label,
+:root[data-skin="green"] .cta-kicker { color: #12b76a; }
+
+.home-gei-logo {
+  display: block;
+  width: clamp(88px, 22vw, 118px);
+  height: auto;
+  max-height: 46px;
+  object-fit: contain;
+  object-position: left center;
+  margin: 0;
+}
+
+.dashboard-header h1:has(.home-gei-logo) {
+  min-height: 46px;
+  margin: 6px 0 7px;
+}
+
+@media (max-width: 360px) {
+  .home-gei-logo { width: 96px; max-height: 40px; }
+  .dashboard-header h1:has(.home-gei-logo) { min-height: 40px; }
+}
 
 @media (max-width: 430px) {
   #skin-control { right: 12px; }
