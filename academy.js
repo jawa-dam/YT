@@ -54,6 +54,26 @@
     `;
   }
 
+  function mascotGuideMarkup() {
+    return `
+      <div class="academy-guide" id="academy-guide" hidden>
+        <button class="academy-guide-backdrop" id="academy-guide-backdrop" type="button" aria-label="Close Adam guide"></button>
+        <section class="academy-guide-card" role="dialog" aria-modal="true" aria-labelledby="academy-guide-title">
+          <button class="academy-guide-close" id="academy-guide-close" type="button" aria-label="Close Adam guide">×</button>
+          <div class="academy-guide-mascot">
+            <img src="${MASCOT_URL}" alt="YallToo mascot Adam" />
+          </div>
+          <div class="academy-guide-copy">
+            <span class="academy-section-label">ADAM • ACADEMY GUIDE</span>
+            <h2 id="academy-guide-title">Welcome to the Water Blueprint.</h2>
+            <p>Explore the six stages, observe the design, and begin with Day 1 when you're ready.</p>
+            <a class="academy-guide-action" href="${ACADEMY_DAYS[0].url}" target="_blank" rel="noopener noreferrer">BEGIN DAY 1 <strong aria-hidden="true">→</strong></a>
+          </div>
+        </section>
+      </div>
+    `;
+  }
+
   function renderAcademy() {
     const screen = document.getElementById("screen-academy");
     if (!screen) return;
@@ -68,9 +88,9 @@
             <h1>6-Day Water Blueprint</h1>
             <p>Learn to observe, question &amp; discover.</p>
           </div>
-          <div class="academy-mascot" aria-label="YallToo mascot guide">
-            <img src="${MASCOT_URL}" alt="YallToo mascot" loading="eager" decoding="async" />
-          </div>
+          <button class="academy-mascot" id="academy-mascot" type="button" aria-label="Open Adam Academy guide" aria-controls="academy-guide" aria-expanded="false">
+            <img src="${MASCOT_URL}" alt="YallToo mascot Adam" loading="eager" decoding="async" />
+          </button>
         </header>
 
         <section class="academy-hero academy-waterwheel-hero" aria-labelledby="academy-hero-title">
@@ -105,37 +125,68 @@
             `).join("")}
           </div>
         </section>
+        ${mascotGuideMarkup()}
       </div>
     `;
 
     const rotor = document.getElementById("academy-wheel-rotor");
     const turnButton = document.getElementById("academy-wheel-tap");
-    if (!rotor || !turnButton) return;
+    if (rotor && turnButton) {
+      let angle = 0;
+      let speed = 8;
+      let last = null;
+      const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-    let angle = 0;
-    let speed = 8;
-    let last = null;
-    const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    let frame = null;
+      const tick = (now) => {
+        if (last === null) last = now;
+        const dt = Math.min((now - last) / 1000, 0.05);
+        last = now;
+        speed += ((reduced ? 0 : 8) - speed) * Math.min(1, 2.4 * dt);
+        angle = (angle + speed * dt) % 360;
+        rotor.setAttribute("transform", `translate(110 82) rotate(${angle})`);
+        requestAnimationFrame(tick);
+      };
 
-    const tick = (now) => {
-      if (last === null) last = now;
-      const dt = Math.min((now - last) / 1000, 0.05);
-      last = now;
-      speed += ((reduced ? 0 : 8) - speed) * Math.min(1, 2.4 * dt);
-      angle = (angle + speed * dt) % 360;
-      rotor.setAttribute("transform", `translate(110 82) rotate(${angle})`);
-      frame = requestAnimationFrame(tick);
+      if (!reduced) requestAnimationFrame(tick);
+      if (reduced) rotor.setAttribute("transform", "translate(110 82) rotate(0)");
+
+      turnButton.addEventListener("click", () => {
+        speed = Math.min(300, speed + 115);
+        turnButton.classList.remove("is-active");
+        void turnButton.offsetWidth;
+        turnButton.classList.add("is-active");
+      });
+    }
+
+    const mascot = document.getElementById("academy-mascot");
+    const guide = document.getElementById("academy-guide");
+    const closeButton = document.getElementById("academy-guide-close");
+    const backdrop = document.getElementById("academy-guide-backdrop");
+    if (!mascot || !guide || !closeButton || !backdrop) return;
+
+    let previousFocus = null;
+
+    const closeGuide = () => {
+      guide.hidden = true;
+      mascot.setAttribute("aria-expanded", "false");
+      document.body.classList.remove("academy-guide-open");
+      if (previousFocus) previousFocus.focus();
+      previousFocus = null;
     };
 
-    if (!reduced) frame = requestAnimationFrame(tick);
-    if (reduced) rotor.setAttribute("transform", "translate(110 82) rotate(0)");
+    const openGuide = () => {
+      previousFocus = document.activeElement;
+      guide.hidden = false;
+      mascot.setAttribute("aria-expanded", "true");
+      document.body.classList.add("academy-guide-open");
+      requestAnimationFrame(() => closeButton.focus());
+    };
 
-    turnButton.addEventListener("click", () => {
-      speed = Math.min(300, speed + 115);
-      turnButton.classList.remove("is-active");
-      void turnButton.offsetWidth;
-      turnButton.classList.add("is-active");
+    mascot.addEventListener("click", openGuide);
+    closeButton.addEventListener("click", closeGuide);
+    backdrop.addEventListener("click", closeGuide);
+    guide.addEventListener("keydown", (event) => {
+      if (event.key === "Escape") closeGuide();
     });
   }
 
