@@ -20,7 +20,7 @@
     alt: "Adam, the YallToo mascot",
     academyLabel: "Open Adam Academy guide"
   };
-  const HOME_MASCOT_URL = "https://assets.zyrosite.com/YZ9jg46Bljs5wOZR/adam-the-dam-guide-F1y7SdiBkY4jeKt6.png";
+  const HOME_MASCOT_URL = "https://assets.zyrosite.com/YZ9jg46Bljs5wOZR/adam-dam-guide-qtx78bnE5ITfwakV.png";
   const state = { activeScreen: "home", initialized: false };
 
   function getNavRoot() { return document.getElementById("bottom-navigation"); }
