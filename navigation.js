@@ -15,63 +15,22 @@
     { label: "PayPal", detail: "Support GEI securely through PayPal", href: "https://www.paypal.com/ncp/payment/YCVQWR87ZEBFJ", className: "support-paypal" }
   ];
 
-  const MASCOT_URL = "https://assets.zyrosite.com/YZ9jg46Bljs5wOZR/yalltoo-mascot-animated-UgmkGIe3sJES4tKm.gif";
+  const MASCOT = window.GEI_MASCOT || {
+    url: "https://assets.zyrosite.com/YZ9jg46Bljs5wOZR/yalltoo-mascot-animated-UgmkGIe3sJES4tKm.gif",
+    alt: "Adam, the YallToo mascot",
+    academyLabel: "Open Adam Academy guide"
+  };
   const state = { activeScreen: "home", initialized: false };
 
   function getNavRoot() { return document.getElementById("bottom-navigation"); }
   function getScreens() { return Array.from(document.querySelectorAll(".app-screen")); }
-
-  function ensureHomeMascotStyles() {
-    if (document.getElementById("home-mascot-frame-styles")) return;
-    const style = document.createElement("style");
-    style.id = "home-mascot-frame-styles";
-    style.textContent = `
-      #screen-home .mascot-orbit { min-width:0; min-height:0; overflow:hidden; }
-      #screen-home .home-mascot-button {
-        position:relative; display:grid; place-items:center; width:100%; height:100%; min-width:0; min-height:94px;
-        padding:0; border:0; border-radius:18px; background:transparent; overflow:hidden; cursor:pointer;
-        -webkit-tap-highlight-color:transparent;
-      }
-      #screen-home .home-mascot-image {
-        position:relative; z-index:1; display:block; width:100%; height:100%; max-width:100%; max-height:100%;
-        min-width:0; min-height:0; object-fit:contain; object-position:center;
-        filter:drop-shadow(0 10px 16px rgba(0,0,0,.18)); pointer-events:none;
-        animation:homeAdamFloat 3.8s ease-in-out infinite;
-      }
-      #screen-home .home-mascot-button .mascot-ring { z-index:0; pointer-events:none; transition:transform .22s ease, box-shadow .22s ease; }
-      #screen-home .home-mascot-button .mascot-caption { z-index:2; pointer-events:none; }
-      #screen-home .home-mascot-button::after {
-        content:"TAP ADAM"; position:absolute; z-index:3; right:3px; bottom:2px;
-        padding:3px 6px; border:1px solid rgba(47,210,255,.28); border-radius:999px;
-        background:rgba(6,7,13,.68); color:var(--cyan); font-size:8px; font-weight:900;
-        letter-spacing:.13em; line-height:1; opacity:.82; transform:translateY(0);
-        box-shadow:0 5px 14px rgba(0,0,0,.16); pointer-events:none;
-        animation:homeAdamCue 2.8s ease-in-out infinite;
-      }
-      #screen-home .home-mascot-button:hover .mascot-ring,
-      #screen-home .home-mascot-button:focus-visible .mascot-ring { transform:scale(1.04); box-shadow:0 0 38px rgba(47,210,255,.18),inset 0 0 24px rgba(47,210,255,.08); }
-      #screen-home .home-mascot-button:active { transform:scale(.985); }
-      #screen-home .home-mascot-button:focus-visible { outline:3px solid var(--pink); outline-offset:3px; }
-      @keyframes homeAdamFloat { 0%,100% { transform:translateY(0); } 50% { transform:translateY(-3px); } }
-      @keyframes homeAdamCue { 0%,100% { opacity:.48; transform:translateY(1px); } 50% { opacity:1; transform:translateY(-1px); } }
-      @media (max-width:360px) {
-        #screen-home .home-mascot-button { min-height:80px; border-radius:15px; }
-        #screen-home .home-mascot-image { width:100%; height:100%; }
-        #screen-home .home-mascot-button::after { right:2px; bottom:1px; padding:3px 5px; font-size:7px; }
-      }
-      @media (prefers-reduced-motion:reduce) {
-        #screen-home .home-mascot-image, #screen-home .home-mascot-button::after { animation:none; }
-      }
-    `;
-    document.head.appendChild(style);
-  }
 
   function ensureSupportStyles() {
     if (document.getElementById("support-page-styles")) return;
     const style = document.createElement("style");
     style.id = "support-page-styles";
     style.textContent = `
-      #screen-support { overflow: hidden; }
+      #screen-support { overflow:hidden; }
       .support-root { width:100%;height:100%;min-height:0;overflow:hidden;box-sizing:border-box;padding:max(14px,env(safe-area-inset-top)) 16px calc(82px + env(safe-area-inset-bottom));display:grid;grid-template-rows:auto 1fr;gap:8px;color:var(--skin-text,#102a43); }
       .support-header { display:flex;align-items:flex-start;justify-content:space-between;gap:10px; }
       .support-kicker { display:block;color:var(--skin-accent,#2fd2ff);font-size:10px;font-weight:900;letter-spacing:.14em;text-transform:uppercase; }
@@ -101,29 +60,15 @@
     if (!screen || screen.dataset.supportRendered === "true") return;
     ensureSupportStyles();
     screen.dataset.supportRendered = "true";
-    screen.innerHTML = `
-      <div class="support-root">
-        <header class="support-header"><div><span class="support-kicker">GEI SUPPORT</span><h1>Support the Research</h1><p>Help Genesis Engineered Interpretations grow, build, document and share.</p></div><div class="support-heart" aria-hidden="true">♥</div></header>
-        <div class="support-content">
-          <section class="support-goal" aria-labelledby="support-goal-title"><span class="support-goal-label" id="support-goal-title">Fundraiser Goal</span><p>Your support directly funds the research — enabling GEI to develop working prototypes, documents, and share this knowledge freely with communities, students, and innovators worldwide. Every contribution moves GEI closer to a future where this guide is accessible to all.</p></section>
-          <section class="support-methods" aria-label="Ways to support GEI">${SUPPORT_LINKS.map((item) => `<a class="support-method ${item.className}" href="${item.href}" target="_blank" rel="noopener noreferrer"><span class="support-icon" aria-hidden="true">$</span><span><strong>${item.label}</strong><span>${item.detail}</span></span><span class="support-arrow" aria-hidden="true">→</span></a>`).join("")}</section>
-          <div class="support-contact"><div class="support-contact-copy"><strong>Contact GEI</strong><span>Questions, collaboration or research support</span></div><a class="support-email" href="mailto:Contact@yalltoo.com">Contact@yalltoo.com</a></div>
-        </div>
-      </div>`;
+    screen.innerHTML = `<div class="support-root"><header class="support-header"><div><span class="support-kicker">GEI SUPPORT</span><h1>Support the Research</h1><p>Help Genesis Engineered Interpretations grow, build, document and share.</p></div><div class="support-heart" aria-hidden="true">♥</div></header><div class="support-content"><section class="support-goal" aria-labelledby="support-goal-title"><span class="support-goal-label" id="support-goal-title">Fundraiser Goal</span><p>Your support directly funds the research — enabling GEI to develop working prototypes, documents, and share this knowledge freely with communities, students, and innovators worldwide. Every contribution moves GEI closer to a future where this guide is accessible to all.</p></section><section class="support-methods" aria-label="Ways to support GEI">${SUPPORT_LINKS.map((item) => `<a class="support-method ${item.className}" href="${item.href}" target="_blank" rel="noopener noreferrer"><span class="support-icon" aria-hidden="true">$</span><span><strong>${item.label}</strong><span>${item.detail}</span></span><span class="support-arrow" aria-hidden="true">→</span></a>`).join("")}</section><div class="support-contact"><div class="support-contact-copy"><strong>Contact GEI</strong><span>Questions, collaboration or research support</span></div><a class="support-email" href="mailto:Contact@yalltoo.com">Contact@yalltoo.com</a></div></div></div>`;
   }
 
   function replaceHomeMascot() {
     const orbit = document.querySelector("#screen-home .mascot-orbit");
     if (!orbit || orbit.dataset.mascotReady === "true") return;
-    ensureHomeMascotStyles();
     orbit.dataset.mascotReady = "true";
     orbit.setAttribute("aria-label", "Adam mascot");
-    orbit.innerHTML = `
-      <button class="home-mascot-button" type="button" aria-label="Open Adam Academy guide">
-        <span class="mascot-ring" aria-hidden="true"></span>
-        <img class="home-mascot-image" src="${MASCOT_URL}" alt="Adam, the YallToo mascot" />
-        <span class="mascot-caption">ADAM</span>
-      </button>`;
+    orbit.innerHTML = `<button class="home-mascot-button gei-mascot-button gei-mascot-button--interactive" type="button" aria-label="${MASCOT.academyLabel}"><span class="mascot-ring" aria-hidden="true"></span><img class="home-mascot-image gei-mascot-image gei-mascot-image--idle" src="${MASCOT.url}" alt="${MASCOT.alt}" loading="eager" decoding="async" /><span class="mascot-caption">ADAM</span></button>`;
     orbit.querySelector(".home-mascot-button")?.addEventListener("click", () => {
       setActiveScreen("academy");
       window.setTimeout(() => { document.querySelector("#screen-academy .academy-mascot")?.focus(); }, 80);
@@ -133,16 +78,8 @@
   function setActiveScreen(screenId) {
     const target = NAV_ITEMS.find((item) => item.id === screenId) || NAV_ITEMS[0];
     state.activeScreen = target.id;
-    document.querySelectorAll("[data-nav-item]").forEach((button) => {
-      const isActive = button.dataset.navItem === target.id;
-      button.classList.toggle("is-active", isActive);
-      button.setAttribute("aria-current", isActive ? "page" : "false");
-    });
-    getScreens().forEach((screen) => {
-      const isActive = screen.id === target.target;
-      screen.classList.toggle("is-active", isActive);
-      screen.setAttribute("aria-hidden", isActive ? "false" : "true");
-    });
+    document.querySelectorAll("[data-nav-item]").forEach((button) => { const isActive = button.dataset.navItem === target.id; button.classList.toggle("is-active", isActive); button.setAttribute("aria-current", isActive ? "page" : "false"); });
+    getScreens().forEach((screen) => { const isActive = screen.id === target.target; screen.classList.toggle("is-active", isActive); screen.setAttribute("aria-hidden", isActive ? "false" : "true"); });
     if (target.id === "support") renderSupport();
   }
 
@@ -161,6 +98,5 @@
     setActiveScreen(state.activeScreen);
   }
 
-  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", init, { once: true });
-  else init();
+  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", init, { once: true }); else init();
 })();
