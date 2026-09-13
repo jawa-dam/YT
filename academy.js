@@ -109,6 +109,7 @@
     const closeGuide = () => { guide.hidden = true; mascot.setAttribute("aria-expanded", "false"); document.body.classList.remove("academy-guide-open"); if (previousFocus) previousFocus.focus(); previousFocus = null; };
     const openGuide = () => { previousFocus = document.activeElement; guide.hidden = false; mascot.setAttribute("aria-expanded", "true"); document.body.classList.add("academy-guide-open"); requestAnimationFrame(() => closeButton.focus()); };
     mascot.addEventListener("click", openGuide);
+    window.addEventListener("gei:open-adam-guide", openGuide);
     closeButton.addEventListener("click", closeGuide);
     backdrop.addEventListener("click", closeGuide);
     guide.addEventListener("keydown", (event) => { if (event.key === "Escape") closeGuide(); });
