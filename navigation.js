@@ -24,6 +24,7 @@
   const HOME_MASCOT_URL = "https://assets.zyrosite.com/YZ9jg46Bljs5wOZR/adam-dam-guide-qtx78bnE5ITfwakV.png";
   const HOME_PRODUCT_URL = "https://assets.zyrosite.com/YZ9jg46Bljs5wOZR/inshot_20260808_192709068-u7bYAfdJRGRfnEfC.gif";
   const HOME_STORE_URL = "https://www.yalltoo.com/gei-discovery-guide-";
+  const HOME_DAM_URL = "dam-release.html";
   const state = { activeScreen: "home", initialized: false };
 
   function getNavRoot() { return document.getElementById("bottom-navigation"); }
@@ -65,15 +66,18 @@
     const style = document.createElement("style");
     style.id = "home-product-styles";
     style.textContent = `
-      .home-product-card { position:relative;display:block;width:100%;min-height:126px;box-sizing:border-box;overflow:hidden;border:1px solid color-mix(in srgb,var(--skin-accent,#2fd2ff) 34%,transparent);border-radius:22px;background:linear-gradient(135deg,color-mix(in srgb,var(--skin-accent,#2fd2ff) 10%,var(--skin-surface,#fff)),var(--skin-surface,#fff));box-shadow:0 14px 34px rgba(0,0,0,.08);text-decoration:none;-webkit-tap-highlight-color:transparent; }
-      .home-product-card img { display:block;width:100%;height:126px;object-fit:cover;object-position:center; }
+      .home-dam-card { position:relative;width:100%;height:102px;box-sizing:border-box;overflow:hidden;border:1px solid color-mix(in srgb,var(--skin-accent,#2fd2ff) 34%,transparent);border-radius:22px;background:linear-gradient(135deg,#08101b,#0b0e18);box-shadow:0 12px 30px rgba(0,0,0,.1); }
+      .home-dam-label { position:absolute;z-index:2;left:11px;top:8px;padding:4px 8px;border:1px solid rgba(47,210,255,.28);border-radius:999px;background:rgba(3,8,16,.72);color:#eaf9ff;font-size:8px;font-weight:900;letter-spacing:.13em;text-transform:uppercase;pointer-events:none; }
+      .home-dam-frame { display:block;width:100%;height:100%;border:0;background:transparent; }
+      .home-product-card { position:relative;display:block;width:100%;min-height:112px;box-sizing:border-box;overflow:hidden;border:1px solid color-mix(in srgb,var(--skin-accent,#2fd2ff) 34%,transparent);border-radius:22px;background:linear-gradient(135deg,color-mix(in srgb,var(--skin-accent,#2fd2ff) 10%,var(--skin-surface,#fff)),var(--skin-surface,#fff));box-shadow:0 14px 34px rgba(0,0,0,.08);text-decoration:none;-webkit-tap-highlight-color:transparent; }
+      .home-product-card img { display:block;width:100%;height:112px;object-fit:cover;object-position:center; }
       .home-product-card::after { content:"";position:absolute;inset:0;background:linear-gradient(180deg,transparent 48%,rgba(6,7,13,.78) 100%);pointer-events:none; }
       .home-product-cta { position:absolute;left:14px;right:14px;bottom:11px;z-index:1;display:flex;align-items:center;justify-content:space-between;gap:10px;color:#fff; }
       .home-product-cta span { font-size:10px;font-weight:900;letter-spacing:.12em;text-transform:uppercase; }
       .home-product-cta b { display:grid;place-items:center;width:34px;height:34px;flex:0 0 34px;border-radius:11px;background:rgba(255,255,255,.94);color:#102a43;font-size:19px;box-shadow:0 6px 18px rgba(0,0,0,.18); }
       .home-product-card:hover,.home-product-card:focus-visible { transform:translateY(-1px);box-shadow:0 18px 38px rgba(0,0,0,.12); }
       .home-product-card:focus-visible { outline:3px solid var(--skin-accent,#2fd2ff);outline-offset:2px; }
-      @media(max-width:360px){.home-product-card{min-height:112px;border-radius:20px}.home-product-card img{height:112px}.home-product-cta{left:11px;right:11px;bottom:9px}.home-product-cta span{font-size:9px}.home-product-cta b{width:31px;height:31px;flex-basis:31px;font-size:17px}}
+      @media(max-width:360px){.home-dam-card{height:86px;border-radius:20px}.home-dam-label{left:8px;top:6px;font-size:7px;padding:3px 7px}.home-product-card{min-height:98px;border-radius:20px}.home-product-card img{height:98px}.home-product-cta{left:11px;right:11px;bottom:8px}.home-product-cta span{font-size:8px}.home-product-cta b{width:30px;height:30px;flex-basis:30px;font-size:16px}}
     `;
     document.head.appendChild(style);
   }
@@ -85,6 +89,15 @@
     const cta = screen.querySelector(".academy-cta");
     if (!blueprint) return;
     ensureHomeProductStyles();
+
+    const homeStack = document.createElement("div");
+    homeStack.className = "home-experience-stack";
+
+    const dam = document.createElement("section");
+    dam.className = "home-dam-card";
+    dam.setAttribute("aria-label", "Interactive GEI dam release");
+    dam.innerHTML = `<span class="home-dam-label">GEI LIVE DAM • RELEASE WATER</span><iframe class="home-dam-frame" src="${HOME_DAM_URL}" title="Interactive GEI dam release" loading="eager" sandbox="allow-scripts"></iframe>`;
+
     const product = document.createElement("a");
     product.className = "home-product-card";
     product.href = HOME_STORE_URL;
@@ -92,7 +105,9 @@
     product.rel = "noopener noreferrer";
     product.setAttribute("aria-label", "Open the GEI Discovery Guide store page");
     product.innerHTML = `<img src="${HOME_PRODUCT_URL}" alt="GEI Discovery Guide" loading="eager" decoding="async"><span class="home-product-cta"><span>GET THE GEI DISCOVERY GUIDE</span><b aria-hidden="true">→</b></span>`;
-    blueprint.replaceWith(product);
+
+    homeStack.append(dam, product);
+    blueprint.replaceWith(homeStack);
     if (cta) cta.remove();
     screen.dataset.productReady = "true";
   }
