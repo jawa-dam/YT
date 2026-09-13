@@ -140,6 +140,14 @@
 :root[data-skin="green"] .video-card small,
 :root[data-skin="green"] .video-card .video-meta { color: #4d6b59 !important; }
 
+/* V1.8.4.6 — Dark skin Portfolio readability */
+:root[data-skin="dark"] .portfolio-title-wrap p { color: #c7d2e3 !important; }
+:root[data-skin="dark"] .research-overview { color: #f1f5fb !important; border-color: rgba(255,255,255,.12) !important; }
+:root[data-skin="dark"] .research-overview h2 { color: #f1f5fb !important; }
+:root[data-skin="dark"] .research-work { border-color: rgba(255,255,255,.09) !important; }
+:root[data-skin="dark"] .research-work-copy strong { color: #e8eef7 !important; }
+:root[data-skin="dark"] .research-work-copy small { color: #9eabc0 !important; }
+
 .home-gei-logo { display: block; width: clamp(88px, 22vw, 118px); height: auto; max-height: 46px; object-fit: contain; object-position: left center; margin: 0; }
 .dashboard-header h1:has(.home-gei-logo) { min-height: 46px; margin: 6px 0 7px; }
 
