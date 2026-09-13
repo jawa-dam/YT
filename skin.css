@@ -106,6 +106,16 @@
 :root[data-skin="green"] .skin-panel-title { color: #4d6b59 !important; }
 :root[data-skin="green"] .skin-option { border-color: #b9e8cc !important; background: #dcf7e6 !important; color: #123524 !important; }
 
+/* V1.7.3 — Green skin readability: use dark ink on the light research surface. */
+:root[data-skin="green"] .portfolio-title-wrap h1,
+:root[data-skin="green"] .research-overview h2 { color: #123524 !important; }
+:root[data-skin="green"] .portfolio-title-wrap p,
+:root[data-skin="green"] .portfolio-note p { color: #4d6b59 !important; }
+:root[data-skin="green"] .research-overview { color: #123524 !important; }
+:root[data-skin="green"] .research-work-copy strong { color: #123524 !important; }
+:root[data-skin="green"] .research-work-copy small { color: #4d6b59 !important; }
+:root[data-skin="green"] .research-work-number { color: #12b76a !important; }
+
 .home-gei-logo { display: block; width: clamp(88px, 22vw, 118px); height: auto; max-height: 46px; object-fit: contain; object-position: left center; margin: 0; }
 .dashboard-header h1:has(.home-gei-logo) { min-height: 46px; margin: 6px 0 7px; }
 
