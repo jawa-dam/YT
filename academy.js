@@ -33,7 +33,7 @@
         <section class="academy-hero" aria-labelledby="academy-hero-title">
           <div class="academy-hero-copy">
             <span class="academy-section-label">YOUR NEXT DISCOVERY</span>
-            <h2 id="academy-hero-title">Start with Day 1.</h2>
+            <h2 id="academy-hero-title" style="color:#f6f8ff !important; text-shadow:0 2px 10px rgba(0,0,0,.28);">Start with Day 1.</h2>
             <p>Enter the first stage of the Genesis Engineered Interpretations learning path.</p>
             <button class="academy-primary-action" type="button">
               <span>Begin Day 1</span>
