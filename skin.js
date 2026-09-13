@@ -6,7 +6,7 @@
   const SKINS = [
     { id: "academic", label: "Academic", className: "skin-academic" },
     { id: "pink", label: "Hot Pink", className: "skin-pink" },
-    { id: "blue", label: "Electric Blue", className: "skin-blue" },
+    { id: "blue", label: "Blue", className: "skin-blue" },
     { id: "green", label: "Green", className: "skin-green" },
     { id: "dark", label: "Dark Mode", className: "skin-dark" }
   ];
