@@ -2,12 +2,13 @@
 :root,:root[data-skin="academic"]{--skin-bg:#f7f9fc;--skin-surface:#fff;--skin-soft:#f1f4f8;--skin-text:#111827;--skin-muted:#5b6472;--skin-border:#dfe5ec;--skin-accent:#2fd2ff;--skin-shadow:rgba(15,23,42,.10)}
 :root[data-skin="pink"]{--skin-bg:#fff0f8;--skin-surface:#fff;--skin-soft:#ffe0f1;--skin-text:#3a102b;--skin-muted:#71455f;--skin-border:#f2b9d5;--skin-accent:#ff1493;--skin-shadow:rgba(214,20,126,.16)}
 :root[data-skin="blue"]{--skin-bg:#eef4ff;--skin-surface:#fff;--skin-soft:#dbe7ff;--skin-text:#10254d;--skin-muted:#4d6487;--skin-border:#b8cdf7;--skin-accent:#1463ff;--skin-shadow:rgba(20,99,255,.14)}
+:root[data-skin="green"]{--skin-bg:#effaf3;--skin-surface:#fff;--skin-soft:#dcf7e6;--skin-text:#123524;--skin-muted:#4d6b59;--skin-border:#b9e8cc;--skin-accent:#12b76a;--skin-shadow:rgba(18,183,106,.14)}
 :root[data-skin="dark"]{--skin-bg:#05060a;--skin-surface:#0b0e18;--skin-soft:#111522;--skin-text:#f6f8ff;--skin-muted:#aeb8cb;--skin-border:rgba(255,255,255,.10);--skin-accent:#aeb8cb;--skin-shadow:rgba(0,0,0,.34)}
-:root[data-skin="academic"] body,:root[data-skin="pink"] body,:root[data-skin="blue"] body{color:var(--skin-text);background:var(--skin-bg)}
-:root[data-skin="academic"] html,:root[data-skin="pink"] html,:root[data-skin="blue"] html{background:var(--skin-bg)}
-:root[data-skin="academic"] .app-frame,:root[data-skin="pink"] .app-frame,:root[data-skin="blue"] .app-frame{background:var(--skin-bg)}
-:root[data-skin="academic"] .app-shell::before,:root[data-skin="pink"] .app-shell::before,:root[data-skin="blue"] .app-shell::before{background:none}
-:root[data-skin="academic"] .app-shell::after,:root[data-skin="pink"] .app-shell::after,:root[data-skin="blue"] .app-shell::after{border-color:var(--skin-border)}
+:root[data-skin="academic"] body,:root[data-skin="pink"] body,:root[data-skin="blue"] body,:root[data-skin="green"] body{color:var(--skin-text);background:var(--skin-bg)}
+:root[data-skin="academic"] html,:root[data-skin="pink"] html,:root[data-skin="blue"] html,:root[data-skin="green"] html{background:var(--skin-bg)}
+:root[data-skin="academic"] .app-frame,:root[data-skin="pink"] .app-frame,:root[data-skin="blue"] .app-frame,:root[data-skin="green"] .app-frame{background:var(--skin-bg)}
+:root[data-skin="academic"] .app-shell::before,:root[data-skin="pink"] .app-shell::before,:root[data-skin="blue"] .app-shell::before,:root[data-skin="green"] .app-shell::before{background:none}
+:root[data-skin="academic"] .app-shell::after,:root[data-skin="pink"] .app-shell::after,:root[data-skin="blue"] .app-shell::after,:root[data-skin="green"] .app-shell::after{border-color:var(--skin-border)}
 :root[data-skin="academic"] .dashboard-header h1,:root[data-skin="pink"] .dashboard-header h1,:root[data-skin="blue"] .dashboard-header h1,:root[data-skin="academic"] .welcome-copy h2,:root[data-skin="pink"] .welcome-copy h2,:root[data-skin="blue"] .welcome-copy h2,:root[data-skin="academic"] .blueprint-topline h2,:root[data-skin="pink"] .blueprint-topline h2,:root[data-skin="blue"] .blueprint-topline h2{color:var(--skin-text)}
 :root[data-skin="academic"] .dashboard-header p,:root[data-skin="pink"] .dashboard-header p,:root[data-skin="blue"] .dashboard-header p,:root[data-skin="academic"] .welcome-copy p,:root[data-skin="pink"] .welcome-copy p,:root[data-skin="blue"] .welcome-copy p,:root[data-skin="academic"] .cta-copy small,:root[data-skin="pink"] .cta-copy small,:root[data-skin="blue"] .cta-copy small{color:var(--skin-muted)}
 :root[data-skin="academic"] .welcome-card,:root[data-skin="academic"] .blueprint-card,:root[data-skin="pink"] .welcome-card,:root[data-skin="pink"] .blueprint-card,:root[data-skin="blue"] .welcome-card,:root[data-skin="blue"] .blueprint-card{border-color:var(--skin-border);background:var(--skin-surface);box-shadow:0 18px 45px var(--skin-shadow),inset 0 1px 0 rgba(255,255,255,.8)}
@@ -40,6 +41,57 @@
 :root[data-skin="academic"] .video-thumb{background:linear-gradient(145deg,rgba(47,210,255,.12),rgba(61,61,234,.08));color:#526b82}:root[data-skin="pink"] .video-thumb{background:linear-gradient(145deg,rgba(255,20,147,.18),rgba(255,82,171,.10));color:#71455f}:root[data-skin="blue"] .video-thumb{background:linear-gradient(145deg,rgba(20,99,255,.16),rgba(47,130,255,.09));color:#4d6487}
 :root[data-skin="academic"] .music-lab-entry,:root[data-skin="pink"] .music-lab-entry,:root[data-skin="blue"] .music-lab-entry{border-color:var(--skin-border);background:var(--skin-soft);color:var(--skin-text)}
 :root[data-skin="academic"] .music-lab-entry b,:root[data-skin="pink"] .music-lab-entry b,:root[data-skin="blue"] .music-lab-entry b{color:var(--skin-muted)}
+
+/* V1.7.3 — Green skin contrast lock: dark primary text on the pale green canvas. */
+:root[data-skin="green"] .dashboard-header h1,
+:root[data-skin="green"] .welcome-copy h2,
+:root[data-skin="green"] .blueprint-topline h2,
+:root[data-skin="green"] .video-lab,
+:root[data-skin="green"] .video-header h1,
+:root[data-skin="green"] .video-feature-copy h2,
+:root[data-skin="green"] .video-section-heading,
+:root[data-skin="green"] .video-card h3,
+:root[data-skin="green"] .video-card strong,
+:root[data-skin="green"] .research-overview h2,
+:root[data-skin="green"] .portfolio-title-wrap h1 { color:#123524 !important; }
+:root[data-skin="green"] .dashboard-header p,
+:root[data-skin="green"] .welcome-copy p,
+:root[data-skin="green"] .cta-copy small,
+:root[data-skin="green"] .video-header p,
+:root[data-skin="green"] .video-feature-copy p,
+:root[data-skin="green"] .video-card p,
+:root[data-skin="green"] .portfolio-title-wrap p,
+:root[data-skin="green"] .portfolio-note p { color:#4d6b59 !important; }
+:root[data-skin="green"] .blueprint-topline,
+:root[data-skin="green"] .research-overview,
+:root[data-skin="green"] .video-lab { color:#123524 !important; }
+:root[data-skin="green"] .research-work-copy strong { color:#123524 !important; }
+:root[data-skin="green"] .research-work-copy small { color:#4d6b59 !important; }
+:root[data-skin="green"] .research-work-number { color:#12b76a !important; }
+
+/* Green skin component surfaces. */
+:root[data-skin="green"] .app-frame,
+:root[data-skin="green"] .app-shell,
+:root[data-skin="green"] .app-screen { background:#effaf3 !important; }
+:root[data-skin="green"] .app-shell::after { border-color:#b9e8cc !important; }
+:root[data-skin="green"] .welcome-card,
+:root[data-skin="green"] .blueprint-card,
+:root[data-skin="green"] .video-feature,
+:root[data-skin="green"] .video-card { background:#fff !important; border-color:#b9e8cc !important; box-shadow:0 18px 45px rgba(18,183,106,.14) !important; }
+:root[data-skin="green"] .welcome-card { background:linear-gradient(135deg,#fff,#dcf7e6) !important; }
+:root[data-skin="green"] .day-pill { background:#dcf7e6 !important; border-color:#b9e8cc !important; color:#4d6b59 !important; }
+:root[data-skin="green"] .day-pill.is-current { border-color:#12b76a !important; background:rgba(18,183,106,.13) !important; color:#087a45 !important; }
+:root[data-skin="green"] .academy-cta { border-color:rgba(18,183,106,.58) !important; background:linear-gradient(135deg,rgba(18,183,106,.18),rgba(10,143,80,.10)) !important; color:#123524 !important; }
+:root[data-skin="green"] .cta-arrow { background:#fff !important; border-color:#b9e8cc !important; color:#123524 !important; }
+:root[data-skin="green"] .member-status { border-color:#b9e8cc !important; background:rgba(255,255,255,.92) !important; color:#123524 !important; }
+:root[data-skin="green"] .bottom-navigation { border-color:#b9e8cc !important; background:rgba(255,255,255,.95) !important; }
+:root[data-skin="green"] .nav-item { color:#4d6b59 !important; }
+:root[data-skin="green"] .nav-item.is-active { background:rgba(18,183,106,.12) !important; color:#087a45 !important; }
+:root[data-skin="green"] .video-feature-art { border-color:rgba(18,183,106,.32) !important; background:radial-gradient(circle at 50% 40%,rgba(18,183,106,.16),transparent 48%),linear-gradient(145deg,#fff,#dcf7e6) !important; color:#123524 !important; }
+:root[data-skin="green"] .video-thumb { background:linear-gradient(145deg,rgba(18,183,106,.14),rgba(10,143,80,.08)) !important; color:#4d6b59 !important; }
+:root[data-skin="green"] .music-lab-entry { border-color:#b9e8cc !important; background:#dcf7e6 !important; color:#123524 !important; }
+:root[data-skin="green"] .music-lab-entry b { color:#4d6b59 !important; }
+
 /* V1.7.1 hotfix: the skin selector belongs to the Academy UI, never the splash. */
 .app-frame:not(.splash-done) #skin-control {display:none!important;pointer-events:none!important}
 .app-frame.splash-done #skin-control {display:block}
