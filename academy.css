@@ -60,7 +60,7 @@
   display: flex;
   align-items: flex-start;
   justify-content: space-between;
-  gap: 8px;
+  gap: 6px;
 }
 
 .academy-kicker,
@@ -92,12 +92,13 @@
 .academy-mascot {
   display: grid;
   place-items: center;
-  flex: 0 0 clamp(76px, 24vw, 104px);
-  width: clamp(76px, 24vw, 104px);
-  height: clamp(76px, 24vw, 104px);
-  margin-top: -8px;
+  flex: 0 0 clamp(86px, 28vw, 122px);
+  width: clamp(86px, 28vw, 122px);
+  height: clamp(86px, 28vw, 122px);
+  margin-top: -14px;
+  margin-right: -6px;
   overflow: visible;
-  border-radius: 26px;
+  border-radius: 30px;
   background: radial-gradient(circle at 50% 45%, rgba(47,210,255,.12), transparent 70%);
 }
 
@@ -368,14 +369,19 @@
   }
 
   .academy-topbar {
-    gap: 6px;
+    gap: 4px;
   }
 
   .academy-mascot {
-    flex-basis: 76px;
-    width: 76px;
-    height: 76px;
-    margin-top: -5px;
+    flex-basis: 88px;
+    width: 88px;
+    height: 88px;
+    margin-top: -8px;
+    margin-right: -5px;
+  }
+
+  .academy-topbar h1 {
+    max-width: 210px;
   }
 
   .academy-hero {
