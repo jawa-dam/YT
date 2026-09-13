@@ -29,20 +29,7 @@
 .skin-trigger:focus-visible,
 .skin-option:focus-visible { outline: 3px solid var(--pink); outline-offset: 3px; }
 
-.skin-panel {
-  position: absolute;
-  top: 48px;
-  right: 0;
-  width: 220px;
-  padding: 12px;
-  border: 1px solid rgba(255,255,255,.12);
-  border-radius: 20px;
-  background: rgba(8,10,18,.94);
-  box-shadow: 0 22px 55px rgba(0,0,0,.45), inset 0 1px 0 rgba(255,255,255,.06);
-  backdrop-filter: blur(18px);
-  -webkit-backdrop-filter: blur(18px);
-}
-
+.skin-panel { position: absolute; top: 48px; right: 0; width: 220px; padding: 12px; border: 1px solid rgba(255,255,255,.12); border-radius: 20px; background: rgba(8,10,18,.94); box-shadow: 0 22px 55px rgba(0,0,0,.45), inset 0 1px 0 rgba(255,255,255,.06); backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px); }
 .skin-panel-title { padding: 2px 4px 9px; color: #8e9db5; font-size: 8px; font-weight: 900; letter-spacing: .15em; text-transform: uppercase; }
 .skin-options { display: grid; gap: 7px; }
 .skin-option { display: flex; align-items: center; gap: 10px; width: 100%; min-height: 42px; padding: 7px 9px; border: 1px solid rgba(255,255,255,.08); border-radius: 13px; background: rgba(255,255,255,.035); color: #eaf0fb; font-size: 11px; font-weight: 800; text-align: left; cursor: pointer; }
@@ -84,7 +71,6 @@
 :root[data-skin="green"] .card-label,
 :root[data-skin="green"] .cta-kicker { color: #12b76a; }
 
-/* V1.7.2: strong Electric Blue identity */
 :root[data-skin="blue"] .app-frame,
 :root[data-skin="blue"] .app-shell,
 :root[data-skin="blue"] .app-screen { background: #edf3ff !important; }
@@ -99,7 +85,6 @@
 :root[data-skin="blue"] .bottom-navigation { border-color: #b8cdf7 !important; background: rgba(255,255,255,.95) !important; }
 :root[data-skin="blue"] .nav-item.is-active { background: rgba(0,87,255,.12) !important; color: #0750d8 !important; }
 
-/* V1.7.2: new Green identity */
 :root[data-skin="green"] .app-frame,
 :root[data-skin="green"] .app-shell,
 :root[data-skin="green"] .app-screen { background: #effaf3 !important; }
@@ -116,6 +101,10 @@
 :root[data-skin="green"] .nav-item.is-active { background: rgba(18,183,106,.12) !important; color: #087a45 !important; }
 :root[data-skin="green"] .video-feature,
 :root[data-skin="green"] .video-card { border-color: #b9e8cc !important; background: #fff !important; }
+:root[data-skin="green"] .skin-trigger,
+:root[data-skin="green"] .skin-panel { border-color: #b9e8cc !important; background: rgba(255,255,255,.96) !important; color: #123524 !important; }
+:root[data-skin="green"] .skin-panel-title { color: #4d6b59 !important; }
+:root[data-skin="green"] .skin-option { border-color: #b9e8cc !important; background: #dcf7e6 !important; color: #123524 !important; }
 
 .home-gei-logo { display: block; width: clamp(88px, 22vw, 118px); height: auto; max-height: 46px; object-fit: contain; object-position: left center; margin: 0; }
 .dashboard-header h1:has(.home-gei-logo) { min-height: 46px; margin: 6px 0 7px; }
