@@ -30,6 +30,8 @@
     }
   ];
 
+  const MASCOT_URL = "https://assets.zyrosite.com/YZ9jg46Bljs5wOZR/yalltoo-mascot-animated-UgmkGIe3sJES4tKm.gif";
+
   const state = {
     activeScreen: "home",
     initialized: false
@@ -255,6 +257,32 @@
     `;
   }
 
+  function replaceHomeMascot() {
+    const orbit = document.querySelector("#screen-home .mascot-orbit");
+    if (!orbit || orbit.dataset.mascotReady === "true") return;
+
+    orbit.dataset.mascotReady = "true";
+    orbit.setAttribute("aria-label", "Adam mascot");
+    orbit.innerHTML = `
+      <button class="home-mascot-button" type="button" aria-label="Open Adam Academy guide">
+        <span class="mascot-ring" aria-hidden="true"></span>
+        <img
+          class="home-mascot-image"
+          src="${MASCOT_URL}"
+          alt="Adam, the YallToo mascot"
+        />
+        <span class="mascot-caption">ADAM</span>
+      </button>
+    `;
+
+    orbit.querySelector(".home-mascot-button")?.addEventListener("click", () => {
+      setActiveScreen("academy");
+      window.setTimeout(() => {
+        document.querySelector("#screen-academy .academy-mascot")?.focus();
+      }, 80);
+    });
+  }
+
   function setActiveScreen(screenId) {
     const target = NAV_ITEMS.find((item) => item.id === screenId) || NAV_ITEMS[0];
     state.activeScreen = target.id;
@@ -302,6 +330,7 @@
     if (state.initialized) return;
     state.initialized = true;
     buildNavigation();
+    replaceHomeMascot();
     setActiveScreen(state.activeScreen);
   }
 
