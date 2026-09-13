@@ -4,9 +4,9 @@
   const STORAGE_KEY = "gei-academy-skin-v1";
   const SKINS = [
     { id: "academic", label: "Academic", className: "skin-academic" },
-    { id: "dark", label: "Dark", className: "skin-dark" },
     { id: "pink", label: "Pink", className: "skin-pink" },
-    { id: "blue", label: "Blue", className: "skin-blue" }
+    { id: "blue", label: "Baby Blue", className: "skin-blue" },
+    { id: "dark", label: "Dark Mode", className: "skin-dark" }
   ];
 
   const state = { active: "academic", initialized: false };
