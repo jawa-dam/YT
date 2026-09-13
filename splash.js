@@ -190,8 +190,7 @@
       </div>
       <div class="splash-controls">
         <div class="splash-progress" aria-hidden="true"><span id="splash-progress-bar"></span></div>
-        <button class="splash-button splash-enter" id="splash-enter" type="button">Enter Academy</button>
-        <button class="splash-button splash-skip" id="splash-skip" type="button">Skip</button>
+        <button class="splash-button splash-enter" id="splash-enter" type="button">Enter Academy →</button>
       </div>
     `;
     frame.insertBefore(layer, frame.firstChild);
@@ -219,7 +218,6 @@
     const splash = frame.querySelector(".splash-layer") || installSplashMarkup(frame);
     const artwork = splash.querySelector(".splash-artwork");
     const enter = splash.querySelector("#splash-enter");
-    const skip = splash.querySelector("#splash-skip");
     const status = splash.querySelector("#splash-status");
     const progressBar = splash.querySelector("#splash-progress-bar");
 
@@ -237,12 +235,11 @@
     };
 
     enter.addEventListener("click", () => completeSplash("enter"));
-    skip.addEventListener("click", () => completeSplash("skip"));
     document.addEventListener("keydown", (event) => {
       if (state !== SPLASH_ACTIVE) return;
-      if (event.key === "Enter" || event.key === "Escape") {
+      if (event.key === "Enter") {
         event.preventDefault();
-        completeSplash(event.key === "Enter" ? "keyboard-enter" : "keyboard-skip");
+        completeSplash("keyboard-enter");
       }
     });
 
