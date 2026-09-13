@@ -80,6 +80,34 @@
     trigger.setAttribute("aria-expanded", "false");
   }
 
+  function syncSkinControlVisibility() {
+    const host = document.getElementById("skin-control");
+    if (!host) return;
+
+    const homeScreen = document.getElementById("screen-home");
+    const show = Boolean(
+      document.getElementById("app-frame")?.classList.contains("splash-done") &&
+      homeScreen?.classList.contains("is-active")
+    );
+
+    host.hidden = !show;
+    host.setAttribute("aria-hidden", show ? "false" : "true");
+  }
+
+  function watchScreenChanges() {
+    const appFrame = document.getElementById("app-frame");
+    if (!appFrame || typeof MutationObserver === "undefined") return;
+
+    syncSkinControlVisibility();
+    const observer = new MutationObserver((mutations) => {
+      if (mutations.some((mutation) => mutation.type === "attributes" && mutation.attributeName === "class")) {
+        syncSkinControlVisibility();
+      }
+    });
+
+    observer.observe(appFrame, { subtree: true, attributes: true, attributeFilter: ["class"] });
+  }
+
   function buildSkinControl() {
     const host = document.getElementById("skin-control");
     if (!host) return;
@@ -130,6 +158,7 @@
 
     applySkin(readSavedSkin());
     buildHomeBrand();
+    watchScreenChanges();
   }
 
   function init() {
