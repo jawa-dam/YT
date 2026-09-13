@@ -2,12 +2,22 @@
   "use strict";
 
   const STORAGE_KEY = "gei-academy-skin-v1";
+  const GEI_LOGO_URL = "https://assets.zyrosite.com/YZ9jg46Bljs5wOZR/gei-logo-gwP3315oRt91xpE8.png";
   const SKINS = [
     { id: "academic", label: "Academic", className: "skin-academic" },
-    { id: "dark", label: "Dark", className: "skin-dark" },
-    { id: "pink", label: "Pink", className: "skin-pink" },
-    { id: "blue", label: "Blue", className: "skin-blue" }
+    { id: "pink", label: "Hot Pink", className: "skin-pink" },
+    { id: "blue", label: "Blue", className: "skin-blue" },
+    { id: "green", label: "Green", className: "skin-green" },
+    { id: "dark", label: "Dark Mode", className: "skin-dark" }
   ];
+
+  const PALETTES = {
+    academic: { bg: "#f7f9fc", surface: "#ffffff", soft: "#f1f4f8", text: "#102a43", muted: "#526b82", accent: "#2fd2ff" },
+    pink: { bg: "#fff0f7", surface: "#ffffff", soft: "#ffe5f1", text: "#3b1028", muted: "#70485f", accent: "#ff1493" },
+    blue: { bg: "#edf3ff", surface: "#ffffff", soft: "#dbe7ff", text: "#10254d", muted: "#4d6487", accent: "#0057ff" },
+    green: { bg: "#effaf3", surface: "#ffffff", soft: "#dcf7e6", text: "#123524", muted: "#4d6b59", accent: "#12b76a" },
+    dark: { bg: "#05060a", surface: "#0b0e18", soft: "#111522", text: "#f6f8ff", muted: "#aeb8cb", accent: "#aeb8cb" }
+  };
 
   const state = { active: "academic", initialized: false };
 
@@ -28,11 +38,19 @@
     }
   }
 
+  function applyPalette(id) {
+    const palette = PALETTES[id] || PALETTES.academic;
+    Object.entries(palette).forEach(([key, value]) => {
+      document.documentElement.style.setProperty(`--skin-${key}`, value);
+    });
+  }
+
   function applySkin(id) {
     const selected = SKINS.find((skin) => skin.id === id) || SKINS[0];
     state.active = selected.id;
     document.documentElement.dataset.skin = selected.id;
     document.body.dataset.skin = selected.id;
+    applyPalette(selected.id);
 
     document.querySelectorAll("[data-skin-option]").forEach((button) => {
       const active = button.dataset.skinOption === selected.id;
@@ -43,9 +61,65 @@
     saveSkin(selected.id);
   }
 
+  function buildHomeBrand() {
+    const title = document.querySelector("#screen-home .dashboard-header h1");
+    if (!title || title.querySelector(".home-gei-logo")) return;
+
+    title.replaceChildren();
+    const logo = document.createElement("img");
+    logo.className = "home-gei-logo";
+    logo.src = GEI_LOGO_URL;
+    logo.alt = "Genesis Engineered Interpretations";
+    logo.loading = "eager";
+    logo.decoding = "async";
+    title.appendChild(logo);
+  }
+
   function closePanel(panel, trigger) {
     panel.hidden = true;
     trigger.setAttribute("aria-expanded", "false");
+  }
+
+  function syncSkinControlVisibility() {
+    const host = document.getElementById("skin-control");
+    if (!host) return;
+
+    const homeScreen = document.getElementById("screen-home");
+    const show = Boolean(
+      document.getElementById("app-frame")?.classList.contains("splash-done") &&
+      homeScreen?.classList.contains("active")
+    );
+
+    host.hidden = !show;
+    host.style.display = show ? "" : "none";
+    host.setAttribute("aria-hidden", show ? "false" : "true");
+
+    if (!show) {
+      const trigger = host.querySelector("#skin-trigger");
+      const panel = host.querySelector("#skin-panel");
+      if (trigger && panel && !panel.hidden) closePanel(panel, trigger);
+    }
+  }
+
+  function watchScreenChanges() {
+    const appFrame = document.getElementById("app-frame");
+    if (!appFrame || typeof MutationObserver === "undefined") return;
+
+    syncSkinControlVisibility();
+    const observer = new MutationObserver((mutations) => {
+      if (mutations.some((mutation) => mutation.type === "attributes" && mutation.attributeName === "class")) {
+        syncSkinControlVisibility();
+      }
+    });
+
+    observer.observe(appFrame, { subtree: true, attributes: true, attributeFilter: ["class"] });
+
+    window.addEventListener("gei:navigation", (event) => {
+      const id = event.detail?.id;
+      const home = document.getElementById("screen-home");
+      if (home) home.classList.toggle("active", id === "home");
+      syncSkinControlVisibility();
+    });
   }
 
   function buildSkinControl() {
@@ -97,6 +171,8 @@
     });
 
     applySkin(readSavedSkin());
+    buildHomeBrand();
+    watchScreenChanges();
   }
 
   function init() {
