@@ -4,6 +4,7 @@
   const root = document.getElementById('video-root');
   if (!root) return;
 
+  const GEI_LOGO_URL = 'https://assets.zyrosite.com/YZ9jg46Bljs5wOZR/gei-logo-gwP3315oRt91xpE8.png';
   const VIDEO_ADAM_URL = 'https://assets.zyrosite.com/YZ9jg46Bljs5wOZR/yalltoo-beaver-p8oCrzuwdz7fwcXd.png';
 
   const videos = [
@@ -35,7 +36,7 @@
     <div class="video-lab">
       <header class="video-header">
         <div><span class="video-eyebrow">GENESIS ENGINEERED INTERPRETATIONS</span><h1>Video Lab</h1><p>Explore GEI through visual learning, guided media, and sound.</p></div>
-        <div class="video-logo" aria-label="G.E.I. logo">G.E.I.</div>
+        <div class="video-logo" aria-label="G.E.I. logo"><img src="${GEI_LOGO_URL}" alt="G.E.I. logo" decoding="async"></div>
       </header>
       <button class="video-adam-guide" id="video-adam-open" type="button" aria-label="Open Adam Video Lab guide" aria-controls="video-adam-modal">
         <span class="video-adam-ring" aria-hidden="true"></span>
