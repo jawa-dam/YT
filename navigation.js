@@ -20,6 +20,7 @@
     alt: "Adam, the YallToo mascot",
     academyLabel: "Open Adam Academy guide"
   };
+  const HOME_MASCOT_URL = "https://assets.zyrosite.com/YZ9jg46Bljs5wOZR/adam-the-dam-guide-F1y7SdiBkY4jeKt6.png";
   const state = { activeScreen: "home", initialized: false };
 
   function getNavRoot() { return document.getElementById("bottom-navigation"); }
@@ -68,7 +69,7 @@
     if (!orbit || orbit.dataset.mascotReady === "true") return;
     orbit.dataset.mascotReady = "true";
     orbit.setAttribute("aria-label", "Adam mascot");
-    orbit.innerHTML = `<button class="home-mascot-button gei-mascot-button gei-mascot-button--interactive" type="button" aria-label="${MASCOT.academyLabel}"><span class="mascot-ring" aria-hidden="true"></span><img class="home-mascot-image gei-mascot-image gei-mascot-image--idle" src="${MASCOT.url}" alt="${MASCOT.alt}" loading="eager" decoding="async" /><span class="mascot-caption">ADAM</span></button>`;
+    orbit.innerHTML = `<button class="home-mascot-button gei-mascot-button gei-mascot-button--interactive" type="button" aria-label="${MASCOT.academyLabel}"><span class="mascot-ring" aria-hidden="true"></span><img class="home-mascot-image gei-mascot-image gei-mascot-image--idle" src="${HOME_MASCOT_URL}" alt="${MASCOT.alt}" loading="eager" decoding="async" /><span class="mascot-caption">ADAM</span></button>`;
     orbit.querySelector(".home-mascot-button")?.addEventListener("click", () => {
       setActiveScreen("academy");
       window.setTimeout(() => { document.querySelector("#screen-academy .academy-mascot")?.focus(); }, 80);
