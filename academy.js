@@ -10,6 +10,8 @@
     { id: 6, label: "DAY 6", title: "The Beast System", status: "LOCKED", active: false, url: "https://www.yalltoo.com/genesis-engineered-day-6-final-operator" }
   ];
 
+  const MASCOT_URL = "https://assets.zyrosite.com/YZ9jg46Bljs5wOZR/yalltoo-mascot-animated-UgmkGIe3sJES4tKm.gif";
+
   function wheelMarkup() {
     const paddles = Array.from({ length: 8 }, (_, i) => {
       const angle = i * 45;
@@ -66,9 +68,8 @@
             <h1>6-Day Water Blueprint</h1>
             <p>Learn to observe, question &amp; discover.</p>
           </div>
-          <div class="academy-progress-chip" aria-label="Academy progress: Day 1 of 6">
-            <span>0%</span>
-            <small>PROGRESS</small>
+          <div class="academy-mascot" aria-label="YallToo mascot guide">
+            <img src="${MASCOT_URL}" alt="YallToo mascot" loading="eager" decoding="async" />
           </div>
         </header>
 
