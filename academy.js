@@ -68,8 +68,8 @@
             <h1>6-Day Water Blueprint</h1>
             <p>Learn to observe, question &amp; discover.</p>
           </div>
-          <div class="academy-mascot" aria-label="YallToo mascot guide" style="display:grid;place-items:center;width:76px;height:76px;flex:0 0 76px;margin-top:-2px;overflow:visible;border-radius:22px;background:radial-gradient(circle at 50% 45%,rgba(47,210,255,.12),transparent 70%);">
-            <img src="${MASCOT_URL}" alt="YallToo mascot" loading="eager" decoding="async" style="display:block;width:76px;height:76px;object-fit:contain;object-position:center;filter:drop-shadow(0 10px 16px rgba(0,0,0,.18));" />
+          <div class="academy-mascot" aria-label="YallToo mascot guide">
+            <img src="${MASCOT_URL}" alt="YallToo mascot" loading="eager" decoding="async" />
           </div>
         </header>
 
