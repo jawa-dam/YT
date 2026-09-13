@@ -66,7 +66,8 @@
     const style = document.createElement("style");
     style.id = "home-product-styles";
     style.textContent = `
-      .home-dam-card { position:relative;width:100%;height:102px;box-sizing:border-box;overflow:hidden;border:1px solid color-mix(in srgb,var(--skin-accent,#2fd2ff) 34%,transparent);border-radius:22px;background:linear-gradient(135deg,#08101b,#0b0e18);box-shadow:0 12px 30px rgba(0,0,0,.1); }
+      .home-experience-stack { width:100%;display:grid;gap:10px; }
+      .home-dam-card { position:relative;width:100%;height:180px;box-sizing:border-box;overflow:hidden;border:1px solid color-mix(in srgb,var(--skin-accent,#2fd2ff) 34%,transparent);border-radius:22px;background:linear-gradient(135deg,#08101b,#0b0e18);box-shadow:0 12px 30px rgba(0,0,0,.1); }
       .home-dam-label { position:absolute;z-index:2;left:11px;top:8px;padding:4px 8px;border:1px solid rgba(47,210,255,.28);border-radius:999px;background:rgba(3,8,16,.72);color:#eaf9ff;font-size:8px;font-weight:900;letter-spacing:.13em;text-transform:uppercase;pointer-events:none; }
       .home-dam-frame { display:block;width:100%;height:100%;border:0;background:transparent; }
       .home-product-card { position:relative;display:block;width:100%;min-height:112px;box-sizing:border-box;overflow:hidden;border:1px solid color-mix(in srgb,var(--skin-accent,#2fd2ff) 34%,transparent);border-radius:22px;background:linear-gradient(135deg,color-mix(in srgb,var(--skin-accent,#2fd2ff) 10%,var(--skin-surface,#fff)),var(--skin-surface,#fff));box-shadow:0 14px 34px rgba(0,0,0,.08);text-decoration:none;-webkit-tap-highlight-color:transparent; }
@@ -77,7 +78,7 @@
       .home-product-cta b { display:grid;place-items:center;width:34px;height:34px;flex:0 0 34px;border-radius:11px;background:rgba(255,255,255,.94);color:#102a43;font-size:19px;box-shadow:0 6px 18px rgba(0,0,0,.18); }
       .home-product-card:hover,.home-product-card:focus-visible { transform:translateY(-1px);box-shadow:0 18px 38px rgba(0,0,0,.12); }
       .home-product-card:focus-visible { outline:3px solid var(--skin-accent,#2fd2ff);outline-offset:2px; }
-      @media(max-width:360px){.home-dam-card{height:86px;border-radius:20px}.home-dam-label{left:8px;top:6px;font-size:7px;padding:3px 7px}.home-product-card{min-height:98px;border-radius:20px}.home-product-card img{height:98px}.home-product-cta{left:11px;right:11px;bottom:8px}.home-product-cta span{font-size:8px}.home-product-cta b{width:30px;height:30px;flex-basis:30px;font-size:16px}}
+      @media(max-width:360px){.home-dam-card{height:150px;border-radius:20px}.home-dam-label{left:8px;top:6px;font-size:7px;padding:3px 7px}.home-product-card{min-height:98px;border-radius:20px}.home-product-card img{height:98px}.home-product-cta{left:11px;right:11px;bottom:8px}.home-product-cta span{font-size:8px}.home-product-cta b{width:30px;height:30px;flex-basis:30px;font-size:16px}}
     `;
     document.head.appendChild(style);
   }
@@ -125,36 +126,39 @@
     if (!orbit || orbit.dataset.mascotReady === "true") return;
     orbit.dataset.mascotReady = "true";
     orbit.setAttribute("aria-label", "Adam mascot");
-    orbit.innerHTML = `<button class="home-mascot-button gei-mascot-button gei-mascot-button--interactive" type="button" aria-label="${MASCOT.academyLabel}"><span class="mascot-ring" aria-hidden="true"></span><img class="home-mascot-image gei-mascot-image gei-mascot-image--idle" src="${HOME_MASCOT_URL}" alt="${MASCOT.alt}" loading="eager" decoding="async" /><span class="mascot-caption">ADAM</span></button>`;
-    orbit.querySelector(".home-mascot-button")?.addEventListener("click", () => {
-      setActiveScreen("academy");
-      window.setTimeout(() => { document.querySelector("#screen-academy .academy-mascot")?.focus(); }, 80);
-    });
+    orbit.innerHTML = `<button class="home-mascot-button gei-mascot-button gei-mascot-button--interactive" type="button" aria-label="${MASCOT.academyLabel}"><span class="mascot-ring" aria-hidden="true"></span><img class="home-mascot-image" src="${HOME_MASCOT_URL}" alt="Adam, the GEI dam guide mascot" loading="eager" decoding="async"><span class="mascot-badge">ADAM</span><span class="mascot-caption">TAP TO MEET ADAM</span></button>`;
+    orbit.querySelector(".home-mascot-button")?.addEventListener("click", () => document.querySelector("#screen-academy .academy-mascot")?.click());
   }
 
-  function setActiveScreen(screenId) {
-    const target = NAV_ITEMS.find((item) => item.id === screenId) || NAV_ITEMS[0];
-    state.activeScreen = target.id;
-    document.querySelectorAll("[data-nav-item]").forEach((button) => { const isActive = button.dataset.navItem === target.id; button.classList.toggle("is-active", isActive); button.setAttribute("aria-current", isActive ? "page" : "false"); });
-    getScreens().forEach((screen) => { const isActive = screen.id === target.target; screen.classList.toggle("is-active", isActive); screen.setAttribute("aria-hidden", isActive ? "false" : "true"); });
-    if (target.id === "support") renderSupport();
+  function setActiveScreen(id) {
+    const screens = getScreens();
+    screens.forEach((screen) => screen.classList.toggle("active", screen.id === `screen-${id}`));
+    document.querySelectorAll("[data-nav-id]").forEach((button) => button.classList.toggle("active", button.dataset.navId === id));
+    state.activeScreen = id;
+    if (id === "home") { replaceHomeMascot(); replaceHomeBlueprint(); }
+    if (id === "support") renderSupport();
+    window.dispatchEvent(new CustomEvent("gei:navigation", { detail: { id } }));
   }
 
   function buildNavigation() {
     const root = getNavRoot();
-    if (!root) return;
-    root.innerHTML = NAV_ITEMS.map((item) => `<button class="nav-item${item.id === state.activeScreen ? " is-active" : ""}" type="button" data-nav-item="${item.id}" aria-label="${item.label}" aria-current="${item.id === state.activeScreen ? "page" : "false"}"><span class="nav-icon" aria-hidden="true">${item.icon}</span><span class="nav-label">${item.label}</span></button>`).join("");
-    root.querySelectorAll("[data-nav-item]").forEach((button) => { button.addEventListener("click", () => { setActiveScreen(button.dataset.navItem || "home"); }); });
+    if (!root || root.dataset.ready === "true") return;
+    root.dataset.ready = "true";
+    root.innerHTML = NAV_ITEMS.map((item) => `<button class="bottom-nav-item${item.id === "home" ? " active" : ""}" type="button" data-nav-id="${item.id}" aria-label="${item.label}" aria-controls="${item.target}"><span class="bottom-nav-icon" aria-hidden="true">${item.icon}</span><span class="bottom-nav-label">${item.label}</span></button>`).join("");
+    root.addEventListener("click", (event) => {
+      const button = event.target.closest("[data-nav-id]");
+      if (!button) return;
+      setActiveScreen(button.dataset.navId);
+    });
   }
 
   function init() {
     if (state.initialized) return;
     state.initialized = true;
     buildNavigation();
-    replaceHomeMascot();
-    replaceHomeBlueprint();
-    setActiveScreen(state.activeScreen);
+    setActiveScreen("home");
   }
 
-  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", init, { once: true }); else init();
+  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", init, { once: true });
+  else init();
 })();
