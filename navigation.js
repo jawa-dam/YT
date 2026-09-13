@@ -35,27 +35,27 @@
     style.id = "support-page-styles";
     style.textContent = `
       #screen-support { overflow:hidden; }
-      .support-root { width:100%;height:100%;min-height:0;overflow:hidden;box-sizing:border-box;padding:max(14px,env(safe-area-inset-top)) 16px calc(82px + env(safe-area-inset-bottom));display:grid;grid-template-rows:auto 1fr;gap:8px;color:var(--skin-text,#102a43); }
-      .support-header { display:flex;align-items:flex-start;justify-content:space-between;gap:10px; }
-      .support-kicker { display:block;color:var(--skin-accent,#2fd2ff);font-size:10px;font-weight:900;letter-spacing:.14em;text-transform:uppercase; }
-      .support-header h1 { margin:4px 0 3px;font-size:clamp(29px,7.5vw,35px);line-height:.98;letter-spacing:-.045em; }
-      .support-header p { margin:0;max-width:280px;color:var(--skin-muted,#526b82);font-size:13px;line-height:1.3; }
-      .support-gei-logo { display:block;width:58px;height:42px;flex:0 0 58px;object-fit:contain;object-position:center;border-radius:10px; }
-      .support-content { min-height:0;overflow:hidden;display:grid;align-content:start;gap:7px;padding-right:0; }
-      .support-goal { padding:12px 13px;border:1px solid color-mix(in srgb,var(--skin-accent,#2fd2ff) 35%,transparent);border-radius:19px;background:linear-gradient(145deg,color-mix(in srgb,var(--skin-accent,#2fd2ff) 12%,var(--skin-surface,#fff)),var(--skin-surface,#fff)); }
-      .support-goal-label { display:block;margin-bottom:4px;color:var(--skin-accent,#2fd2ff);font-size:10px;font-weight:900;letter-spacing:.12em;text-transform:uppercase; }
-      .support-goal p { margin:0;color:var(--skin-text,#102a43);font-size:13px;line-height:1.36; }
-      .support-methods { display:grid;grid-template-columns:1fr;gap:6px; }
-      .support-method { display:flex;align-items:center;gap:10px;min-height:51px;padding:7px 10px;box-sizing:border-box;border:1px solid color-mix(in srgb,var(--skin-accent,#2fd2ff) 28%,transparent);border-radius:15px;background:var(--skin-surface,#fff);color:inherit;text-decoration:none;-webkit-tap-highlight-color:transparent; }
+      .support-root { width:100%;height:100%;min-height:0;overflow:hidden;box-sizing:border-box;padding:max(16px,env(safe-area-inset-top)) 16px calc(82px + env(safe-area-inset-bottom));display:grid;grid-template-rows:auto 1fr;gap:12px;color:var(--skin-text,#102a43); }
+      .support-header { display:flex;align-items:flex-start;justify-content:space-between;gap:12px; }
+      .support-kicker { display:block;color:var(--skin-accent,#2fd2ff);font-size:12px;font-weight:900;letter-spacing:.14em;text-transform:uppercase; }
+      .support-header h1 { margin:5px 0 4px;font-size:clamp(34px,8.8vw,42px);line-height:.98;letter-spacing:-.045em; }
+      .support-header p { margin:0;max-width:290px;color:var(--skin-muted,#526b82);font-size:15px;line-height:1.3; }
+      .support-gei-logo { display:block;width:72px;height:52px;flex:0 0 72px;object-fit:contain;object-position:center;border-radius:10px; }
+      .support-content { min-height:0;overflow:hidden;display:grid;align-content:start;gap:10px;padding-right:0; }
+      .support-goal { padding:16px 15px;border:1px solid color-mix(in srgb,var(--skin-accent,#2fd2ff) 35%,transparent);border-radius:21px;background:linear-gradient(145deg,color-mix(in srgb,var(--skin-accent,#2fd2ff) 12%,var(--skin-surface,#fff)),var(--skin-surface,#fff)); }
+      .support-goal-label { display:block;margin-bottom:6px;color:var(--skin-accent,#2fd2ff);font-size:12px;font-weight:900;letter-spacing:.12em;text-transform:uppercase; }
+      .support-goal p { margin:0;color:var(--skin-text,#102a43);font-size:15px;line-height:1.38; }
+      .support-methods { display:grid;grid-template-columns:1fr;gap:8px; }
+      .support-method { display:flex;align-items:center;gap:12px;min-height:64px;padding:8px 12px;box-sizing:border-box;border:1px solid color-mix(in srgb,var(--skin-accent,#2fd2ff) 28%,transparent);border-radius:17px;background:var(--skin-surface,#fff);color:inherit;text-decoration:none;-webkit-tap-highlight-color:transparent; }
       .support-method:focus-visible { outline:3px solid var(--skin-accent,#2fd2ff);outline-offset:2px; }
-      .support-icon { display:grid;place-items:center;width:46px;height:34px;flex:0 0 46px;border-radius:10px;background:var(--skin-soft,#f1f4f8);overflow:hidden; }
+      .support-icon { display:grid;place-items:center;width:62px;height:46px;flex:0 0 62px;border-radius:11px;background:var(--skin-soft,#f1f4f8);overflow:hidden; }
       .support-icon img { display:block;width:100%;height:100%;object-fit:contain;object-position:center; }
-      .support-method strong,.support-method span { display:block; }.support-method strong { font-size:14px;line-height:1.05; }.support-method span { margin-top:2px;color:var(--skin-muted,#526b82);font-size:10px;line-height:1.15; }
-      .support-arrow { margin-left:auto;color:var(--skin-accent,#2fd2ff);font-size:18px; }
-      .support-contact { display:flex;align-items:center;justify-content:space-between;gap:8px;min-height:48px;padding:9px 11px;box-sizing:border-box;border-radius:15px;background:var(--skin-soft,#f1f4f8); }
-      .support-contact-copy strong,.support-contact-copy span { display:block; }.support-contact-copy strong { font-size:12px;line-height:1.05; }.support-contact-copy span { margin-top:2px;color:var(--skin-muted,#526b82);font-size:10px;line-height:1.15; }
-      .support-email { color:var(--skin-accent,#2fd2ff);font-size:11px;font-weight:800;text-decoration:none;overflow-wrap:anywhere;text-align:right; }
-      @media(max-width:360px){.support-root{padding-inline:13px;padding-top:12px;gap:7px}.support-header{gap:8px}.support-header h1{font-size:28px}.support-header p{font-size:12px;max-width:235px}.support-gei-logo{width:52px;height:38px;flex-basis:52px}.support-goal{padding:10px 11px}.support-goal p{font-size:12px;line-height:1.3}.support-method{min-height:47px;padding:6px 8px;gap:8px}.support-icon{width:42px;height:31px;flex-basis:42px}.support-method strong{font-size:13px}.support-method span{font-size:9px}.support-contact{min-height:44px;padding:7px 9px}.support-contact-copy strong{font-size:11px}.support-contact-copy span{font-size:9px}.support-email{font-size:10px}}
+      .support-method strong,.support-method span { display:block; }.support-method strong { font-size:17px;line-height:1.05; }.support-method span { margin-top:3px;color:var(--skin-muted,#526b82);font-size:12px;line-height:1.2; }
+      .support-arrow { margin-left:auto;color:var(--skin-accent,#2fd2ff);font-size:23px; }
+      .support-contact { display:flex;align-items:center;justify-content:space-between;gap:10px;min-height:58px;padding:10px 12px;box-sizing:border-box;border-radius:16px;background:var(--skin-soft,#f1f4f8); }
+      .support-contact-copy strong,.support-contact-copy span { display:block; }.support-contact-copy strong { font-size:14px;line-height:1.05; }.support-contact-copy span { margin-top:3px;color:var(--skin-muted,#526b82);font-size:11px;line-height:1.2; }
+      .support-email { color:var(--skin-accent,#2fd2ff);font-size:12px;font-weight:800;text-decoration:none;overflow-wrap:anywhere;text-align:right; }
+      @media(max-width:360px){.support-root{padding-inline:12px;padding-top:13px;gap:9px}.support-header{gap:8px}.support-kicker{font-size:11px}.support-header h1{font-size:32px}.support-header p{font-size:14px;max-width:220px}.support-gei-logo{width:62px;height:46px;flex-basis:62px}.support-content{gap:8px}.support-goal{padding:13px 12px}.support-goal-label{font-size:11px;margin-bottom:5px}.support-goal p{font-size:14px;line-height:1.34}.support-methods{gap:7px}.support-method{min-height:59px;padding:7px 9px;gap:9px}.support-icon{width:55px;height:41px;flex-basis:55px}.support-method strong{font-size:16px}.support-method span{font-size:11px}.support-arrow{font-size:21px}.support-contact{min-height:52px;padding:8px 9px}.support-contact-copy strong{font-size:13px}.support-contact-copy span{font-size:10px}.support-email{font-size:11px}}
     `;
     document.head.appendChild(style);
   }
