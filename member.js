@@ -48,7 +48,7 @@
     const memberDate = readOrCreateMemberDate();
     const days = daysWithMember(memberDate);
     const dayLabel = days === 1 ? "1 day with GEI" : `${days} days with GEI`;
-    output.textContent = `Member since ${formatMemberDate(memberDate)} • ${dayLabel}`;
+    output.textContent = `${formatMemberDate(memberDate)} • ${dayLabel}`;
   }
 
   function init() {
