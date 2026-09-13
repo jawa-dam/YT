@@ -43,3 +43,13 @@
 :root[data-skin="pink"] .video-thumb{background:linear-gradient(145deg,rgba(255,157,242,.18),rgba(243,16,186,.08));color:#76576d}
 :root[data-skin="academic"] .music-lab-entry,:root[data-skin="pink"] .music-lab-entry,:root[data-skin="blue"] .music-lab-entry{border-color:var(--skin-border);background:var(--skin-soft);color:var(--skin-text)}
 :root[data-skin="academic"] .music-lab-entry b,:root[data-skin="pink"] .music-lab-entry b,:root[data-skin="blue"] .music-lab-entry b{color:var(--skin-muted)}
+
+/* V1.7.1 hotfix: the skin selector belongs to the Academy UI, never the splash. */
+.app-frame:not(.splash-done) #skin-control {
+  display: none !important;
+  pointer-events: none !important;
+}
+
+.app-frame.splash-done #skin-control {
+  display: block;
+}
