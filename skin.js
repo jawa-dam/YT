@@ -91,6 +91,7 @@
     );
 
     host.hidden = !show;
+    host.style.display = show ? "" : "none";
     host.setAttribute("aria-hidden", show ? "false" : "true");
   }
 
