@@ -22,9 +22,7 @@
       const parsed = JSON.parse(raw);
       const completed = Array.isArray(parsed.completed) ? parsed.completed.map(Number).filter((id) => id >= 1 && id <= 6) : [];
       return { completed: [...new Set(completed)].sort((a, b) => a - b), xp: Math.max(0, Number(parsed.xp) || 0) };
-    } catch (error) {
-      return { ...DEFAULT_STATE };
-    }
+    } catch (error) { return { ...DEFAULT_STATE }; }
   }
 
   function saveState() {
@@ -114,6 +112,9 @@
       if (xp) xp.textContent = `+${state.xp} XP`;
       milestone?.classList.add("is-visible");
     }
+
+    const welcome = document.querySelector("#screen-home .welcome-copy p");
+    if (welcome) welcome.textContent = count === 0 ? "Your GEI journey starts with Day 1. Tap Adam anytime for guidance." : (count < 6 ? `You've completed ${count} of 6 days. ${day.title} is your next step.` : "You've completed the six-day blueprint. Adam can help you review your path.");
   }
 
   function updateAcademy() {
@@ -146,6 +147,17 @@
     }
   }
 
+  function updateAdamContext() {
+    const count = completedCount();
+    const current = currentDayId();
+    const day = DAYS[current - 1];
+    const message = document.querySelector("#home-adam-assistant-message");
+    if (!message) return;
+    message.textContent = count === 0
+      ? "Welcome. You're ready for Day 1. I can guide you through the GEI blueprint whenever you're ready."
+      : (count < 6 ? `Welcome back. ${day.title} is unlocked. I can help you take the next step.` : "You've completed the six-day blueprint. I can help you review the GEI path.");
+  }
+
   function guardLockedAcademyLinks(event) {
     const card = event.target.closest?.(".academy-day-card");
     if (!card || !card.classList.contains("is-locked")) return;
@@ -157,11 +169,15 @@
     ensureJourneyCard();
     updateJourney();
     updateAcademy();
+    updateAdamContext();
   }
 
   function init() {
     renderAll();
     document.addEventListener("click", guardLockedAcademyLinks, true);
+    document.addEventListener("click", (event) => {
+      if (event.target.closest?.(".home-mascot-button")) window.setTimeout(updateAdamContext, 0);
+    }, true);
     window.GEI_PROGRESS = Object.freeze({ getState: () => ({ ...state }), getCurrentDay: currentDayId, completeDay, resetProgress });
     window.dispatchEvent(new CustomEvent("gei:progress-ready", { detail: { ...state, currentDay: currentDayId() } }));
   }
