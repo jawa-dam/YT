@@ -1,11 +1,11 @@
-/* V1.9.4 — Support frame lock. Keep the page visible inside the existing app grid. */
+/* V1.9.4 — Support frame lock + compact fit. Keep every support action visible without page scrolling. */
 #screen-support {
   position: relative !important;
   min-height: 0 !important;
   height: 100% !important;
-  overflow: hidden !important;
+  overflow: clip !important;
   overscroll-behavior: none !important;
-  touch-action: none !important;
+  touch-action: manipulation !important;
 }
 
 #screen-support .support-root {
@@ -14,23 +14,234 @@
   width: 100% !important;
   height: 100% !important;
   min-height: 0 !important;
-  overflow: hidden !important;
-  overscroll-behavior: none !important;
-  touch-action: none !important;
   box-sizing: border-box !important;
+  overflow: clip !important;
+  overscroll-behavior: none !important;
+  touch-action: manipulation !important;
   display: grid !important;
   grid-template-rows: auto minmax(0, 1fr) !important;
+  gap: 8px !important;
+  padding: 12px 14px calc(76px + env(safe-area-inset-bottom)) !important;
+}
+
+#screen-support .support-header {
+  min-height: 0 !important;
+  gap: 9px !important;
+}
+
+#screen-support .support-kicker {
+  font-size: 10px !important;
+  letter-spacing: .12em !important;
+}
+
+#screen-support .support-header h1 {
+  margin: 3px 0 3px !important;
+  font-size: clamp(29px, 7.6vw, 38px) !important;
+  line-height: .96 !important;
+}
+
+#screen-support .support-header p {
+  max-width: 250px !important;
+  font-size: 12px !important;
+  line-height: 1.2 !important;
+}
+
+#screen-support .support-gei-logo {
+  width: 62px !important;
+  height: 44px !important;
+  flex-basis: 62px !important;
 }
 
 #screen-support .support-content {
   min-height: 0 !important;
-  max-height: 100% !important;
-  overflow: hidden !important;
+  max-height: none !important;
+  overflow: visible !important;
   overscroll-behavior: none !important;
-  touch-action: none !important;
+  touch-action: manipulation !important;
+  display: grid !important;
+  grid-template-rows: auto auto auto !important;
+  align-content: start !important;
+  gap: 7px !important;
+  padding: 0 !important;
 }
 
-#screen-support .support-method,
-#screen-support .support-email {
+#screen-support .support-goal {
+  padding: 10px 11px !important;
+  border-radius: 17px !important;
+}
+
+#screen-support .support-goal-label {
+  margin-bottom: 3px !important;
+  font-size: 9px !important;
+  letter-spacing: .1em !important;
+}
+
+#screen-support .support-goal p {
+  font-size: 11px !important;
+  line-height: 1.22 !important;
+}
+
+#screen-support .support-methods {
+  display: grid !important;
+  grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+  gap: 6px !important;
+}
+
+#screen-support .support-method {
+  min-width: 0 !important;
+  min-height: 72px !important;
+  padding: 6px !important;
+  display: grid !important;
+  grid-template-columns: 1fr auto !important;
+  grid-template-rows: auto auto !important;
+  align-content: center !important;
+  gap: 3px 5px !important;
+  border-radius: 14px !important;
+  text-align: left !important;
   touch-action: manipulation !important;
+}
+
+#screen-support .support-icon {
+  grid-column: 1 / -1 !important;
+  width: 100% !important;
+  height: 27px !important;
+  flex: 0 0 auto !important;
+  border-radius: 8px !important;
+}
+
+#screen-support .support-method > span:nth-child(2) {
+  min-width: 0 !important;
+}
+
+#screen-support .support-method strong {
+  font-size: 12px !important;
+  line-height: 1 !important;
+}
+
+#screen-support .support-method span span {
+  margin-top: 2px !important;
+  font-size: 8px !important;
+  line-height: 1.08 !important;
+}
+
+#screen-support .support-arrow {
+  margin-left: 0 !important;
+  font-size: 16px !important;
+  align-self: end !important;
+}
+
+#screen-support .support-contact {
+  min-height: 47px !important;
+  padding: 7px 9px !important;
+  gap: 7px !important;
+  border-radius: 13px !important;
+}
+
+#screen-support .support-contact-copy {
+  min-width: 0 !important;
+}
+
+#screen-support .support-contact-copy strong {
+  font-size: 12px !important;
+  line-height: 1 !important;
+}
+
+#screen-support .support-contact-copy span {
+  margin-top: 2px !important;
+  font-size: 9px !important;
+  line-height: 1.08 !important;
+}
+
+#screen-support .support-email {
+  max-width: 48% !important;
+  font-size: 10px !important;
+  line-height: 1.05 !important;
+  overflow-wrap: anywhere !important;
+  word-break: break-word !important;
+  touch-action: manipulation !important;
+}
+
+@media (max-width: 360px) {
+  #screen-support .support-root {
+    padding: 9px 10px calc(70px + env(safe-area-inset-bottom)) !important;
+    gap: 6px !important;
+  }
+
+  #screen-support .support-header {
+    gap: 6px !important;
+  }
+
+  #screen-support .support-kicker {
+    font-size: 9px !important;
+  }
+
+  #screen-support .support-header h1 {
+    margin: 2px 0 !important;
+    font-size: 27px !important;
+  }
+
+  #screen-support .support-header p {
+    max-width: 205px !important;
+    font-size: 11px !important;
+    line-height: 1.15 !important;
+  }
+
+  #screen-support .support-gei-logo {
+    width: 54px !important;
+    height: 39px !important;
+    flex-basis: 54px !important;
+  }
+
+  #screen-support .support-content {
+    gap: 5px !important;
+  }
+
+  #screen-support .support-goal {
+    padding: 8px 9px !important;
+    border-radius: 14px !important;
+  }
+
+  #screen-support .support-goal p {
+    font-size: 10px !important;
+    line-height: 1.16 !important;
+  }
+
+  #screen-support .support-methods {
+    gap: 4px !important;
+  }
+
+  #screen-support .support-method {
+    min-height: 64px !important;
+    padding: 5px !important;
+  }
+
+  #screen-support .support-icon {
+    height: 23px !important;
+  }
+
+  #screen-support .support-method strong {
+    font-size: 11px !important;
+  }
+
+  #screen-support .support-method span span {
+    font-size: 7px !important;
+  }
+
+  #screen-support .support-arrow {
+    font-size: 14px !important;
+  }
+
+  #screen-support .support-contact {
+    min-height: 42px !important;
+    padding: 6px 7px !important;
+  }
+
+  #screen-support .support-contact-copy strong {
+    font-size: 11px !important;
+  }
+
+  #screen-support .support-contact-copy span,
+  #screen-support .support-email {
+    font-size: 8px !important;
+  }
 }
