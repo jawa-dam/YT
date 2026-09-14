@@ -1,0 +1,19 @@
+/* V1.11 — GEI Learning Feedback & Completion Intelligence */
+.gei-feedback[hidden]{display:none}
+.gei-feedback{position:fixed;inset:0;z-index:70;display:grid;place-items:center;padding:18px;background:rgba(3,7,15,.66);backdrop-filter:blur(7px)}
+.gei-feedback-card{position:relative;width:min(100%,390px);box-sizing:border-box;padding:22px 18px 18px;border:1px solid rgba(47,210,255,.48);border-radius:24px;background:linear-gradient(145deg,#0d1525,#090d18);box-shadow:0 26px 80px rgba(0,0,0,.52),0 0 36px rgba(47,210,255,.1);color:#d8e3f1}
+.gei-feedback-kicker{display:block;color:#71d9f5;font-size:9px;font-weight:900;letter-spacing:.16em;text-transform:uppercase}
+.gei-feedback-card h2{margin:7px 28px 7px 0;color:#dbe6f2;font-size:27px;line-height:1.03;letter-spacing:-.04em}
+.gei-feedback-copy{margin:0 0 14px;color:#aebdce;font-size:12px;line-height:1.45}
+.gei-feedback-stats{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin:0 0 14px}
+.gei-feedback-stat{padding:10px;border:1px solid rgba(255,255,255,.08);border-radius:14px;background:rgba(255,255,255,.035)}
+.gei-feedback-stat strong{display:block;color:#e0e9f3;font-size:16px;line-height:1.1}
+.gei-feedback-stat span{display:block;margin-top:4px;color:#8999ad;font-size:8px;font-weight:900;letter-spacing:.11em;text-transform:uppercase}
+.gei-feedback-next{margin:0 0 14px;padding:10px 11px;border-left:2px solid #2fd2ff;border-radius:0 11px 11px 0;background:rgba(47,210,255,.07);color:#aebdce;font-size:10px;line-height:1.4}
+.gei-feedback-next strong{color:#d4dfeb}
+.gei-feedback-actions{display:flex;gap:8px}
+.gei-feedback-action{flex:1;min-height:40px;border-radius:12px;border:1px solid rgba(47,210,255,.48);background:rgba(47,210,255,.1);color:#dbe6f2;font:inherit;font-size:10px;font-weight:900;letter-spacing:.07em;text-transform:uppercase;cursor:pointer}
+.gei-feedback-action.primary{background:#2fd2ff;color:#061018}
+.gei-feedback-close{position:absolute;top:8px;right:9px;width:32px;height:32px;border:1px solid rgba(255,255,255,.14);border-radius:50%;background:rgba(255,255,255,.05);color:#aebdce;font-size:21px;line-height:1;cursor:pointer}
+.gei-feedback-close:focus-visible,.gei-feedback-action:focus-visible{outline:3px solid #2fd2ff;outline-offset:2px}
+@media(max-width:360px){.gei-feedback{padding:12px}.gei-feedback-card{padding:18px 14px 14px;border-radius:20px}.gei-feedback-card h2{font-size:23px}.gei-feedback-copy{font-size:11px}.gei-feedback-stat{padding:9px}.gei-feedback-action{font-size:9px}}
