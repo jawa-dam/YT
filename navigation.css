@@ -8,7 +8,6 @@
   overflow: hidden;
 }
 
-/* Navigation JS uses .active; keep the original .is-active state compatible. */
 .app-screen.is-active { display: grid; }
 .app-screen.active { display: grid; }
 .app-screen.is-active:not(.active) { display: none; }
@@ -25,26 +24,9 @@
   text-align: center;
 }
 
-.stub-screen h2 {
-  margin: 8px 0;
-  font-size: clamp(28px, 8vw, 40px);
-  letter-spacing: -0.04em;
-}
-
-.stub-screen p {
-  margin: 0;
-  color: #aeb8cb;
-  font-size: 14px;
-  line-height: 1.5;
-}
-
-.screen-kicker {
-  color: #2fd2ff;
-  font-size: 10px;
-  font-weight: 900;
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
-}
+.stub-screen h2 { margin: 8px 0; font-size: clamp(28px, 8vw, 40px); letter-spacing: -0.04em; }
+.stub-screen p { margin: 0; color: #aeb8cb; font-size: 14px; line-height: 1.5; }
+.screen-kicker { color: #2fd2ff; font-size: 10px; font-weight: 900; letter-spacing: 0.16em; text-transform: uppercase; }
 
 .bottom-navigation {
   position: absolute;
@@ -55,29 +37,25 @@
   display: grid;
   grid-template-columns: repeat(5, minmax(0, 1fr));
   align-items: stretch;
-  gap: 4px;
-  padding: 7px;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 22px;
-  background: rgba(7, 9, 16, 0.82);
-  box-shadow: 0 18px 42px rgba(0, 0, 0, 0.42), inset 0 1px 0 rgba(255, 255, 255, 0.05);
-  backdrop-filter: blur(18px) saturate(130%);
-  -webkit-backdrop-filter: blur(18px) saturate(130%);
+  gap: 5px;
+  padding: 6px;
+  border: 1px solid rgba(255, 255, 255, 0.11);
+  border-radius: 23px;
+  background: linear-gradient(180deg, rgba(16, 22, 34, 0.94), rgba(6, 9, 16, 0.96));
+  box-shadow: 0 18px 42px rgba(0, 0, 0, 0.44), inset 0 1px 0 rgba(255, 255, 255, 0.07);
+  backdrop-filter: blur(18px) saturate(135%);
+  -webkit-backdrop-filter: blur(18px) saturate(135%);
 }
 
-.splash-layer ~ .app-shell .bottom-navigation {
-  visibility: hidden;
-  pointer-events: none;
-}
+.splash-layer ~ .app-shell .bottom-navigation { visibility: hidden; pointer-events: none; }
+.app-frame.splash-done .bottom-navigation { visibility: visible; pointer-events: auto; }
 
-.app-frame.splash-done .bottom-navigation {
-  visibility: visible;
-  pointer-events: auto;
-}
-
-/* Support both the legacy nav-item API and navigation.js's bottom-nav-item API. */
+/* V1.9.3 — modern app-style navigation. */
+.nav-button,
 .nav-item,
 .bottom-nav-item {
+  appearance: none;
+  -webkit-appearance: none;
   display: grid;
   justify-items: center;
   align-content: center;
@@ -85,71 +63,71 @@
   min-width: 0;
   min-height: 52px;
   padding: 6px 4px;
-  border: 0;
-  border-radius: 16px;
+  border: 1px solid transparent;
+  border-radius: 17px;
+  outline: 0;
   background: transparent;
   color: #8f9bb0;
+  font: inherit;
   cursor: pointer;
   -webkit-tap-highlight-color: transparent;
-  transition: background 160ms ease, color 160ms ease, transform 160ms ease;
+  touch-action: manipulation;
+  transition: background 160ms ease, border-color 160ms ease, color 160ms ease, transform 160ms ease;
 }
 
+.nav-button:hover,
 .nav-item:hover,
-.bottom-nav-item:hover {
-  color: #dce5f4;
-}
+.bottom-nav-item:hover { color: #edf5ff; background: rgba(255,255,255,.035); }
 
+.nav-button:active,
 .nav-item:active,
-.bottom-nav-item:active {
-  transform: scale(0.96);
-}
+.bottom-nav-item:active { transform: scale(.95); }
 
+.nav-button.active,
 .nav-item.is-active,
 .bottom-nav-item.active {
-  background: linear-gradient(135deg, rgba(47, 210, 255, 0.16), rgba(61, 61, 234, 0.18));
-  color: #ffffff;
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06);
+  background: linear-gradient(145deg, rgba(47,210,255,.18), rgba(61,61,234,.2));
+  border-color: rgba(47,210,255,.22);
+  color: #fff;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.07), 0 5px 18px rgba(0,0,0,.14);
 }
 
 .nav-icon,
 .bottom-nav-icon {
   display: grid;
   place-items: center;
-  width: 25px;
-  height: 21px;
-  font-size: 17px;
+  width: 28px;
+  height: 24px;
+  font-size: 19px;
   line-height: 1;
+  font-family: system-ui, -apple-system, "Segoe UI Symbol", sans-serif;
 }
 
 .nav-label,
 .bottom-nav-label {
-  overflow: hidden;
+  display: block;
   max-width: 100%;
+  overflow: hidden;
+  color: inherit;
   font-size: 8px;
   font-weight: 900;
-  letter-spacing: 0.06em;
+  letter-spacing: .065em;
   line-height: 1;
   text-overflow: ellipsis;
   text-transform: uppercase;
   white-space: nowrap;
 }
 
+.nav-button:focus-visible,
 .nav-item:focus-visible,
 .bottom-nav-item:focus-visible {
-  outline: 3px solid #ff9df2;
+  outline: 2px solid #ff9df2;
   outline-offset: 2px;
 }
 
-#screen-home {
-  padding-bottom: 84px;
-}
+#screen-home { padding-bottom: 84px; }
 
-/* V1.8.4.4 — keep Home Adam as one reliable, frame-safe hit target. */
-#screen-home .mascot-orbit {
-  position: relative;
-  z-index: 20;
-}
-
+#screen-home .mascot-orbit { position: relative; z-index: 20; }
 #screen-home .home-mascot-button {
   position: absolute;
   inset: 0;
@@ -171,43 +149,18 @@
 #screen-home .home-mascot-button .mascot-ring,
 #screen-home .home-mascot-button .mascot-badge,
 #screen-home .home-mascot-button .mascot-caption,
-#screen-home .home-mascot-button .home-mascot-image {
-  pointer-events: none;
-}
+#screen-home .home-mascot-button .home-mascot-image { pointer-events: none; }
 
-#screen-home .home-mascot-button:focus-visible {
-  outline: 3px solid #ff9df2;
-  outline-offset: 3px;
-  border-radius: 18px;
-}
+#screen-home .home-mascot-button:focus-visible { outline: 3px solid #ff9df2; outline-offset: 3px; border-radius: 18px; }
 
 @media (max-width: 360px) {
-  .bottom-navigation {
-    left: 8px;
-    right: 8px;
-    padding: 5px;
-    border-radius: 19px;
-  }
-
-  .nav-item,
-  .bottom-nav-item {
-    min-height: 50px;
-    border-radius: 14px;
-  }
-
-  .nav-label,
-  .bottom-nav-label {
-    font-size: 7px;
-  }
-
-  #screen-home {
-    padding-bottom: 78px;
-  }
+  .bottom-navigation { left: 8px; right: 8px; padding: 5px; border-radius: 20px; gap: 3px; }
+  .nav-button, .nav-item, .bottom-nav-item { min-height: 50px; border-radius: 15px; padding-inline: 3px; }
+  .nav-icon, .bottom-nav-icon { width: 25px; height: 22px; font-size: 18px; }
+  .nav-label, .bottom-nav-label { font-size: 7px; }
+  #screen-home { padding-bottom: 78px; }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .nav-item,
-  .bottom-nav-item {
-    transition: none;
-  }
+  .nav-button, .nav-item, .bottom-nav-item { transition: none; }
 }
