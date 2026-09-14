@@ -58,19 +58,18 @@
 #screen-home::-webkit-scrollbar-thumb { background:rgba(82,107,130,.42);border-radius:999px; }
 #screen-home .dashboard-main { min-height:max-content !important; }
 
-/* V1.10.1 — Reduce Academy text glare while preserving strong contrast. */
-#screen-academy .academy-topbar h1 { color:#dbe6f2 !important;text-shadow:none !important; }
-#screen-academy .academy-topbar p { color:#9eafc3 !important; }
+/* V1.10.2 — Restore readable dark text on the Academy's light surfaces. */
+#screen-academy .academy-topbar h1 { color:#102a43 !important;text-shadow:none !important; }
+#screen-academy .academy-topbar p { color:#526b82 !important; }
 #screen-academy .academy-section-label,
-#screen-academy .academy-kicker { color:#71d9f5 !important; }
-#screen-academy .academy-hero-copy h2 { color:#dbe6f2 !important;text-shadow:none !important; }
-#screen-academy .academy-hero-copy p { color:#aebdce !important; }
-#screen-academy .academy-primary-action { color:#e6eef7 !important; }
+#screen-academy .academy-kicker { color:#168bb3 !important; }
+#screen-academy .academy-path-heading h2 { color:#102a43 !important;text-shadow:none !important; }
+#screen-academy .academy-path-count { color:#526b82 !important; }
 #screen-academy .academy-day-number,
-#screen-academy .academy-day-status { color:#8999ad !important; }
-#screen-academy .academy-day-card h3 { color:#d4dfeb !important; }
-#screen-academy .academy-path-count { color:#8999ad !important; }
-#screen-academy .academy-path-heading h2 { color:#dbe6f2 !important; }
+#screen-academy .academy-day-status { color:#526b82 !important; }
+#screen-academy .academy-day-card h3 { color:#30465b !important;text-shadow:none !important; }
+#screen-academy .academy-day-card.is-active .academy-day-number,
+#screen-academy .academy-day-card.is-active .academy-day-status { color:#168bb3 !important; }
 #screen-academy .academy-guide-copy h2 { color:#dbe6f2 !important; }
 #screen-academy .academy-guide-copy p { color:#aebdce !important; }
 
