@@ -1,0 +1,36 @@
+/* V1.9.4 — Support frame lock. Keep the page visible inside the existing app grid. */
+#screen-support {
+  position: relative !important;
+  min-height: 0 !important;
+  height: 100% !important;
+  overflow: hidden !important;
+  overscroll-behavior: none !important;
+  touch-action: none !important;
+}
+
+#screen-support .support-root {
+  position: relative !important;
+  inset: auto !important;
+  width: 100% !important;
+  height: 100% !important;
+  min-height: 0 !important;
+  overflow: hidden !important;
+  overscroll-behavior: none !important;
+  touch-action: none !important;
+  box-sizing: border-box !important;
+  display: grid !important;
+  grid-template-rows: auto minmax(0, 1fr) !important;
+}
+
+#screen-support .support-content {
+  min-height: 0 !important;
+  max-height: 100% !important;
+  overflow: hidden !important;
+  overscroll-behavior: none !important;
+  touch-action: none !important;
+}
+
+#screen-support .support-method,
+#screen-support .support-email {
+  touch-action: manipulation !important;
+}
