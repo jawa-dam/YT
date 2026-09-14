@@ -1,4 +1,4 @@
-/* V1.10 — GEI Guided Entry & Progress Experience */
+/* V1.10/V1.11 — GEI Guided Entry, Progress & Completion Intelligence */
 (() => {
   "use strict";
 
@@ -41,7 +41,7 @@
     state.xp += 100;
     saveState();
     renderAll();
-    window.dispatchEvent(new CustomEvent("gei:progress-updated", { detail: { ...state, currentDay: currentDayId() } }));
+    window.dispatchEvent(new CustomEvent("gei:progress-updated", { detail: { ...state, completedDay: id, currentDay: currentDayId() } }));
   }
 
   function resetProgress() {
@@ -53,10 +53,7 @@
 
   function journeyMarkup() {
     return `<section class="gei-journey-card" id="gei-journey-card" aria-labelledby="gei-journey-title">
-      <div class="gei-journey-top">
-        <div><span class="gei-journey-kicker">GEI PROGRESS</span><h2 class="gei-journey-title" id="gei-journey-title">Continue Your Journey</h2></div>
-        <span class="gei-journey-count" id="gei-journey-count">0 / 6</span>
-      </div>
+      <div class="gei-journey-top"><div><span class="gei-journey-kicker">GEI PROGRESS</span><h2 class="gei-journey-title" id="gei-journey-title">Continue Your Journey</h2></div><span class="gei-journey-count" id="gei-journey-count">0 / 6</span></div>
       <p class="gei-journey-copy" id="gei-journey-copy">You're ready for Day 1. Start with the source, water, engineering and interpretation.</p>
       <div class="gei-journey-track" role="progressbar" aria-label="GEI learning progress" aria-valuemin="0" aria-valuemax="6" aria-valuenow="0"><span class="gei-journey-fill" id="gei-journey-fill"></span></div>
       <div class="gei-journey-milestone" id="gei-journey-milestone"><span id="gei-journey-milestone-text">DAY 1 COMPLETE</span><span class="gei-journey-xp" id="gei-journey-xp">+100 XP</span></div>
@@ -91,7 +88,6 @@
     if (fill) fill.style.width = `${(count / 6) * 100}%`;
     const track = card.querySelector(".gei-journey-track");
     if (track) track.setAttribute("aria-valuenow", String(count));
-
     if (count === 0) {
       if (copyEl) copyEl.textContent = "You're ready for Day 1. Start with the source, water, engineering and interpretation.";
       if (primary) { primary.textContent = "START DAY 1 →"; primary.href = DAYS[0].url; }
@@ -112,7 +108,6 @@
       if (xp) xp.textContent = `+${state.xp} XP`;
       milestone?.classList.add("is-visible");
     }
-
     const welcome = document.querySelector("#screen-home .welcome-copy p");
     if (welcome) welcome.textContent = count === 0 ? "Your GEI journey starts with Day 1. Tap Adam anytime for guidance." : (count < 6 ? `You've completed ${count} of 6 days. ${day.title} is your next step.` : "You've completed the six-day blueprint. Adam can help you review your path.");
   }
@@ -126,61 +121,33 @@
     if (pathCount) pathCount.textContent = `${String(Math.min(current, 6)).padStart(2, "0")} / 06`;
     const progressChip = screen.querySelector(".academy-progress-chip span");
     if (progressChip) progressChip.textContent = `${count}/6`;
-    const cards = screen.querySelectorAll(".academy-day-card");
-    cards.forEach((card) => {
-      const id = Number(card.dataset.day);
-      const unlocked = isUnlocked(id);
-      const done = isComplete(id);
-      card.classList.toggle("is-completed", done);
-      card.classList.toggle("is-current", id === current && !done);
-      card.classList.toggle("is-locked", !unlocked);
+    screen.querySelectorAll(".academy-day-card").forEach((card) => {
+      const id = Number(card.dataset.day); const unlocked = isUnlocked(id); const done = isComplete(id);
+      card.classList.toggle("is-completed", done); card.classList.toggle("is-current", id === current && !done); card.classList.toggle("is-locked", !unlocked);
       card.setAttribute("aria-disabled", unlocked ? "false" : "true");
       const status = card.querySelector(".academy-day-status");
       if (status) status.textContent = done ? "COMPLETE ✓" : (id === current ? "READY" : (unlocked ? "UNLOCKED" : "LOCKED"));
       if (!unlocked) card.setAttribute("tabindex", "-1"); else card.removeAttribute("tabindex");
     });
     const heroAction = screen.querySelector(".academy-primary-action");
-    if (heroAction) {
-      const day = DAYS[current - 1];
-      heroAction.href = day.url;
-      heroAction.querySelector("span")?.replaceChildren(document.createTextNode(`Continue ${day.title}`));
-    }
+    if (heroAction) { const day = DAYS[current - 1]; heroAction.href = day.url; heroAction.querySelector("span")?.replaceChildren(document.createTextNode(`Continue ${day.title}`)); }
   }
 
   function updateAdamContext() {
-    const count = completedCount();
-    const current = currentDayId();
-    const day = DAYS[current - 1];
-    const message = document.querySelector("#home-adam-assistant-message");
+    const count = completedCount(); const current = currentDayId(); const day = DAYS[current - 1]; const message = document.querySelector("#home-adam-assistant-message");
     if (!message) return;
-    message.textContent = count === 0
-      ? "Welcome. You're ready for Day 1. I can guide you through the GEI blueprint whenever you're ready."
-      : (count < 6 ? `Welcome back. ${day.title} is unlocked. I can help you take the next step.` : "You've completed the six-day blueprint. I can help you review the GEI path.");
+    message.textContent = count === 0 ? "Welcome. You're ready for Day 1. I can guide you through the GEI blueprint whenever you're ready." : (count < 6 ? `Welcome back. ${day.title} is unlocked. I can help you take the next step.` : "You've completed the six-day blueprint. I can help you review the GEI path.");
   }
 
-  function guardLockedAcademyLinks(event) {
-    const card = event.target.closest?.(".academy-day-card");
-    if (!card || !card.classList.contains("is-locked")) return;
-    event.preventDefault();
-    event.stopPropagation();
-  }
-
-  function renderAll() {
-    ensureJourneyCard();
-    updateJourney();
-    updateAcademy();
-    updateAdamContext();
-  }
+  function guardLockedAcademyLinks(event) { const card = event.target.closest?.(".academy-day-card"); if (!card || !card.classList.contains("is-locked")) return; event.preventDefault(); event.stopPropagation(); }
+  function renderAll() { ensureJourneyCard(); updateJourney(); updateAcademy(); updateAdamContext(); }
 
   function init() {
     renderAll();
     document.addEventListener("click", guardLockedAcademyLinks, true);
-    document.addEventListener("click", (event) => {
-      if (event.target.closest?.(".home-mascot-button")) window.setTimeout(updateAdamContext, 0);
-    }, true);
-    window.GEI_PROGRESS = Object.freeze({ getState: () => ({ ...state }), getCurrentDay: currentDayId, completeDay, resetProgress });
+    document.addEventListener("click", (event) => { if (event.target.closest?.(".home-mascot-button")) window.setTimeout(updateAdamContext, 0); }, true);
+    window.GEI_PROGRESS = Object.freeze({ getState: () => ({ ...state }), getCurrentDay: currentDayId, getDayUrl: (id) => DAYS.find((day) => day.id === Number(id))?.url || null, completeDay, resetProgress });
     window.dispatchEvent(new CustomEvent("gei:progress-ready", { detail: { ...state, currentDay: currentDayId() } }));
   }
-
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", init, { once: true }); else init();
 })();
