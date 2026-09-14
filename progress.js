@@ -63,7 +63,7 @@
 
   function ensureJourneyCard() {
     const screen = document.getElementById("screen-home");
-    const stack = screen?.querySelector(".home-experience-stack");
+    const stack = screen?.querySelector(".home-experience-stack") || screen?.querySelector(".dashboard-main");
     if (!stack || document.getElementById("gei-journey-card")) return;
     stack.insertAdjacentHTML("afterbegin", journeyMarkup());
     document.getElementById("gei-journey-complete")?.addEventListener("click", () => completeDay(currentDayId()));
