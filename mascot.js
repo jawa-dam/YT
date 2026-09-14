@@ -22,10 +22,21 @@
     if (!copy || copy.dataset.adamAssistantReady === "true") return;
     copy.dataset.adamAssistantReady = "true";
     copy.innerHTML = `
-      <span class="card-label">MEET ADAM • GEI ASSISTANT</span>
-      <h2>Need a hand?</h2>
-      <p>Tap Adam for quick help finding your way through GEI.</p>
+      <span class="card-label">ADAM • YOUR GEI ASSISTANT</span>
+      <h2>Hi, I'm Adam.</h2>
+      <p>Your compact GEI guide. Tap me and I'll help you find what you need.</p>
     `;
+  }
+
+  function personalizeHomeMascot() {
+    const button = document.querySelector("#screen-home .home-mascot-button");
+    if (!button || button.dataset.adamAssistantLabelReady === "true") return;
+    button.dataset.adamAssistantLabelReady = "true";
+    button.setAttribute("aria-label", "Ask Adam, your GEI Assistant");
+    const badge = button.querySelector(".mascot-badge");
+    const caption = button.querySelector(".mascot-caption");
+    if (badge) badge.textContent = "ADAM";
+    if (caption) caption.textContent = "ASK ADAM";
   }
 
   function ensureAssistantStyles() {
@@ -86,17 +97,17 @@
           <div class="home-adam-assistant-heading"><span class="home-adam-assistant-kicker">YALLTOO • GEI ASSISTANT</span><strong>Hi, I'm Adam.</strong></div>
           <button class="home-adam-assistant-close" type="button" aria-label="Close Adam assistant">×</button>
         </header>
-        <p class="home-adam-assistant-message" id="home-adam-assistant-message">I can give you a quick answer or help you find where to start.</p>
+        <p class="home-adam-assistant-message" id="home-adam-assistant-message">I'm here to help. What can I help you with?</p>
         <div>
-          <p class="home-adam-assistant-label">How can I help?</p>
+          <p class="home-adam-assistant-label">Quick help</p>
           <div class="home-adam-assistant-choices">
             <button class="home-adam-assistant-choice" type="button" data-adam-question="gei">💧 What is GEI?</button>
-            <button class="home-adam-assistant-choice" type="button" data-adam-question="day1">📖 Where do I start?</button>
-            <button class="home-adam-assistant-choice" type="button" data-adam-question="academy">🎓 Explain the Academy</button>
+            <button class="home-adam-assistant-choice" type="button" data-adam-question="day1">📖 Start with Day 1</button>
+            <button class="home-adam-assistant-choice" type="button" data-adam-question="academy">🎓 How does Academy work?</button>
             <button class="home-adam-assistant-choice" type="button" data-adam-question="navigate">🧭 Help me navigate</button>
           </div>
         </div>
-        <footer class="home-adam-assistant-footer"><span>Adam is ready to guide you.</span><span class="home-adam-assistant-status">● ONLINE</span></footer>
+        <footer class="home-adam-assistant-footer"><span>Ask Adam anytime.</span><span class="home-adam-assistant-status">● ONLINE</span></footer>
       </section>
     `;
     home.appendChild(assistant);
@@ -131,6 +142,7 @@
 
   function init() {
     personalizeHomeCard();
+    personalizeHomeMascot();
     document.addEventListener("click", routeHomeAdam, true);
   }
 
