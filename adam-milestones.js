@@ -36,25 +36,18 @@
     const memory = getMemory();
     const last = Number(memory?.lastCompletedDay) || null;
     const count = milestone.count;
-
-    if (count === 0 && last) {
-      return `Welcome back. I remember your last recorded milestone was Day ${last}. ${milestone.message}`;
-    }
-    if (count > 0 && last && last < count) {
-      return `You completed Day ${last} previously. ${milestone.message}`;
-    }
+    if (count === 0 && last) return `Welcome back. I remember your last recorded milestone was Day ${last}. ${milestone.message}`;
+    if (count > 0 && last && last < count) return `You completed Day ${last} previously. ${milestone.message}`;
     return milestone.message;
   }
 
   function refreshAssistant() {
     const assistant = document.getElementById("home-adam-assistant");
     if (!assistant) return;
-
     const milestone = getMilestone();
     const label = assistant.querySelector(".home-adam-assistant-next-label");
     const message = assistant.querySelector("#home-adam-assistant-message");
     const next = assistant.querySelector(".home-adam-assistant-next-value");
-
     if (label) label.textContent = milestone.label;
     if (message) message.textContent = getMessage(milestone);
     if (next) next.textContent = `DAY ${milestone.currentDay} • ${milestone.count}/6`;
@@ -62,18 +55,22 @@
   }
 
   function init() {
-    window.GEI_ADAM_MILESTONES = Object.freeze({
-      version: 1,
-      getMilestone,
-      getAll: () => Object.values(MILESTONES)
-    });
-
+    window.GEI_ADAM_MILESTONES = Object.freeze({ version: 1, getMilestone, getAll: () => Object.values(MILESTONES) });
     window.addEventListener("gei:progress-ready", refreshAssistant);
     window.addEventListener("gei:progress-updated", refreshAssistant);
     window.addEventListener("gei:xp-updated", refreshAssistant);
     window.addEventListener("gei:adam-memory-ready", refreshAssistant);
     window.addEventListener("gei:adam-memory-updated", refreshAssistant);
     window.setTimeout(refreshAssistant, 0);
+
+    // V1.25 is loaded as a child layer so the existing index script order remains untouched.
+    if (!document.querySelector('script[data-gei-adaptive="v1.25"]')) {
+      const script = document.createElement("script");
+      script.src = "adam-adaptive.js";
+      script.defer = true;
+      script.dataset.geiAdaptive = "v1.25";
+      document.head.appendChild(script);
+    }
   }
 
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", init, { once: true });
