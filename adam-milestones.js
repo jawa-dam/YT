@@ -71,6 +71,15 @@
       script.dataset.geiAdaptive = "v1.25";
       document.head.appendChild(script);
     }
+
+    // V1.26 is loaded as a child layer so the existing index script order remains untouched.
+    if (!document.querySelector('script[data-gei-context="v1.26"]')) {
+      const script = document.createElement("script");
+      script.src = "adam-context.js";
+      script.defer = true;
+      script.dataset.geiContext = "v1.26";
+      document.head.appendChild(script);
+    }
   }
 
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", init, { once: true });
