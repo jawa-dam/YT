@@ -65,7 +65,7 @@
   }
 
   function loadAcademyFixStyles() {
-    if (document.querySelector('link[data-gei-academy-fix="v1.26.3"]')) return;
+    if (document.querySelector('link[data-gei-academy-fix="v1.26.3"]') || document.querySelector('link[href="v1-26-academy-fix.css"]')) return;
     const link = document.createElement("link");
     link.rel = "stylesheet";
     link.href = "v1-26-academy-fix.css";
@@ -83,7 +83,9 @@
     window.setTimeout(refreshAssistant, 0);
 
     loadChildScript("adam-adaptive.js", "adaptive", null);
-    loadChildScript("adam-context.js", "context", () => window.GEI_ADAM_CONTEXT?.refresh?.());
+    if (!document.querySelector('script[src="adam-context.js"]')) {
+      loadChildScript("adam-context.js", "context", () => window.GEI_ADAM_CONTEXT?.refresh?.());
+    }
     loadAcademyFixStyles();
   }
 
