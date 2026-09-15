@@ -54,6 +54,25 @@
     assistant.dataset.adamMilestone = milestone.count;
   }
 
+  function loadChildScript(src, marker, onload) {
+    if (document.querySelector(`script[data-gei-${marker}]`)) return;
+    const script = document.createElement("script");
+    script.src = src;
+    script.async = false;
+    script.dataset[`gei${marker.charAt(0).toUpperCase()}${marker.slice(1)}`] = marker;
+    if (typeof onload === "function") script.addEventListener("load", onload, { once: true });
+    document.head.appendChild(script);
+  }
+
+  function loadAcademyFixStyles() {
+    if (document.querySelector('link[data-gei-academy-fix="v1.26.3"]')) return;
+    const link = document.createElement("link");
+    link.rel = "stylesheet";
+    link.href = "v1-26-academy-fix.css";
+    link.dataset.geiAcademyFix = "v1.26.3";
+    document.head.appendChild(link);
+  }
+
   function init() {
     window.GEI_ADAM_MILESTONES = Object.freeze({ version: 1, getMilestone, getAll: () => Object.values(MILESTONES) });
     window.addEventListener("gei:progress-ready", refreshAssistant);
@@ -63,23 +82,9 @@
     window.addEventListener("gei:adam-memory-updated", refreshAssistant);
     window.setTimeout(refreshAssistant, 0);
 
-    // V1.25 is loaded as a child layer so the existing index script order remains untouched.
-    if (!document.querySelector('script[data-gei-adaptive="v1.25"]')) {
-      const script = document.createElement("script");
-      script.src = "adam-adaptive.js";
-      script.defer = true;
-      script.dataset.geiAdaptive = "v1.25";
-      document.head.appendChild(script);
-    }
-
-    // V1.26 is loaded as a child layer so the existing index script order remains untouched.
-    if (!document.querySelector('script[data-gei-context="v1.26"]')) {
-      const script = document.createElement("script");
-      script.src = "adam-context.js";
-      script.defer = true;
-      script.dataset.geiContext = "v1.26";
-      document.head.appendChild(script);
-    }
+    loadChildScript("adam-adaptive.js", "adaptive", null);
+    loadChildScript("adam-context.js", "context", () => window.GEI_ADAM_CONTEXT?.refresh?.());
+    loadAcademyFixStyles();
   }
 
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", init, { once: true });
