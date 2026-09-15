@@ -1,0 +1,8 @@
+/* V1.17 — Popout Source Visibility Fix */
+/* Existing card styles set display:grid; this targeted rule ensures hidden source cards do not remain visible behind their launcher. */
+#screen-home .gei-streak-card[hidden],
+#screen-home .gei-vault-card[hidden],
+#screen-home .gei-journey-card[hidden],
+#screen-home .gei-achievement-card[hidden],
+#screen-home .gei-profile-card[hidden],
+#screen-home .gei-xp-card[hidden]{display:none!important}
