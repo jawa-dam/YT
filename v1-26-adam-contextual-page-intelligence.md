@@ -1,43 +1,34 @@
-# V1.26 — Adam Contextual Page Intelligence
+# V1.26.1 — Adam Contextual Launcher Recovery
 
 ## Purpose
 
-Give Adam awareness of the active GEI Academy page so his guidance changes with the learner's current environment instead of treating every screen as Home.
+Restore reliable `ASK ADAM` rendering on non-Home screens while preserving the existing V1.26 architecture and the V1.25 Home Adam experience.
 
-## Contexts
+## Root cause addressed
 
-- Academy — current blueprint step and next-day action
-- Portfolio — learner record and research identity context
-- Video Lab — visual-learning context
-- Support — research-support context
+The original contextual layer observed the entire application frame and scheduled a new render whenever it appended or removed its own launcher/panel. That could create a self-triggering refresh loop. Screen detection also depended too heavily on the `is-active` class.
 
-## Behavior
+## Recovery changes
 
-Non-Home active screens receive a compact `ASK ADAM` launcher. Opening it shows:
-- the active page context
-- context-specific guidance
-- current blueprint completion
-- current XP
-- one context-appropriate action
+- Prefer the actually visible `.app-screen` using `aria-hidden` plus computed display/visibility.
+- Retain `is-active` as a fallback for compatibility.
+- Add a render guard and screen-id cache so the contextual layer does not rebuild itself for its own DOM mutations.
+- Debounce refresh requests.
+- Re-render intentionally on navigation and progress/XP/Adam events.
+- Establish `position: relative` on non-Home host screens so the launcher has a stable positioning context.
+- Make the launcher visually obvious on mobile with a strong blue treatment and Adam mascot.
+- Preserve the existing context panel and navigation behavior.
 
-The Home Adam experience remains the existing V1.25 assistant.
+## Verification gate
 
-## Architecture boundaries
+1. Home keeps the existing V1.25 Adam experience.
+2. Academy visibly shows `ASK ADAM`.
+3. Portfolio, Video Lab, and Support each receive the contextual launcher.
+4. Opening and closing the panel works.
+5. Context action continues to reuse existing navigation/progress APIs.
+6. Progress and XP remain read-only from `GEI_PROGRESS`.
+7. The observer does not continuously rebuild the launcher.
+8. Approximately 430px and 320px layouts remain bounded.
+9. Splash and bottom navigation are untouched.
 
-- `GEI_PROGRESS` remains the source of truth.
-- No new progress, XP, streak, achievement, or profile storage.
-- V1.23 memory and V1.24/V1.25 intelligence remain intact.
-- Navigation is reused rather than rewritten.
-- Splash is untouched.
-- Mobile-first at approximately 430px and 320px.
-
-## Verification
-
-1. Home still uses the existing Adam experience.
-2. Academy shows an `ASK ADAM` contextual launcher and references the current learning step.
-3. Portfolio, Video Lab, and Support each produce distinct contextual guidance.
-4. Context panel opens/closes correctly.
-5. Context action works.
-6. Progress and XP values match the existing Academy state.
-7. No clipping or overflow around 430px and 320px.
-8. Existing navigation and splash behavior remain unchanged.
+**Do not merge PR #75 until the Vercel preview confirms the launcher is visibly present and interactive.**
