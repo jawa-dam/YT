@@ -50,11 +50,11 @@
     return Math.min(6, Math.max(1, progress.completed.length < 6 ? progress.currentDay : 1));
   }
 
-  function buildObjectives() {
-    const day = getDay();
+  function buildObjectives(day) {
     const items = OBJECTIVES[day] || OBJECTIVES[1];
     const section = document.createElement("section");
     section.className = "adam-learning-objectives";
+    section.dataset.objectivesDay = String(day);
     section.setAttribute("aria-labelledby", "adam-objectives-title");
     section.innerHTML = `
       <div class="adam-objectives-head">
@@ -76,13 +76,14 @@
     const view = academy.querySelector(".academy-view");
     if (!view) return;
 
+    const day = getDay();
     const existing = view.querySelector(":scope > .adam-learning-objectives");
-    if (existing) existing.remove();
+    if (existing?.dataset.objectivesDay === String(day)) return;
+    existing?.remove();
 
     const target = view.querySelector(":scope > .adam-context-launcher");
     if (!target) return;
-
-    view.insertBefore(buildObjectives(), target);
+    view.insertBefore(buildObjectives(day), target);
   }
 
   function ensureStyles() {
@@ -107,8 +108,6 @@
     ensureStyles();
     render();
     ["gei:navigation","gei:progress-ready","gei:progress-updated"].forEach((name) => window.addEventListener(name, () => window.setTimeout(render, 30)));
-    const observer = new MutationObserver(() => window.setTimeout(render, 30));
-    observer.observe(document.getElementById("app-frame") || document.body, { subtree: true, childList: true });
   }
 
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", init, { once: true }); else init();
