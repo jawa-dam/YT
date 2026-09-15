@@ -1,4 +1,4 @@
-/* V1.28 — Adam Objective Mastery & Checkpoints */
+/* V1.28/V1.29 — Adam Objective Mastery & Progress UX */
 (() => {
   "use strict";
 
@@ -64,11 +64,26 @@
     return Math.min(6, Math.max(1, completed < 6 ? Number(api.getCurrentDay?.()) || 1 : 1));
   }
 
+  function updateTrack() {
+    const track = document.getElementById("adam-mastery-track");
+    if (!track) return;
+    const count = masteredCount(activeDay);
+    track.setAttribute("aria-label", `Day ${activeDay}: ${count} of 3 checkpoints mastered`);
+    const fill = track.querySelector(".adam-mastery-track-fill");
+    if (fill) fill.style.width = `${Math.round((count / CHECKPOINTS[activeDay].length) * 100)}%`;
+    track.querySelectorAll(".adam-mastery-step").forEach((step, index) => {
+      const mastered = isMastered(activeDay, index);
+      step.classList.toggle("is-mastered", mastered);
+      step.setAttribute("aria-label", `Checkpoint ${index + 1}${mastered ? ": mastered" : ": not mastered"}`);
+    });
+  }
+
   function renderQuestion() {
     const host = document.getElementById("adam-mastery-question");
     if (!host) return;
     const items = CHECKPOINTS[activeDay];
     while (questionIndex < items.length && isMastered(activeDay, questionIndex)) questionIndex++;
+    updateTrack();
     if (questionIndex >= items.length) {
       host.innerHTML = `<div class="adam-mastery-complete"><span class="adam-mastery-complete-icon">✓</span><div><strong>Day ${activeDay} mastery complete</strong><small>All ${items.length} objectives demonstrated.</small></div></div>`;
       return;
@@ -91,6 +106,7 @@
     state.mastered.push(key(activeDay, questionIndex));
     state.mastered = [...new Set(state.mastered)];
     saveState();
+    updateTrack();
     window.GEI_PROGRESS?.addXP?.(15, "adam-objective-mastery");
     if (feedback) feedback.textContent = "Objective demonstrated! +15 XP";
     window.setTimeout(() => { questionIndex++; render(); }, 420);
@@ -100,7 +116,7 @@
     const section = document.createElement("section");
     section.className = "adam-objective-mastery";
     section.setAttribute("aria-labelledby", "adam-mastery-title");
-    section.innerHTML = `<div class="adam-mastery-head"><div><span class="adam-mastery-kicker">ADAM • OBJECTIVE MASTERY</span><h3 id="adam-mastery-title">Demonstrate what you learned</h3></div><span class="adam-mastery-badge">+15 XP EACH</span></div><p class="adam-mastery-copy">Answer three short checkpoints to demonstrate the Day ${activeDay} learning objectives.</p><div id="adam-mastery-question"></div>`;
+    section.innerHTML = `<div class="adam-mastery-head"><div><span class="adam-mastery-kicker">ADAM • OBJECTIVE MASTERY</span><h3 id="adam-mastery-title">Demonstrate what you learned</h3></div><span class="adam-mastery-badge">+15 XP EACH</span></div><p class="adam-mastery-copy">Answer three short checkpoints to demonstrate the Day ${activeDay} learning objectives.</p><div class="adam-mastery-progress"><div class="adam-mastery-progress-label"><span>DAY ${activeDay} MASTERY</span><b id="adam-mastery-progress-count">${masteredCount(activeDay)} / 3</b></div><div class="adam-mastery-track" id="adam-mastery-track" role="group" aria-label="Day ${activeDay}: ${masteredCount(activeDay)} of 3 checkpoints mastered"><div class="adam-mastery-track-line"><span class="adam-mastery-track-fill"></span></div><div class="adam-mastery-steps"><span class="adam-mastery-step" aria-label="Checkpoint 1"></span><span class="adam-mastery-step" aria-label="Checkpoint 2"></span><span class="adam-mastery-step" aria-label="Checkpoint 3"></span></div></div></div><div id="adam-mastery-question"></div>`;
     return section;
   }
 
@@ -109,19 +125,23 @@
     const view = academy?.querySelector(".academy-view");
     const objectives = view?.querySelector(":scope > .adam-learning-objectives");
     if (!view || !objectives) return;
+    const nextDay = getDay();
+    if (nextDay !== activeDay) questionIndex = 0;
+    activeDay = nextDay;
     const existing = view.querySelector(":scope > .adam-objective-mastery");
     if (existing) existing.remove();
-    activeDay = getDay();
     const section = build();
     view.insertBefore(section, objectives.nextSibling);
     renderQuestion();
+    const count = document.getElementById("adam-mastery-progress-count");
+    if (count) count.textContent = `${masteredCount(activeDay)} / 3`;
   }
 
   function ensureStyles() {
     if (document.getElementById("adam-objective-mastery-styles")) return;
     const style = document.createElement("style");
     style.id = "adam-objective-mastery-styles";
-    style.textContent = `.adam-objective-mastery{position:relative;z-index:2;margin:0 0 12px;padding:14px;border:2px solid #155eef;border-radius:18px;background:#fff;box-shadow:0 14px 34px rgba(16,42,67,.10)}.adam-mastery-head{display:flex;align-items:flex-end;justify-content:space-between;gap:9px}.adam-mastery-kicker{display:block;color:#155eef;font-size:8px;font-weight:1000;letter-spacing:.13em}.adam-mastery-head h3{margin:4px 0 0;color:#102a43;font-size:17px;line-height:1.08}.adam-mastery-badge{padding:5px 7px;border-radius:8px;background:#eef3ff;color:#155eef;font-size:8px;font-weight:1000;white-space:nowrap}.adam-mastery-copy{margin:8px 0 11px;color:#526b82;font-size:11px;line-height:1.4}.adam-mastery-question-head{display:flex;justify-content:space-between;gap:8px;margin-bottom:7px;color:#60738f;font-size:8px;font-weight:1000;letter-spacing:.08em}.adam-mastery-question-head b{color:#155eef}.adam-mastery-question h4{margin:0 0 9px;color:#102a43;font-size:14px;line-height:1.3}.adam-mastery-choices{display:grid;gap:7px}.adam-mastery-choices button{width:100%;min-height:40px;padding:8px 10px;border:1px solid rgba(21,94,239,.25);border-radius:11px;background:#f7f9fc;color:#304963;text-align:left;font:inherit;font-size:11px;font-weight:700;cursor:pointer}.adam-mastery-choices button:disabled{opacity:.65;cursor:default}.adam-mastery-choices button:focus-visible{outline:3px solid #ff1493;outline-offset:2px}.adam-mastery-feedback{min-height:16px;margin:7px 0 0;color:#155eef;font-size:10px;font-weight:800}.adam-mastery-complete{display:flex;align-items:center;gap:10px;padding:10px;border-radius:12px;background:#eef3ff;color:#102a43}.adam-mastery-complete-icon{display:grid;place-items:center;width:28px;height:28px;border-radius:50%;background:#155eef;color:#fff;font-weight:1000}.adam-mastery-complete strong,.adam-mastery-complete small{display:block}.adam-mastery-complete strong{font-size:12px}.adam-mastery-complete small{margin-top:2px;color:#526b82;font-size:10px}@media(max-width:360px){.adam-objective-mastery{padding:12px;border-radius:16px}.adam-mastery-head h3{font-size:15px}.adam-mastery-copy{font-size:10px}.adam-mastery-question h4{font-size:13px}.adam-mastery-choices button{font-size:10px;min-height:38px}.adam-mastery-kicker,.adam-mastery-badge,.adam-mastery-question-head{font-size:7px}}`;
+    style.textContent = `.adam-objective-mastery{position:relative;z-index:2;margin:0 0 12px;padding:14px;border:2px solid #155eef;border-radius:18px;background:#fff;box-shadow:0 14px 34px rgba(16,42,67,.10)}.adam-mastery-head{display:flex;align-items:flex-end;justify-content:space-between;gap:9px}.adam-mastery-kicker{display:block;color:#155eef;font-size:8px;font-weight:1000;letter-spacing:.13em}.adam-mastery-head h3{margin:4px 0 0;color:#102a43;font-size:17px;line-height:1.08}.adam-mastery-badge{padding:5px 7px;border-radius:8px;background:#eef3ff;color:#155eef;font-size:8px;font-weight:1000;white-space:nowrap}.adam-mastery-copy{margin:8px 0 10px;color:#526b82;font-size:11px;line-height:1.4}.adam-mastery-progress{margin:0 0 11px;padding:9px 10px;border-radius:12px;background:#f5f8ff;border:1px solid rgba(21,94,239,.12)}.adam-mastery-progress-label{display:flex;justify-content:space-between;gap:8px;margin-bottom:7px;color:#60738f;font-size:8px;font-weight:1000;letter-spacing:.08em}.adam-mastery-progress-label b{color:#155eef}.adam-mastery-track{position:relative;height:22px}.adam-mastery-track-line{position:absolute;left:8px;right:8px;top:8px;height:5px;border-radius:99px;background:#dfe7f7;overflow:hidden}.adam-mastery-track-fill{display:block;width:0;height:100%;border-radius:99px;background:#155eef;transition:width .28s ease}.adam-mastery-steps{position:absolute;inset:0;display:flex;justify-content:space-between;align-items:flex-start}.adam-mastery-step{width:21px;height:21px;border-radius:50%;box-sizing:border-box;border:2px solid #b9c8e5;background:#fff;box-shadow:0 1px 4px rgba(16,42,67,.08)}.adam-mastery-step.is-mastered{border-color:#155eef;background:#155eef;position:relative}.adam-mastery-step.is-mastered::after{content:"✓";position:absolute;inset:0;display:grid;place-items:center;color:#fff;font-size:11px;font-weight:1000}.adam-mastery-question-head{display:flex;justify-content:space-between;gap:8px;margin-bottom:7px;color:#60738f;font-size:8px;font-weight:1000;letter-spacing:.08em}.adam-mastery-question-head b{color:#155eef}.adam-mastery-question h4{margin:0 0 9px;color:#102a43;font-size:14px;line-height:1.3}.adam-mastery-choices{display:grid;gap:7px}.adam-mastery-choices button{width:100%;min-height:40px;padding:8px 10px;border:1px solid rgba(21,94,239,.25);border-radius:11px;background:#f7f9fc;color:#304963;text-align:left;font:inherit;font-size:11px;font-weight:700;cursor:pointer}.adam-mastery-choices button:disabled{opacity:.65;cursor:default}.adam-mastery-choices button:focus-visible{outline:3px solid #ff1493;outline-offset:2px}.adam-mastery-feedback{min-height:16px;margin:7px 0 0;color:#155eef;font-size:10px;font-weight:800}.adam-mastery-complete{display:flex;align-items:center;gap:10px;padding:10px;border-radius:12px;background:#eef3ff;color:#102a43}.adam-mastery-complete-icon{display:grid;place-items:center;width:28px;height:28px;border-radius:50%;background:#155eef;color:#fff;font-weight:1000}.adam-mastery-complete strong,.adam-mastery-complete small{display:block}.adam-mastery-complete strong{font-size:12px}.adam-mastery-complete small{margin-top:2px;color:#526b82;font-size:10px}@media(max-width:360px){.adam-objective-mastery{padding:12px;border-radius:16px}.adam-mastery-head h3{font-size:15px}.adam-mastery-copy{font-size:10px}.adam-mastery-question h4{font-size:13px}.adam-mastery-choices button{font-size:10px;min-height:38px}.adam-mastery-kicker,.adam-mastery-badge,.adam-mastery-question-head,.adam-mastery-progress-label{font-size:7px}}`;
     document.head.appendChild(style);
   }
 
