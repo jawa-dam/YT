@@ -103,6 +103,7 @@
     const style = document.createElement("style");
     style.id = "adam-learning-objectives-styles";
     style.textContent = `
+      .academy-view{grid-template-rows:auto auto auto auto auto!important;align-content:start!important}
       .adam-learning-objectives{position:relative;z-index:2;grid-column:1/-1;width:100%;box-sizing:border-box;margin:0;padding:14px 14px 12px;border:1px solid rgba(21,94,239,.24);border-radius:18px;background:rgba(255,255,255,.97);box-shadow:0 12px 30px rgba(16,42,67,.08)}
       .adam-objectives-head{display:flex;align-items:flex-end;justify-content:space-between;gap:10px;margin-bottom:9px}
       .adam-objectives-kicker{display:block;color:#155eef;font-size:8px;font-weight:1000;letter-spacing:.13em;text-transform:uppercase}
