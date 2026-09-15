@@ -57,10 +57,19 @@
   will-change:transform;
 }
 
+/* V1.17 — keep the tap prompt above Adam so it remains readable. */
 .home-mascot-button .mascot-caption {
   z-index:3;
-  bottom:-1px;
+  top:-13px;
+  bottom:auto;
+  left:50%;
+  width:max-content;
+  max-width:150px;
+  transform:translateX(-50%);
   pointer-events:none;
+  text-align:center;
+  line-height:1.15;
+  white-space:normal;
 }
 
 .home-mascot-button:focus-visible {
@@ -83,6 +92,11 @@
   .home-mascot-button {
     width:clamp(88px,29vw,104px);
     height:clamp(102px,33vw,116px);
+  }
+  .home-mascot-button .mascot-caption {
+    top:-11px;
+    max-width:132px;
+    font-size:11px;
   }
 }
 
