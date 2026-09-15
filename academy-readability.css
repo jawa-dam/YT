@@ -1,8 +1,108 @@
-/* V1.17 — Academy Path Readability */
-.academy-path-heading h2{font-size:24px!important;line-height:1.1;color:var(--text,#f6f8ff)!important}
-.academy-path-heading .academy-section-label{font-size:13px!important;letter-spacing:.12em}
-.academy-path-count{font-size:12px!important;color:#c5d0df!important}
-.academy-day-card{padding:12px!important}
-.academy-day-number,.academy-day-status{font-size:10px!important;color:#b9c6d8!important;letter-spacing:.08em}
-.academy-day-card h3{font-size:16px!important;line-height:1.18;color:#f6f8ff!important}
-@media(max-width:360px){.academy-path-heading h2{font-size:22px!important}.academy-path-heading .academy-section-label{font-size:12px!important}.academy-path-count{font-size:11px!important}.academy-day-card h3{font-size:15px!important}.academy-day-number,.academy-day-status{font-size:9px!important}}
+/* V1.17 — Academy + Navigation Readability */
+
+/* THE PATH */
+.academy-path-heading .academy-section-label{
+  color:#087da5!important;
+  font-size:14px!important;
+  font-weight:900;
+  letter-spacing:.13em;
+  line-height:1.2;
+}
+.academy-path-heading h2{
+  margin-top:4px!important;
+  color:#102a43!important;
+  font-size:28px!important;
+  line-height:1.05!important;
+  font-weight:900!important;
+}
+.academy-path-count{
+  color:#526b82!important;
+  font-size:14px!important;
+  font-weight:900!important;
+}
+.academy-day-card{
+  padding:12px!important;
+  opacity:1!important;
+  color:#17324b!important;
+}
+.academy-day-card.is-locked{
+  opacity:1!important;
+  background:#e3e8ee!important;
+  border-color:#c2ccd6!important;
+}
+.academy-day-number,.academy-day-status{
+  color:#526b82!important;
+  font-size:11px!important;
+  font-weight:900!important;
+  letter-spacing:.07em;
+}
+.academy-day-card h3,
+.academy-day-card.is-locked h3{
+  color:#294760!important;
+  font-size:17px!important;
+  line-height:1.15!important;
+  font-weight:900!important;
+  text-shadow:none!important;
+}
+.academy-day-card.is-active{
+  background:linear-gradient(145deg,#effcff,#e2edf3)!important;
+  border-color:#2fd2ff!important;
+}
+.academy-day-card.is-active .academy-day-number,
+.academy-day-card.is-active .academy-day-status{
+  color:#087da5!important;
+}
+
+/* Bottom navigation — readable on the light academic surface. */
+:root[data-skin="academic"] .bottom-navigation,
+:root[data-skin="pink"] .bottom-navigation,
+:root[data-skin="blue"] .bottom-navigation{
+  background:rgba(255,255,255,.98)!important;
+  border-color:#d0d9e3!important;
+  box-shadow:0 16px 36px rgba(25,45,70,.15),inset 0 1px 0 rgba(255,255,255,.95)!important;
+}
+:root[data-skin="academic"] .bottom-navigation .nav-button,
+:root[data-skin="academic"] .bottom-navigation .nav-item,
+:root[data-skin="academic"] .bottom-navigation .bottom-nav-item,
+:root[data-skin="pink"] .bottom-navigation .nav-button,
+:root[data-skin="pink"] .bottom-navigation .nav-item,
+:root[data-skin="pink"] .bottom-navigation .bottom-nav-item,
+:root[data-skin="blue"] .bottom-navigation .nav-button,
+:root[data-skin="blue"] .bottom-navigation .nav-item,
+:root[data-skin="blue"] .bottom-navigation .bottom-nav-item{
+  color:#52627a!important;
+}
+:root[data-skin="academic"] .bottom-navigation .nav-button.active,
+:root[data-skin="academic"] .bottom-navigation .nav-item.is-active,
+:root[data-skin="academic"] .bottom-navigation .bottom-nav-item.active,
+:root[data-skin="pink"] .bottom-navigation .nav-button.active,
+:root[data-skin="pink"] .bottom-navigation .nav-item.is-active,
+:root[data-skin="pink"] .bottom-navigation .bottom-nav-item.active,
+:root[data-skin="blue"] .bottom-navigation .nav-button.active,
+:root[data-skin="blue"] .bottom-navigation .nav-item.is-active,
+:root[data-skin="blue"] .bottom-navigation .bottom-nav-item.active{
+  color:#17324b!important;
+  background:linear-gradient(145deg,#dff7ff,#dbe5ff)!important;
+  border-color:#a7dff2!important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.95),0 5px 16px rgba(30,65,100,.12)!important;
+}
+:root[data-skin="academic"] .bottom-navigation .nav-label,
+:root[data-skin="academic"] .bottom-navigation .bottom-nav-label,
+:root[data-skin="pink"] .bottom-navigation .nav-label,
+:root[data-skin="pink"] .bottom-navigation .bottom-nav-label,
+:root[data-skin="blue"] .bottom-navigation .nav-label,
+:root[data-skin="blue"] .bottom-navigation .bottom-nav-label{
+  color:inherit!important;
+  font-size:10px!important;
+  font-weight:900!important;
+  letter-spacing:.04em;
+}
+
+@media(max-width:360px){
+  .academy-path-heading .academy-section-label{font-size:13px!important}
+  .academy-path-heading h2{font-size:25px!important}
+  .academy-path-count{font-size:12px!important}
+  .academy-day-number,.academy-day-status{font-size:10px!important}
+  .academy-day-card h3{font-size:16px!important}
+  .nav-label,.bottom-nav-label{font-size:9px!important}
+}
