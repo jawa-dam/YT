@@ -1,0 +1,98 @@
+/* V1.21 — Readability & Adam Mascot Label */
+
+/* Keep navigation calm and readable against the dark navigation surface. */
+.bottom-navigation .nav-button,
+.bottom-navigation .nav-item,
+.bottom-navigation .bottom-nav-item {
+  color:#6f7c8f;
+}
+
+.bottom-navigation .nav-button:hover,
+.bottom-navigation .nav-item:hover,
+.bottom-navigation .bottom-nav-item:hover {
+  color:#aeb9c8;
+}
+
+.bottom-navigation .nav-button.active,
+.bottom-navigation .nav-item.is-active,
+.bottom-navigation .bottom-nav-item.active {
+  color:#d5deea;
+}
+
+.bottom-navigation .nav-label,
+.bottom-navigation .bottom-nav-label {
+  color:inherit;
+}
+
+/* Academy six-stage labels: reduce glare while preserving hierarchy. */
+.academy-day-card h3 {
+  color:#bcc8d8;
+}
+
+.academy-day-number,
+.academy-day-status {
+  color:#748198;
+}
+
+.academy-day-card.is-active h3 {
+  color:#cbd6e3;
+}
+
+.academy-day-card.is-active .academy-day-number,
+.academy-day-card.is-active .academy-day-status {
+  color:#2fd2ff;
+}
+
+/* Home Adam interaction: remove the old name beneath the mascot. */
+#screen-home .home-mascot-button .mascot-caption {
+  display:none !important;
+}
+
+/* Clear, high-contrast invitation above the mascot. */
+#screen-home .home-mascot-button::before {
+  content:"TAP TO MEET ADAM";
+  position:absolute;
+  top:-2px;
+  left:50%;
+  z-index:4;
+  transform:translateX(-50%);
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  width:max-content;
+  max-width:calc(100% - 4px);
+  min-height:24px;
+  box-sizing:border-box;
+  padding:5px 9px;
+  border:1px solid #2fd2ff;
+  border-radius:999px;
+  background:#e8f9ff;
+  color:#075985;
+  box-shadow:0 5px 14px rgba(7,89,133,.16);
+  font-size:8px;
+  font-weight:900;
+  letter-spacing:.095em;
+  line-height:1;
+  white-space:nowrap;
+  pointer-events:none;
+}
+
+#screen-home .home-mascot-button .home-mascot-image {
+  height:calc(100% - 17px);
+  margin-top:17px;
+}
+
+@media(max-width:360px){
+  #screen-home .home-mascot-button::before {
+    top:0;
+    min-height:22px;
+    padding:4px 7px;
+    font-size:7px;
+    letter-spacing:.075em;
+  }
+
+  #screen-home .home-mascot-button .home-mascot-image {
+    height:calc(100% - 15px);
+    margin-top:15px;
+  }
+}
