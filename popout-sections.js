@@ -2,12 +2,11 @@
 (() => {
   "use strict";
   const CONFIG = [
-    ["gei-streak-card", "🎁", "LEARNING MOMENTUM", "0 Day Streak"],
-    ["gei-vault-card", "🔐", "LEARNER IDENTITY", "Achievement Vault"],
-    ["gei-journey-card", "🧭", "GEI PROGRESS", "Continue Your Journey"],
-    ["gei-achievement-card", "🏆", "STREAK ACHIEVEMENTS", "Learning Rewards"],
     ["gei-profile-card", "👤", "LEARNER PROFILE", "Blueprint Identity"],
-    ["gei-xp-card", "⭐", "XP INTELLIGENCE", "Learner Evolution"]
+    ["gei-xp-card", "⭐", "XP INTELLIGENCE", "Learner Evolution"],
+    ["gei-streak-card", "🎁", "LEARNING MOMENTUM", "0 Day Streak"],
+    ["gei-achievement-card", "🏆", "STREAK ACHIEVEMENTS", "Learning Rewards"],
+    ["gei-vault-card", "🔐", "LEARNER IDENTITY", "Achievement Vault"]
   ];
   const SELECTOR = CONFIG.map(([id]) => `#${id}`).join(",");
 
@@ -20,24 +19,66 @@
     card.hidden = false;
     card.style.removeProperty("display");
   }
-  function makeTrigger(card, cfg) {
+  function makeRailItem(card, cfg) {
     if (card.dataset.geiPopoutPrepared === "true") return;
     const [id, icon, kicker, title] = cfg;
-    const trigger = document.createElement("button");
-    trigger.type = "button";
-    trigger.className = "gei-popout-trigger";
-    trigger.dataset.geiPopoutTarget = id;
-    trigger.setAttribute("aria-label", `Open ${kicker}: ${title}`);
-    trigger.innerHTML = `<span class="gei-popout-icon" aria-hidden="true">${icon}</span><span class="gei-popout-copy"><span class="gei-popout-kicker">${kicker}</span><span class="gei-popout-title">${title}</span></span><span class="gei-popout-arrow" aria-hidden="true">›</span>`;
+    const button = document.createElement("button");
+    button.type = "button";
+    button.className = "gei-popout-icon-button";
+    button.dataset.geiPopoutTarget = id;
+    button.setAttribute("aria-label", `Open ${kicker}: ${title}`);
+    button.title = `${kicker} — ${title}`;
+    button.innerHTML = `<span aria-hidden="true">${icon}</span>`;
     card.dataset.geiPopoutPrepared = "true";
-    card.parentNode.insertBefore(trigger, card);
+    card.parentNode.insertBefore(button, card);
     hideSource(card);
   }
-  function prepare() {
+  function ensureRail() {
+    const home = document.getElementById("screen-home");
+    const stack = home?.querySelector(".home-experience-stack") || home?.querySelector(".dashboard-main");
+    if (!stack) return;
+    let rail = home.querySelector("#gei-popout-rail");
+    if (!rail) {
+      rail = document.createElement("div");
+      rail.id = "gei-popout-rail";
+      rail.className = "gei-popout-rail";
+      rail.setAttribute("aria-label", "GEI quick access");
+      stack.insertBefore(rail, stack.firstChild);
+    }
     document.querySelectorAll(SELECTOR).forEach((card) => {
       if (card.closest(".gei-popout-dialog")) return;
-      const cfg = configFor(card);
-      if (cfg) makeTrigger(card, cfg);
+      if (card.dataset.geiPopoutPrepared !== "true") {
+        const cfg = configFor(card);
+        if (!cfg) return;
+        const [id, icon, kicker, title] = cfg;
+        const button = document.createElement("button");
+        button.type = "button";
+        button.className = "gei-popout-icon-button";
+        button.dataset.geiPopoutTarget = id;
+        button.setAttribute("aria-label", `Open ${kicker}: ${title}`);
+        button.title = `${kicker} — ${title}`;
+        button.innerHTML = `<span aria-hidden="true">${icon}</span>`;
+        rail.appendChild(button);
+        card.dataset.geiPopoutPrepared = "true";
+        hideSource(card);
+      } else {
+        const existing = rail.querySelector(`[data-gei-popout-target="${card.id}"]`);
+        if (!existing) {
+          const cfg = configFor(card);
+          if (cfg) {
+            const [, icon, kicker, title] = cfg;
+            const button = document.createElement("button");
+            button.type = "button";
+            button.className = "gei-popout-icon-button";
+            button.dataset.geiPopoutTarget = card.id;
+            button.setAttribute("aria-label", `Open ${kicker}: ${title}`);
+            button.title = `${kicker} — ${title}`;
+            button.innerHTML = `<span aria-hidden="true">${icon}</span>`;
+            rail.appendChild(button);
+          }
+        }
+        hideSource(card);
+      }
     });
   }
   function open(card, trigger) {
@@ -63,15 +104,16 @@
     home.appendChild(backdrop);
     showSource(card);
     content.appendChild(card);
-
     const cleanup = () => {
       if (!backdrop.isConnected) return;
-      const parent = home.querySelector(".home-experience-stack") || home.querySelector(".dashboard-main");
-      if (parent && trigger.isConnected) parent.insertBefore(card, trigger.nextSibling);
+      const stack = home.querySelector(".home-experience-stack") || home.querySelector(".dashboard-main");
+      if (stack && !card.closest(".gei-popout-dialog")) stack.appendChild(card);
+      const rail = home.querySelector("#gei-popout-rail");
+      if (rail && trigger && !trigger.isConnected) rail.appendChild(trigger);
       hideSource(card);
       backdrop.remove();
-      trigger.focus();
-      prepare();
+      if (trigger) trigger.focus();
+      ensureRail();
     };
     close.addEventListener("click", cleanup);
     backdrop.addEventListener("click", (event) => { if (event.target === backdrop) cleanup(); });
@@ -89,10 +131,10 @@
     open(card, trigger);
   }
   function init() {
-    prepare();
+    ensureRail();
     document.addEventListener("click", route, true);
     const home = document.getElementById("screen-home");
-    if (home) new MutationObserver(prepare).observe(home, { childList: true, subtree: true });
+    if (home) new MutationObserver(ensureRail).observe(home, { childList: true, subtree: true });
   }
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", init, { once: true }); else init();
 })();
