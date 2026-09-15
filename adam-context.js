@@ -1,4 +1,4 @@
-/* V1.26.1 — Adam Contextual Launcher Recovery */
+/* V1.26.2 — Adam Contextual Launcher — robust screen detection */
 (() => {
   "use strict";
 
@@ -18,37 +18,36 @@
     const api = window.GEI_PROGRESS;
     if (!api || typeof api.getState !== "function") return { completed: [], xp: 0, currentDay: 1 };
     const state = api.getState() || {};
-    const completed = Array.isArray(state.completed)
-      ? [...new Set(state.completed.map(Number).filter((id) => id >= 1 && id <= 6))].sort((a, b) => a - b)
-      : [];
+    const completed = Array.isArray(state.completed) ? [...new Set(state.completed.map(Number).filter((id) => id >= 1 && id <= 6))].sort((a, b) => a - b) : [];
     return { completed, xp: Math.max(0, Number(state.xp) || 0), currentDay: Number(api.getCurrentDay?.()) || 1 };
+  }
+
+  function isVisible(screen) {
+    if (!screen) return false;
+    if (screen.getAttribute("aria-hidden") === "true") return false;
+    const style = window.getComputedStyle(screen);
+    return style.display !== "none" && style.visibility !== "hidden" && style.opacity !== "0";
   }
 
   function getActiveScreen() {
     const screens = Array.from(document.querySelectorAll(".app-screen"));
-    const visible = screens.find((screen) => {
-      if (screen.getAttribute("aria-hidden") === "true") return false;
-      const style = window.getComputedStyle(screen);
-      return style.display !== "none" && style.visibility !== "hidden";
-    });
-    if (visible) return visible;
-    return document.querySelector(".app-screen.is-active") || document.querySelector('.app-screen[aria-hidden="false"]') || null;
+    // Navigation's is-active state is authoritative when it is not explicitly hidden.
+    const active = screens.find((screen) => screen.classList.contains("is-active") && isVisible(screen));
+    if (active) return active;
+    // Then honor the explicit accessibility state used by the app.
+    const ariaActive = screens.find((screen) => screen.getAttribute("aria-hidden") === "false" && isVisible(screen));
+    if (ariaActive) return ariaActive;
+    // Finally, use the first genuinely visible screen. This covers dynamically rendered screens.
+    return screens.find(isVisible) || null;
   }
 
   function getContext() {
     const active = getActiveScreen();
     const id = active?.id || "screen-home";
-    const context = CONTEXTS[id] || {
-      key: "home",
-      label: "HOME",
-      title: "Your GEI command center",
-      message: "You're on the GEI home screen. Adam is ready to guide your next move.",
-      action: "Meet Adam",
-      actionType: "home"
-    };
+    const context = CONTEXTS[id] || { label: "HOME", title: "Your GEI command center", message: "You're on the GEI home screen. Adam is ready to guide your next move.", action: "Meet Adam", actionType: "home" };
     const progress = getProgress();
     const count = progress.completed.length;
-    return Object.freeze({ ...context, screenId: id, count, currentDay: count < 6 ? progress.currentDay : 1, xp: progress.xp, version: 1.1 });
+    return Object.freeze({ ...context, screenId: id, count, currentDay: count < 6 ? progress.currentDay : 1, xp: progress.xp, version: 1.2 });
   }
 
   function navigate(type) {
@@ -58,9 +57,9 @@
       if (url) window.open(url, "_blank", "noopener,noreferrer");
       return;
     }
-    const label = type === "academy" ? "Academy" : "Home";
+    const label = type === "academy" ? "academy" : "home";
     const target = Array.from(document.querySelectorAll("#bottom-navigation button, #bottom-navigation a"))
-      .find((el) => el.textContent.trim().toLowerCase().includes(label.toLowerCase()));
+      .find((el) => el.textContent.trim().toLowerCase().includes(label));
     target?.click();
   }
 
@@ -69,7 +68,7 @@
     const style = document.createElement("style");
     style.id = "adam-context-styles";
     style.textContent = `
-      .adam-context-launcher{position:absolute;z-index:60;top:88px;right:12px;display:flex;align-items:center;gap:7px;min-height:40px;padding:7px 12px;border:2px solid #155eef;border-radius:999px;background:#fff;color:#102a5c;font-size:10px;font-weight:1000;letter-spacing:.08em;text-transform:uppercase;box-shadow:0 8px 24px rgba(21,94,239,.22);cursor:pointer;touch-action:manipulation;-webkit-tap-highlight-color:transparent;white-space:nowrap}.adam-context-launcher img{width:25px;height:25px;object-fit:contain}.adam-context-launcher:active{transform:translateY(1px)}.adam-context-launcher:focus-visible{outline:3px solid #ff1493;outline-offset:3px}.adam-context-panel{position:absolute;z-index:70;left:10px;right:10px;top:136px;display:none}.adam-context-panel.is-open{display:block}.adam-context-card{width:min(100%,390px);margin:0 auto;padding:14px;border:2px solid #155eef;border-radius:20px;background:#fff;color:#102a43;box-shadow:0 22px 55px rgba(0,0,0,.24)}.adam-context-head{display:flex;align-items:center;gap:9px}.adam-context-avatar{width:42px;height:42px;object-fit:contain}.adam-context-head strong{display:block;font-size:19px;line-height:1.05}.adam-context-kicker{display:block;color:#155eef;font-size:9px;font-weight:900;letter-spacing:.12em}.adam-context-close{margin-left:auto;width:34px;height:34px;border:1px solid rgba(21,94,239,.25);border-radius:10px;background:#e1e9ff;color:#102a43;font-size:20px;cursor:pointer}.adam-context-message{margin:11px 0;padding:11px 12px;border-left:3px solid #155eef;border-radius:11px;background:#e1e9ff;font-size:14px;line-height:1.4}.adam-context-meta{display:flex;justify-content:space-between;gap:8px;padding:8px 10px;border:1px solid rgba(21,94,239,.22);border-radius:11px;color:#50658b;font-size:10px;font-weight:900}.adam-context-meta b{color:#155eef}.adam-context-action{width:100%;min-height:44px;margin-top:9px;border:1px solid #155eef;border-radius:12px;background:#eef3ff;color:#102a5c;font-size:12px;font-weight:900;cursor:pointer}.adam-context-action:focus-visible{outline:3px solid #ff1493;outline-offset:2px}@media(max-width:360px){.adam-context-launcher{top:82px;right:9px;min-height:37px;padding:6px 10px;font-size:9px}.adam-context-launcher img{width:23px;height:23px}.adam-context-panel{left:8px;right:8px;top:127px}.adam-context-card{padding:11px;border-radius:18px}.adam-context-head strong{font-size:17px}.adam-context-message{font-size:13px}.adam-context-action{min-height:42px;font-size:11px}}
+      .adam-context-launcher{position:absolute;z-index:90;top:116px;right:14px;display:flex;align-items:center;gap:7px;min-height:42px;padding:7px 13px;border:2px solid #155eef;border-radius:999px;background:#fff;color:#102a5c;font-size:11px;font-weight:1000;letter-spacing:.07em;text-transform:uppercase;box-shadow:0 10px 28px rgba(21,94,239,.26);cursor:pointer;touch-action:manipulation;-webkit-tap-highlight-color:transparent;white-space:nowrap}.adam-context-launcher img{width:27px;height:27px;object-fit:contain}.adam-context-launcher:active{transform:translateY(1px)}.adam-context-launcher:focus-visible{outline:3px solid #ff1493;outline-offset:3px}.adam-context-panel{position:absolute;z-index:100;left:10px;right:10px;top:168px;display:none}.adam-context-panel.is-open{display:block}.adam-context-card{width:min(100%,390px);margin:0 auto;padding:14px;border:2px solid #155eef;border-radius:20px;background:#fff;color:#102a43;box-shadow:0 22px 55px rgba(0,0,0,.24)}.adam-context-head{display:flex;align-items:center;gap:9px}.adam-context-avatar{width:42px;height:42px;object-fit:contain}.adam-context-head strong{display:block;font-size:19px;line-height:1.05}.adam-context-kicker{display:block;color:#155eef;font-size:9px;font-weight:900;letter-spacing:.12em}.adam-context-close{margin-left:auto;width:34px;height:34px;border:1px solid rgba(21,94,239,.25);border-radius:10px;background:#e1e9ff;color:#102a43;font-size:20px;cursor:pointer}.adam-context-message{margin:11px 0;padding:11px 12px;border-left:3px solid #155eef;border-radius:11px;background:#e1e9ff;font-size:14px;line-height:1.4}.adam-context-meta{display:flex;justify-content:space-between;gap:8px;padding:8px 10px;border:1px solid rgba(21,94,239,.22);border-radius:11px;color:#50658b;font-size:10px;font-weight:900}.adam-context-meta b{color:#155eef}.adam-context-action{width:100%;min-height:44px;margin-top:9px;border:1px solid #155eef;border-radius:12px;background:#eef3ff;color:#102a5c;font-size:12px;font-weight:900;cursor:pointer}.adam-context-action:focus-visible{outline:3px solid #ff1493;outline-offset:2px}@media(max-width:360px){.adam-context-launcher{top:104px;right:9px;min-height:39px;padding:6px 10px;font-size:9px}.adam-context-launcher img{width:24px;height:24px}.adam-context-panel{left:8px;right:8px;top:153px}.adam-context-card{padding:11px;border-radius:18px}.adam-context-head strong{font-size:17px}.adam-context-message{font-size:13px}.adam-context-action{min-height:42px;font-size:11px}}
       #screen-academy,#screen-portfolio,#screen-video,#screen-support{position:relative!important;}
     `;
     document.head.appendChild(style);
@@ -106,14 +105,8 @@
     active.append(launcher, panel);
 
     const closeButton = panel.querySelector(".adam-context-close");
-    launcher.addEventListener("click", () => {
-      panel.classList.add("is-open");
-      closeButton?.focus();
-    });
-    closeButton?.addEventListener("click", () => {
-      panel.classList.remove("is-open");
-      launcher.focus();
-    });
+    launcher.addEventListener("click", () => { panel.classList.add("is-open"); closeButton?.focus(); });
+    closeButton?.addEventListener("click", () => { panel.classList.remove("is-open"); launcher.focus(); });
     panel.querySelector(".adam-context-action")?.addEventListener("click", () => navigate(context.actionType));
     rendering = false;
   }
@@ -125,15 +118,22 @@
 
   function init() {
     ensureStyles();
-    window.GEI_ADAM_CONTEXT = Object.freeze({ version: 1.1, getContext, refresh: () => render(true) });
+    window.GEI_ADAM_CONTEXT = Object.freeze({ version: 1.2, getContext, refresh: () => render(true) });
     scheduleRefresh(true);
 
     const root = document.getElementById("app-frame") || document.body;
     const observer = new MutationObserver((mutations) => {
-      if (mutations.some((mutation) => {
-        const target = mutation.target?.closest?.(".adam-context-launcher,.adam-context-panel");
-        return !target;
-      })) scheduleRefresh(false);
+      const relevant = mutations.some((mutation) => {
+        const target = mutation.target;
+        if (target?.closest?.(".adam-context-launcher,.adam-context-panel")) return false;
+        if (mutation.addedNodes?.length) {
+          for (const node of mutation.addedNodes) {
+            if (node.nodeType === 1 && node.matches?.(".adam-context-launcher,.adam-context-panel")) return false;
+          }
+        }
+        return true;
+      });
+      if (relevant) scheduleRefresh(false);
     });
     observer.observe(root, { subtree: true, childList: true, attributes: true, attributeFilter: ["class", "aria-hidden", "style"] });
 
@@ -142,11 +142,7 @@
       if (navItem) scheduleRefresh(true);
     }, true);
 
-    window.addEventListener("gei:progress-ready", () => scheduleRefresh(true));
-    window.addEventListener("gei:progress-updated", () => scheduleRefresh(true));
-    window.addEventListener("gei:xp-updated", () => scheduleRefresh(true));
-    window.addEventListener("gei:adam-memory-updated", () => scheduleRefresh(true));
-    window.addEventListener("gei:adam-milestone-updated", () => scheduleRefresh(true));
+    ["gei:progress-ready","gei:progress-updated","gei:xp-updated","gei:adam-memory-updated","gei:adam-milestone-updated"].forEach((name) => window.addEventListener(name, () => scheduleRefresh(true)));
   }
 
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", init, { once: true });
