@@ -204,11 +204,22 @@ body.academy-guide-open { overflow:hidden; }
   .academy-topbar { gap:4px; }
   .academy-mascot { flex-basis:88px; width:88px; height:88px; margin-top:-8px; margin-right:-5px; }
   .academy-topbar h1 { max-width:210px; }
-  .academy-hero { grid-template-columns:minmax(0,1fr) 112px; min-height:154px; padding:11px 10px 9px 13px; }
-  .academy-waterwheel { width:116px; }
-  .academy-waterwheel-glow { width:112px; height:112px; }
+
+  /* V1.34.1: the compact 154px hero could not contain the stacked title,
+     description, CTA, and waterwheel on small phones. Keep the whole hero
+     as one visible unit instead of letting the grid row compress it. */
+  .academy-hero {
+    grid-template-columns:minmax(0,1fr) 120px;
+    min-height:250px;
+    padding:13px 10px 11px 13px;
+    align-items:center;
+  }
+  .academy-waterwheel { width:124px; }
+  .academy-waterwheel-glow { width:120px; height:120px; right:-2px; top:50%; transform:translateY(-50%); }
+  .academy-wheel-tap { right:4px; bottom:7px; min-height:32px; }
   .academy-hero-copy h2 { font-size:22px; }
-  .academy-hero-copy p { font-size:10px; }
+  .academy-hero-copy p { font-size:10px; line-height:1.4; max-width:190px; margin-bottom:10px; }
+  .academy-primary-action { width:min(100%,175px); min-height:40px; }
   .academy-day-grid { gap:6px; }
   .academy-guide-card { grid-template-columns:68px minmax(0,1fr); gap:10px; width:calc(100% - 20px); padding:13px; border-radius:20px; }
   .academy-guide-mascot { width:68px; height:68px; }
