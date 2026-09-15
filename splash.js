@@ -5,7 +5,10 @@
   const SPLASH_ACTIVE = "SPLASH_ACTIVE";
   const SPLASH_COMPLETE = "SPLASH_COMPLETE";
   const TIMEOUT_MS = 10_000;
+  const ARTWORK_WATCHDOG_MS = 2_500;
   const GEI_LOGO_URL = "https://assets.zyrosite.com/YZ9jg46Bljs5wOZR/gei-logo-gwP3315oRt91xpE8.png";
+  const LOCAL_FALLBACK_SVG = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 1800"><defs><linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#07101b"/><stop offset=".55" stop-color="#10263a"/><stop offset="1" stop-color="#160d22"/></linearGradient><linearGradient id="water" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#2fd2ff"/><stop offset=".5" stop-color="#3d3dea"/><stop offset="1" stop-color="#f310ba"/></linearGradient><radialGradient id="glow"><stop offset="0" stop-color="#2fd2ff" stop-opacity=".5"/><stop offset="1" stop-color="#2fd2ff" stop-opacity="0"/></radialGradient></defs><rect width="1200" height="1800" fill="url(#bg)"/><circle cx="180" cy="310" r="420" fill="url(#glow)"/><circle cx="1050" cy="680" r="470" fill="#f310ba" opacity=".08"/><path d="M0 1040 L220 790 L390 930 L560 560 L720 820 L900 610 L1200 1040 V1260 H0Z" fill="#0b1725" stroke="#2fd2ff" stroke-opacity=".22" stroke-width="8"/><path d="M0 1110 H1200 V1800 H0Z" fill="#07111d" opacity=".82"/><rect x="105" y="1035" width="990" height="95" rx="20" fill="#dce8f2" opacity=".92"/><rect x="125" y="1052" width="950" height="20" rx="10" fill="#ffffff" opacity=".45"/><path d="M135 1130 H1065 V1255 H135Z" fill="#132c42"/><path d="M180 1255 C360 1190 480 1310 650 1245 S930 1195 1080 1260 V1800 H180Z" fill="url(#water)" opacity=".72"/><path d="M230 1290 C390 1240 500 1350 660 1285 S910 1240 1030 1290" fill="none" stroke="#b9f4ff" stroke-width="14" stroke-linecap="round" opacity=".65"/><circle cx="600" cy="930" r="120" fill="none" stroke="#2fd2ff" stroke-width="10" opacity=".32"/><circle cx="600" cy="930" r="78" fill="none" stroke="#f310ba" stroke-width="7" opacity=".26"/><text x="600" y="925" fill="#ffffff" font-family="Arial,sans-serif" font-size="54" font-weight="800" text-anchor="middle">GEI</text><text x="600" y="985" fill="#bfefff" font-family="Arial,sans-serif" font-size="25" font-weight="700" letter-spacing="7" text-anchor="middle">WATER • ENGINEERING</text></svg>`;
+  const LOCAL_FALLBACK_IMAGE = `data:image/svg+xml;charset=UTF-8,${encodeURIComponent(LOCAL_FALLBACK_SVG)}`;
   const DECK_STORAGE_KEY = "gei-splash-image-deck-v1";
   const LAST_IMAGE_KEY = "gei-splash-last-image-v1";
 
@@ -56,7 +59,7 @@
     "https://assets.zyrosite.com/YZ9jg46Bljs5wOZR/wilbert-bouie-jr-gei-genesis-engineered-interpretations-kwSWnKWRiZVB9aDt.png",
     "https://assets.zyrosite.com/YZ9jg46Bljs5wOZR/wilbert-bouie-jr-gei-yall-too-eikvukiQnLbrcW6t.png",
     "https://assets.zyrosite.com/YZ9jg46Bljs5wOZR/doctor-god-ZFQq7gu0Uds2K8xg.png",
-    "https://assets.zyrosite.com/YZ9jg46Bljs5wOZR/guitar-god-PnQfaNx4157O1KXf.png",
+    "https://assets.zyrosite.com/YZ9jg4-6Bljs5wOZR/guitar-god-PnQfaNx4157O1KXf.png",
     "https://assets.zyrosite.com/YZ9jg46Bljs5wOZR/pirate-god-DOkoFBGTq5dMjWIr.png",
     "https://assets.zyrosite.com/YZ9jg46Bljs5wOZR/astronaut-god-eRqNNpho8vDZWJ82.png",
     "https://assets.zyrosite.com/YZ9jg46Bljs5wOZR/god-is-a-mountain-y-all-too-dot-com-hi3CNgf9RV4SqjHx.png",
@@ -77,10 +80,10 @@
     "https://assets.zyrosite.com/YZ9jg46Bljs5wOZR/yall-too-contact-god-npiW7DVvPGZGTbqO.png"
   ];
 
-  const FALLBACK_IMAGE = SPLASH_IMAGES[0];
   let state = SPLASH_ACTIVE;
   let completionScheduled = false;
   let timeoutId = null;
+  let artworkWatchdogId = null;
 
   function shuffle(items) {
     const result = [...items];
@@ -137,7 +140,7 @@
       }
     }
 
-    let selected = deck.shift() || FALLBACK_IMAGE;
+    let selected = deck.shift() || SPLASH_IMAGES[0];
 
     if (selected === lastImage && deck.length > 0) {
       const replacementIndex = deck.findIndex((url) => url !== lastImage);
@@ -202,6 +205,7 @@
     completionScheduled = true;
     state = SPLASH_COMPLETE;
     if (timeoutId) window.clearTimeout(timeoutId);
+    if (artworkWatchdogId) window.clearTimeout(artworkWatchdogId);
     const frame = document.getElementById(APP_FRAME_ID);
     if (!frame) return;
     frame.classList.add("splash-done");
@@ -220,19 +224,47 @@
     const enter = splash.querySelector("#splash-enter");
     const status = splash.querySelector("#splash-status");
     const progressBar = splash.querySelector("#splash-progress-bar");
+    if (!artwork || !enter || !progressBar) return;
 
     applyRandomTreatment(splash);
+
+    let fallbackApplied = false;
+    const clearArtworkWatchdog = () => {
+      if (artworkWatchdogId) {
+        window.clearTimeout(artworkWatchdogId);
+        artworkWatchdogId = null;
+      }
+    };
+    const useLocalFallback = () => {
+      if (fallbackApplied) return;
+      fallbackApplied = true;
+      clearArtworkWatchdog();
+      artwork.dataset.fallbackApplied = "true";
+      artwork.style.objectFit = "cover";
+      artwork.style.objectPosition = "center";
+      artwork.style.padding = "0";
+      artwork.style.opacity = "1";
+      artwork.style.transform = "none";
+      artwork.style.filter = "none";
+      artwork.src = LOCAL_FALLBACK_IMAGE;
+      if (status) status.textContent = "GEI artwork ready";
+    };
+
+    artwork.onload = () => {
+      clearArtworkWatchdog();
+      if (status) status.textContent = fallbackApplied ? "GEI artwork ready" : "Ready to enter";
+    };
+
+    artwork.onerror = () => {
+      useLocalFallback();
+    };
+
     const selectedImage = nextImage();
     artwork.src = selectedImage;
-    artwork.onerror = () => {
-      if (artwork.dataset.fallbackApplied === "true") return;
-      artwork.dataset.fallbackApplied = "true";
-      artwork.src = FALLBACK_IMAGE;
-      if (status) status.textContent = "Using fallback artwork";
-    };
-    artwork.onload = () => {
-      if (status) status.textContent = "Ready to enter";
-    };
+
+    artworkWatchdogId = window.setTimeout(() => {
+      if (artwork.naturalWidth === 0) useLocalFallback();
+    }, ARTWORK_WATCHDOG_MS);
 
     enter.addEventListener("click", () => completeSplash("enter"));
     document.addEventListener("keydown", (event) => {
