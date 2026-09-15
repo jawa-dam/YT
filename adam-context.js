@@ -18,8 +18,12 @@
     return { completed, xp: Math.max(0, Number(state.xp) || 0), currentDay: Number(api.getCurrentDay?.()) || 1 };
   }
 
+  function getActiveScreen() {
+    return document.querySelector(".app-screen.is-active") || document.querySelector('.app-screen[aria-hidden="false"]');
+  }
+
   function getContext() {
-    const active = document.querySelector(".app-screen.is-active");
+    const active = getActiveScreen();
     const id = active?.id || "screen-home";
     const context = CONTEXTS[id] || { key: "home", label: "HOME", title: "Your GEI command center", message: "You're on the GEI home screen. Adam is ready to guide your next move.", action: "Meet Adam", actionType: "home" };
     const progress = getProgress();
@@ -56,7 +60,7 @@
 
   function render() {
     removeContextUI();
-    const active = document.querySelector(".app-screen.is-active");
+    const active = getActiveScreen();
     if (!active || active.id === "screen-home") return;
     const context = getContext();
     const launcher = document.createElement("button");
@@ -75,19 +79,35 @@
     panel.querySelector(".adam-context-action")?.addEventListener("click", () => navigate(context.actionType));
   }
 
+  function scheduleRefresh() {
+    window.setTimeout(render, 0);
+    window.setTimeout(render, 120);
+    window.setTimeout(render, 450);
+  }
+
   function init() {
     ensureStyles();
     window.GEI_ADAM_CONTEXT = Object.freeze({ version: 1, getContext, refresh: render });
-    render();
-    const observer = new MutationObserver(() => {
-      if (document.querySelector(".app-screen.is-active")) render();
+    scheduleRefresh();
+
+    const observer = new MutationObserver(() => scheduleRefresh());
+    observer.observe(document.getElementById("app-frame") || document.body, {
+      subtree: true,
+      childList: true,
+      attributes: true,
+      attributeFilter: ["class", "aria-hidden"]
     });
-    observer.observe(document.getElementById("app-frame") || document.body, { subtree: true, attributes: true, attributeFilter: ["class"] });
-    window.addEventListener("gei:progress-ready", render);
-    window.addEventListener("gei:progress-updated", render);
-    window.addEventListener("gei:xp-updated", render);
-    window.addEventListener("gei:adam-memory-updated", render);
-    window.addEventListener("gei:adam-milestone-updated", render);
+
+    document.addEventListener("click", (event) => {
+      const navItem = event.target.closest?.("#bottom-navigation button, #bottom-navigation a");
+      if (navItem) scheduleRefresh();
+    }, true);
+
+    window.addEventListener("gei:progress-ready", scheduleRefresh);
+    window.addEventListener("gei:progress-updated", scheduleRefresh);
+    window.addEventListener("gei:xp-updated", scheduleRefresh);
+    window.addEventListener("gei:adam-memory-updated", scheduleRefresh);
+    window.addEventListener("gei:adam-milestone-updated", scheduleRefresh);
   }
 
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", init, { once: true });
