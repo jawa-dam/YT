@@ -1,3 +1,4 @@
+/* V1.17 — GEI Home Adam Mascot */
 (() => {
   "use strict";
 
@@ -28,15 +29,63 @@
     `;
   }
 
+  function ensureHomeMascotLabelStyles() {
+    if (document.getElementById("home-adam-mascot-label-styles")) return;
+    const style = document.createElement("style");
+    style.id = "home-adam-mascot-label-styles";
+    style.textContent = `
+      #screen-home .home-mascot-button .mascot-badge { display:none !important; }
+      #screen-home .home-mascot-button .mascot-caption {
+        position:absolute !important;
+        top:-18px !important;
+        bottom:auto !important;
+        left:50% !important;
+        right:auto !important;
+        transform:translateX(-50%) !important;
+        z-index:9 !important;
+        display:block !important;
+        width:max-content !important;
+        max-width:calc(100vw - 36px) !important;
+        box-sizing:border-box !important;
+        margin:0 !important;
+        padding:7px 12px !important;
+        border:1px solid #2fd2ff !important;
+        border-radius:999px !important;
+        background:#102a43 !important;
+        color:#ffffff !important;
+        box-shadow:0 8px 20px rgba(16,42,67,.22),0 0 18px rgba(47,210,255,.18) !important;
+        font-size:12px !important;
+        font-weight:900 !important;
+        letter-spacing:.08em !important;
+        line-height:1.1 !important;
+        text-align:center !important;
+        text-transform:uppercase !important;
+        text-shadow:none !important;
+        white-space:nowrap !important;
+        pointer-events:none !important;
+      }
+      @media(max-width:360px){
+        #screen-home .home-mascot-button .mascot-caption {
+          top:-15px !important;
+          padding:6px 9px !important;
+          font-size:10px !important;
+          letter-spacing:.07em !important;
+        }
+      }
+    `;
+    document.head.appendChild(style);
+  }
+
   function personalizeHomeMascot() {
     const button = document.querySelector("#screen-home .home-mascot-button");
     if (!button || button.dataset.adamAssistantLabelReady === "true") return;
     button.dataset.adamAssistantLabelReady = "true";
+    ensureHomeMascotLabelStyles();
     button.setAttribute("aria-label", "Ask Adam, your GEI Assistant");
     const badge = button.querySelector(".mascot-badge");
     const caption = button.querySelector(".mascot-caption");
-    if (badge) badge.textContent = "ADAM";
-    if (caption) caption.textContent = "ASK ADAM";
+    if (badge) badge.remove();
+    if (caption) caption.textContent = "TAP TO MEET ADAM";
   }
 
   function ensureAssistantStyles() {
