@@ -1,3 +1,4 @@
+/* V1.22 — Adam Interaction & Guidance Intelligence */
 (() => {
   "use strict";
 
@@ -10,12 +11,59 @@
     academyLabel: "Open Adam GEI assistant"
   });
 
-  const ASSISTANT_RESPONSES = {
-    gei: "GEI stands for Genesis Engineered Interpretations. Adam can help you explore the project through water, engineering, language and interpretation.",
-    day1: "Start with Day 1. It introduces the first step of the GEI blueprint and gives you the foundation for the days that follow.",
-    academy: "GEI Academy is your learning space. Use it to work through the six-day blueprint and build your understanding step by step.",
-    navigate: "I can help you find your way. Use the Home, Academy, Portfolio, Video and Support buttons below whenever you need them."
+  const STATIC_RESPONSES = {
+    gei: "GEI stands for Genesis Engineered Interpretations. Explore the project through water, engineering, language and interpretation.",
+    academy: "GEI Academy is your six-day learning path. Each completed day unlocks the next step in the blueprint.",
+    navigate: "I can guide you to the right place. Your next learning step is always shown here, and the bottom navigation can take you to Home, Academy, Portfolio, Video or Support.",
+    progress: "Your GEI progress is saved on this device. I can tell you what you've completed and what comes next."
   };
+
+  function getProgress() {
+    const api = window.GEI_PROGRESS;
+    if (!api || typeof api.getState !== "function" || typeof api.getCurrentDay !== "function") {
+      return { completed: [], xp: 0, currentDay: 1 };
+    }
+    const state = api.getState() || {};
+    const completed = Array.isArray(state.completed) ? state.completed.map(Number).filter((id) => id >= 1 && id <= 6) : [];
+    return { completed: [...new Set(completed)].sort((a, b) => a - b), xp: Math.max(0, Number(state.xp) || 0), currentDay: Number(api.getCurrentDay()) || 1 };
+  }
+
+  function getDayUrl(id) {
+    return window.GEI_PROGRESS?.getDayUrl?.(id) || null;
+  }
+
+  function getGuidance() {
+    const progress = getProgress();
+    const count = progress.completed.length;
+    if (count === 0) {
+      return {
+        count,
+        currentDay: 1,
+        kicker: "YOUR NEXT STEP",
+        message: "You're ready for Day 1. I'll help you start the GEI blueprint and understand what to look for.",
+        actionLabel: "📖 Start Day 1",
+        action: "continue"
+      };
+    }
+    if (count < 6) {
+      return {
+        count,
+        currentDay: progress.currentDay,
+        kicker: "YOUR NEXT STEP",
+        message: `Welcome back. Day ${progress.currentDay} is unlocked. I'll help you keep moving through the blueprint.`,
+        actionLabel: `📖 Continue Day ${progress.currentDay}`,
+        action: "continue"
+      };
+    }
+    return {
+      count,
+      currentDay: 6,
+      kicker: "BLUEPRINT COMPLETE",
+      message: "You've completed all six days. I can help you review your path or explore the rest of YallToo.",
+      actionLabel: "📖 Review Day 1",
+      action: "review"
+    };
+  }
 
   function personalizeHomeCard() {
     const copy = document.querySelector("#screen-home .welcome-copy");
@@ -46,7 +94,7 @@
     style.textContent = `
       .home-adam-assistant { position:absolute;z-index:40;left:12px;right:12px;top:88px;bottom:88px;display:flex;align-items:center;justify-content:center;pointer-events:none; }
       .home-adam-assistant-backdrop { position:absolute;inset:0;border-radius:24px;background:rgba(2,5,11,.58);backdrop-filter:blur(5px);-webkit-backdrop-filter:blur(5px);opacity:0;animation:adamAssistantBackdrop .2s ease-out forwards; }
-      .home-adam-assistant-card { position:relative;width:min(100%,390px);max-height:100%;overflow:hidden;display:grid;grid-template-rows:auto auto 1fr auto;gap:10px;padding:14px;border:1px solid color-mix(in srgb,var(--skin-accent,#2fd2ff) 42%,rgba(255,255,255,.16));border-radius:22px;background:linear-gradient(145deg,color-mix(in srgb,var(--skin-surface,#fff) 94%,var(--skin-accent,#2fd2ff) 6%),var(--skin-surface,#fff));box-shadow:0 24px 60px rgba(0,0,0,.34),0 0 36px color-mix(in srgb,var(--skin-accent,#2fd2ff) 12%,transparent);color:var(--skin-text,#102a43);transform:translateY(10px) scale(.98);opacity:0;animation:adamAssistantIn .24s cubic-bezier(.2,.8,.2,1) forwards;pointer-events:auto; }
+      .home-adam-assistant-card { position:relative;width:min(100%,390px);max-height:100%;overflow:hidden;display:grid;grid-template-rows:auto auto auto 1fr auto;gap:10px;padding:14px;border:1px solid color-mix(in srgb,var(--skin-accent,#2fd2ff) 42%,rgba(255,255,255,.16));border-radius:22px;background:linear-gradient(145deg,color-mix(in srgb,var(--skin-surface,#fff) 94%,var(--skin-accent,#2fd2ff) 6%),var(--skin-surface,#fff));box-shadow:0 24px 60px rgba(0,0,0,.34),0 0 36px color-mix(in srgb,var(--skin-accent,#2fd2ff) 12%,transparent);color:var(--skin-text,#102a43);transform:translateY(10px) scale(.98);opacity:0;animation:adamAssistantIn .24s cubic-bezier(.2,.8,.2,1) forwards;pointer-events:auto; }
       .home-adam-assistant-head { display:flex;align-items:center;gap:10px;min-width:0; }
       .home-adam-assistant-avatar { width:48px;height:48px;flex:0 0 48px;object-fit:contain;filter:drop-shadow(0 7px 10px rgba(0,0,0,.18)); }
       .home-adam-assistant-heading { min-width:0;flex:1; }
@@ -55,9 +103,13 @@
       .home-adam-assistant-close { width:38px;height:38px;flex:0 0 38px;display:grid;place-items:center;padding:0;border:1px solid color-mix(in srgb,var(--skin-accent,#2fd2ff) 28%,transparent);border-radius:11px;background:var(--skin-soft,#f1f4f8);color:var(--skin-text,#102a43);font-size:22px;line-height:1;cursor:pointer; }
       .home-adam-assistant-close:focus-visible,.home-adam-assistant-choice:focus-visible { outline:3px solid var(--skin-accent,#2fd2ff);outline-offset:2px; }
       .home-adam-assistant-message { margin:0;padding:12px 13px;border-left:3px solid var(--skin-accent,#2fd2ff);border-radius:12px;background:var(--skin-soft,#f1f4f8);font-size:16px;line-height:1.45;color:var(--skin-text,#102a43); }
+      .home-adam-assistant-next { display:flex;align-items:center;justify-content:space-between;gap:8px;padding:9px 11px;border:1px solid color-mix(in srgb,var(--skin-accent,#2fd2ff) 25%,transparent);border-radius:13px;background:color-mix(in srgb,var(--skin-accent,#2fd2ff) 8%,var(--skin-surface,#fff)); }
+      .home-adam-assistant-next-label { color:var(--skin-muted,#526b82);font-size:9px;font-weight:900;letter-spacing:.11em;text-transform:uppercase; }
+      .home-adam-assistant-next-value { color:var(--skin-accent,#2fd2ff);font-size:12px;font-weight:900;white-space:nowrap; }
       .home-adam-assistant-label { margin:0 2px -3px;color:var(--skin-muted,#526b82);font-size:10px;font-weight:900;letter-spacing:.11em;text-transform:uppercase; }
       .home-adam-assistant-choices { min-height:0;display:grid;grid-template-columns:1fr 1fr;gap:8px;align-content:start;overflow:auto; }
       .home-adam-assistant-choice { min-height:54px;padding:10px 11px;border:1px solid color-mix(in srgb,var(--skin-accent,#2fd2ff) 25%,transparent);border-radius:13px;background:var(--skin-surface,#fff);color:var(--skin-text,#102a43);font-size:14px;font-weight:800;line-height:1.25;text-align:left;cursor:pointer; }
+      .home-adam-assistant-choice.primary { border-color:color-mix(in srgb,var(--skin-accent,#2fd2ff) 55%,transparent);background:linear-gradient(145deg,color-mix(in srgb,var(--skin-accent,#2fd2ff) 13%,var(--skin-surface,#fff)),var(--skin-surface,#fff)); }
       .home-adam-assistant-choice:active { transform:scale(.985); }
       .home-adam-assistant-footer { display:flex;align-items:center;justify-content:space-between;gap:8px;padding-top:2px;color:var(--skin-muted,#526b82);font-size:10px;font-weight:800; }
       .home-adam-assistant-status { color:var(--skin-accent,#2fd2ff);font-weight:900; }
@@ -70,10 +122,51 @@
         .home-adam-assistant-heading strong{font-size:22px;}
         .home-adam-assistant-message{font-size:15px;padding:10px 11px;}
         .home-adam-assistant-choice{min-height:50px;padding:9px;font-size:13px;}
+        .home-adam-assistant-next{padding:8px 9px;}
+        .home-adam-assistant-next-value{font-size:11px;}
       }
       @media(prefers-reduced-motion:reduce){.home-adam-assistant-backdrop,.home-adam-assistant-card{animation:none;opacity:1;transform:none;}}
     `;
     document.head.appendChild(style);
+  }
+
+  function clickNavigation(label) {
+    const buttons = Array.from(document.querySelectorAll("#bottom-navigation button, #bottom-navigation a"));
+    const target = buttons.find((button) => button.textContent.trim().toLowerCase().includes(label.toLowerCase()));
+    if (target) { target.click(); return true; }
+    return false;
+  }
+
+  function showResponse(assistant, text) {
+    const message = assistant.querySelector("#home-adam-assistant-message");
+    if (message) message.textContent = text;
+  }
+
+  function handleAction(assistant, action) {
+    const progress = getProgress();
+    const count = progress.completed.length;
+    const current = count < 6 ? progress.currentDay : 1;
+
+    if (action === "continue" || action === "review") {
+      const url = getDayUrl(current);
+      if (url) window.open(url, "_blank", "noopener,noreferrer");
+      return;
+    }
+    if (action === "progress") {
+      const completeText = count === 0 ? "No days completed yet." : `${count} of 6 days complete • ${progress.xp} XP`;
+      showResponse(assistant, `${completeText} Your next step is Day ${progress.currentDay}. Keep building one day at a time.`);
+      return;
+    }
+    if (action === "academy") {
+      showResponse(assistant, "Opening GEI Academy. Your unlocked path is ready there.");
+      window.setTimeout(() => { clickNavigation("Academy"); assistant.remove(); }, 260);
+      return;
+    }
+    if (action === "navigate") {
+      showResponse(assistant, STATIC_RESPONSES.navigate);
+      return;
+    }
+    if (STATIC_RESPONSES[action]) showResponse(assistant, STATIC_RESPONSES[action]);
   }
 
   function openAssistant() {
@@ -83,6 +176,7 @@
     if (existing) return;
     ensureAssistantStyles();
 
+    const guidance = getGuidance();
     const assistant = document.createElement("div");
     assistant.className = "home-adam-assistant";
     assistant.id = "home-adam-assistant";
@@ -97,14 +191,16 @@
           <div class="home-adam-assistant-heading"><span class="home-adam-assistant-kicker">YALLTOO • GEI ASSISTANT</span><strong>Hi, I'm Adam.</strong></div>
           <button class="home-adam-assistant-close" type="button" aria-label="Close Adam assistant">×</button>
         </header>
-        <p class="home-adam-assistant-message" id="home-adam-assistant-message">I'm here to help. What can I help you with?</p>
+        <p class="home-adam-assistant-message" id="home-adam-assistant-message">${guidance.message}</p>
+        <div class="home-adam-assistant-next"><span class="home-adam-assistant-next-label">${guidance.kicker}</span><span class="home-adam-assistant-next-value">DAY ${guidance.currentDay} • ${guidance.count}/6</span></div>
         <div>
-          <p class="home-adam-assistant-label">Quick help</p>
+          <p class="home-adam-assistant-label">Adam's quick guidance</p>
           <div class="home-adam-assistant-choices">
-            <button class="home-adam-assistant-choice" type="button" data-adam-question="gei">💧 What is GEI?</button>
-            <button class="home-adam-assistant-choice" type="button" data-adam-question="day1">📖 Start with Day 1</button>
-            <button class="home-adam-assistant-choice" type="button" data-adam-question="academy">🎓 How does Academy work?</button>
-            <button class="home-adam-assistant-choice" type="button" data-adam-question="navigate">🧭 Help me navigate</button>
+            <button class="home-adam-assistant-choice primary" type="button" data-adam-action="${guidance.action}">${guidance.actionLabel}</button>
+            <button class="home-adam-assistant-choice" type="button" data-adam-action="progress">📊 My progress</button>
+            <button class="home-adam-assistant-choice" type="button" data-adam-action="gei">💧 What is GEI?</button>
+            <button class="home-adam-assistant-choice" type="button" data-adam-action="academy">🎓 Open Academy</button>
+            <button class="home-adam-assistant-choice" type="button" data-adam-action="navigate">🧭 Help me navigate</button>
           </div>
         </div>
         <footer class="home-adam-assistant-footer"><span>Ask Adam anytime.</span><span class="home-adam-assistant-status">● ONLINE</span></footer>
@@ -118,12 +214,8 @@
     };
     assistant.querySelector(".home-adam-assistant-close")?.addEventListener("click", close);
     assistant.querySelector(".home-adam-assistant-backdrop")?.addEventListener("click", close);
-    assistant.querySelectorAll("[data-adam-question]").forEach((button) => {
-      button.addEventListener("click", () => {
-        const key = button.dataset.adamQuestion;
-        const message = assistant.querySelector("#home-adam-assistant-message");
-        if (message && ASSISTANT_RESPONSES[key]) message.textContent = ASSISTANT_RESPONSES[key];
-      });
+    assistant.querySelectorAll("[data-adam-action]").forEach((button) => {
+      button.addEventListener("click", () => handleAction(assistant, button.dataset.adamAction));
     });
     assistant.querySelector(".home-adam-assistant-close")?.focus();
   }
@@ -131,19 +223,32 @@
   function routeHomeAdam(event) {
     const button = event.target.closest?.(".home-mascot-button");
     if (!button) return;
-
     const home = document.getElementById("screen-home");
     if (!home) return;
-
     event.preventDefault();
     event.stopImmediatePropagation();
     openAssistant();
+  }
+
+  function refreshOpenAssistant() {
+    const assistant = document.getElementById("home-adam-assistant");
+    if (!assistant) return;
+    const guidance = getGuidance();
+    const message = assistant.querySelector("#home-adam-assistant-message");
+    const next = assistant.querySelector(".home-adam-assistant-next-value");
+    const primary = assistant.querySelector('[data-adam-action="continue"], [data-adam-action="review"]');
+    if (message) message.textContent = guidance.message;
+    if (next) next.textContent = `DAY ${guidance.currentDay} • ${guidance.count}/6`;
+    if (primary) { primary.dataset.adamAction = guidance.action; primary.textContent = guidance.actionLabel; }
   }
 
   function init() {
     personalizeHomeCard();
     personalizeHomeMascot();
     document.addEventListener("click", routeHomeAdam, true);
+    window.addEventListener("gei:progress-ready", refreshOpenAssistant);
+    window.addEventListener("gei:progress-updated", refreshOpenAssistant);
+    window.addEventListener("gei:xp-updated", refreshOpenAssistant);
   }
 
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", init, { once: true });
