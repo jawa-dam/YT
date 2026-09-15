@@ -52,11 +52,7 @@
   object-position: var(--splash-art-x) var(--splash-art-y);
   filter: saturate(var(--splash-art-saturate)) contrast(var(--splash-art-contrast)) brightness(var(--splash-art-brightness)) hue-rotate(var(--splash-art-hue));
   transform: scale(var(--splash-art-scale));
-  background-image: url("https://assets.zyrosite.com/YZ9jg46Bljs5wOZR/y-all-too-god-is-a-mountain-z7efLdbRpVLTxHbD.png");
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-  background-color: #06070d;
+  background-color: var(--near-black);
   transition: transform 900ms ease, filter 900ms ease, object-position 900ms ease;
 }
 
