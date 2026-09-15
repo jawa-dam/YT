@@ -1,0 +1,43 @@
+/* V1.26.3 — Academy scroll + Adam launcher visibility recovery */
+#screen-academy.is-active {
+  overflow: hidden !important;
+  touch-action: none !important;
+}
+
+#screen-academy.is-active .academy-view {
+  overflow-x: hidden !important;
+  overflow-y: auto !important;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior-y: contain;
+  touch-action: pan-y !important;
+  scrollbar-width: none;
+  padding-bottom: 18px;
+}
+
+#screen-academy.is-active .academy-view::-webkit-scrollbar {
+  display: none;
+}
+
+/* Keep the contextual Adam control visible without covering the bottom navigation. */
+#screen-academy.is-active .adam-context-launcher {
+  position: absolute !important;
+  top: 104px !important;
+  right: 14px !important;
+  z-index: 90 !important;
+}
+
+#screen-academy.is-active .adam-context-panel {
+  top: 158px !important;
+  z-index: 100 !important;
+}
+
+@media (max-width: 360px) {
+  #screen-academy.is-active .adam-context-launcher {
+    top: 94px !important;
+    right: 10px !important;
+  }
+
+  #screen-academy.is-active .adam-context-panel {
+    top: 146px !important;
+  }
+}
