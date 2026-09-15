@@ -1,4 +1,4 @@
-/* V1.22 — Adam Interaction & Guidance Intelligence */
+/* V1.23 — Adam Learning Memory */
 (() => {
   "use strict";
 
@@ -28,19 +28,31 @@
     return { completed: [...new Set(completed)].sort((a, b) => a - b), xp: Math.max(0, Number(state.xp) || 0), currentDay: Number(api.getCurrentDay()) || 1 };
   }
 
+  function getMemory() {
+    const api = window.GEI_ADAM_MEMORY;
+    if (!api || typeof api.getState !== "function") return null;
+    return api.getState() || null;
+  }
+
   function getDayUrl(id) {
     return window.GEI_PROGRESS?.getDayUrl?.(id) || null;
   }
 
   function getGuidance() {
     const progress = getProgress();
+    const memory = getMemory();
     const count = progress.completed.length;
+    const lastCompleted = Number(memory?.lastCompletedDay) || null;
+    const returning = Boolean(lastCompleted);
+
     if (count === 0) {
       return {
         count,
         currentDay: 1,
         kicker: "YOUR NEXT STEP",
-        message: "You're ready for Day 1. I'll help you start the GEI blueprint and understand what to look for.",
+        message: returning
+          ? `Welcome back. I remember that your last recorded learning milestone was Day ${lastCompleted}. Your current path is ready to begin again with Day 1.`
+          : "You're ready for Day 1. I'll help you start the GEI blueprint and understand what to look for.",
         actionLabel: "📖 Start Day 1",
         action: "continue"
       };
@@ -50,7 +62,9 @@
         count,
         currentDay: progress.currentDay,
         kicker: "YOUR NEXT STEP",
-        message: `Welcome back. Day ${progress.currentDay} is unlocked. I'll help you keep moving through the blueprint.`,
+        message: lastCompleted && lastCompleted < progress.currentDay
+          ? `Welcome back. You completed Day ${lastCompleted} last time, and Day ${progress.currentDay} is now your next step. I'll help you keep building from there.`
+          : `Welcome back. Day ${progress.currentDay} is unlocked. I'll help you keep moving through the blueprint.`,
         actionLabel: `📖 Continue Day ${progress.currentDay}`,
         action: "continue"
       };
@@ -59,7 +73,7 @@
       count,
       currentDay: 6,
       kicker: "BLUEPRINT COMPLETE",
-      message: "You've completed all six days. I can help you review your path or explore the rest of YallToo.",
+      message: "You've completed all six days. I remember your learning path, so I can help you review it or explore the rest of YallToo.",
       actionLabel: "📖 Review Day 1",
       action: "review"
     };
@@ -144,6 +158,7 @@
 
   function handleAction(assistant, action) {
     const progress = getProgress();
+    const memory = getMemory();
     const count = progress.completed.length;
     const current = count < 6 ? progress.currentDay : 1;
 
@@ -154,7 +169,8 @@
     }
     if (action === "progress") {
       const completeText = count === 0 ? "No days completed yet." : `${count} of 6 days complete • ${progress.xp} XP`;
-      showResponse(assistant, `${completeText} Your next step is Day ${progress.currentDay}. Keep building one day at a time.`);
+      const memoryText = memory?.lastCompletedDay ? ` I remember your last milestone as Day ${memory.lastCompletedDay}.` : "";
+      showResponse(assistant, `${completeText}.${memoryText} Your next step is Day ${progress.currentDay}. Keep building one day at a time.`);
       return;
     }
     if (action === "academy") {
@@ -249,6 +265,8 @@
     window.addEventListener("gei:progress-ready", refreshOpenAssistant);
     window.addEventListener("gei:progress-updated", refreshOpenAssistant);
     window.addEventListener("gei:xp-updated", refreshOpenAssistant);
+    window.addEventListener("gei:adam-memory-ready", refreshOpenAssistant);
+    window.addEventListener("gei:adam-memory-updated", refreshOpenAssistant);
   }
 
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", init, { once: true });
