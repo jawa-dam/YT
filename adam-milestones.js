@@ -83,6 +83,7 @@
     window.setTimeout(refreshAssistant, 0);
 
     loadChildScript("adam-adaptive.js", "adaptive", null);
+    loadChildScript("adam-mastery-milestones.js", "mastery-milestones", null);
     if (!document.querySelector('script[src="adam-context.js"]')) {
       loadChildScript("adam-context.js", "context", () => window.GEI_ADAM_CONTEXT?.refresh?.());
     }
