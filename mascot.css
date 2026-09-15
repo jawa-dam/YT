@@ -72,6 +72,44 @@
   white-space:normal;
 }
 
+/* V1.17 — Adam Home assistant: give the guide enough room to be genuinely useful. */
+.welcome-card {
+  grid-template-columns:minmax(0,1fr) 122px;
+  min-height:190px;
+  padding:22px;
+  gap:14px;
+}
+.welcome-copy .card-label {
+  font-size:13px;
+  line-height:1.2;
+}
+.welcome-copy h2 {
+  margin:9px 0 9px;
+  font-size:34px;
+  line-height:1.04;
+  letter-spacing:-.04em;
+}
+.welcome-copy p {
+  max-width:310px;
+  font-size:18px;
+  line-height:1.45;
+}
+.mascot-orbit {
+  min-height:126px;
+}
+.mascot-ring {
+  width:108px;
+  height:108px;
+}
+.mascot-badge {
+  width:74px;
+  height:74px;
+  font-size:32px;
+}
+.home-mascot-button .mascot-caption {
+  font-size:13px;
+}
+
 .home-mascot-button:focus-visible {
   outline:2px solid var(--cyan);
   outline-offset:4px;
@@ -98,6 +136,18 @@
     max-width:132px;
     font-size:11px;
   }
+  .welcome-card {
+    grid-template-columns:minmax(0,1fr) 92px;
+    min-height:176px;
+    padding:18px;
+    gap:9px;
+  }
+  .welcome-copy .card-label { font-size:12px; }
+  .welcome-copy h2 { font-size:29px; margin:8px 0 8px; }
+  .welcome-copy p { font-size:17px; line-height:1.42; }
+  .mascot-orbit { min-height:112px; }
+  .mascot-ring { width:88px; height:88px; }
+  .mascot-badge { width:62px; height:62px; font-size:27px; }
 }
 
 @media (prefers-reduced-motion:reduce) {
