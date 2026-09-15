@@ -1,4 +1,4 @@
-/* V1.27 — Adam Learning Objectives */
+/* V1.27/V1.28 — Adam Learning Objectives + Mastery Boot */
 (() => {
   "use strict";
 
@@ -78,12 +78,24 @@
 
     const day = getDay();
     const existing = view.querySelector(":scope > .adam-learning-objectives");
-    if (existing?.dataset.objectivesDay === String(day)) return;
+    if (existing?.dataset.objectivesDay === String(day)) {
+      bootMastery();
+      return;
+    }
     existing?.remove();
 
-    const target = view.querySelector(":scope > .adam-context-launcher");
+    const target = view.querySelector(":scope > .academy-path");
     if (!target) return;
     view.insertBefore(buildObjectives(day), target);
+    bootMastery();
+  }
+
+  function bootMastery() {
+    if (document.querySelector('script[data-gei-adam-mastery]')) return;
+    const script = document.createElement("script");
+    script.src = "adam-objective-mastery.js";
+    script.dataset.geiAdamMastery = "true";
+    document.head.appendChild(script);
   }
 
   function ensureStyles() {
@@ -91,7 +103,7 @@
     const style = document.createElement("style");
     style.id = "adam-learning-objectives-styles";
     style.textContent = `
-      .adam-learning-objectives{position:relative;z-index:2;margin:0 0 10px;padding:14px 14px 12px;border:1px solid rgba(21,94,239,.24);border-radius:18px;background:rgba(255,255,255,.94);box-shadow:0 12px 30px rgba(16,42,67,.08)}
+      .adam-learning-objectives{position:relative;z-index:2;grid-column:1/-1;width:100%;box-sizing:border-box;margin:0;padding:14px 14px 12px;border:1px solid rgba(21,94,239,.24);border-radius:18px;background:rgba(255,255,255,.97);box-shadow:0 12px 30px rgba(16,42,67,.08)}
       .adam-objectives-head{display:flex;align-items:flex-end;justify-content:space-between;gap:10px;margin-bottom:9px}
       .adam-objectives-kicker{display:block;color:#155eef;font-size:8px;font-weight:1000;letter-spacing:.13em;text-transform:uppercase}
       .adam-objectives-head h3{margin:4px 0 0;color:#102a43;font-size:17px;line-height:1.05;letter-spacing:-.025em}
