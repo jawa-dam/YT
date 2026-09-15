@@ -34,6 +34,8 @@
   }
   function open(card, trigger) {
     if (document.getElementById("gei-section-popout")) return;
+    const home = document.getElementById("screen-home");
+    if (!home) return;
     const backdrop = document.createElement("div");
     backdrop.className = "gei-popout-backdrop";
     backdrop.id = "gei-section-popout";
@@ -50,12 +52,13 @@
     close.textContent = "×";
     dialog.append(close, content);
     backdrop.appendChild(dialog);
-    document.getElementById("screen-home")?.appendChild(backdrop);
+    home.appendChild(backdrop);
     card.hidden = false;
     content.appendChild(card);
+
     const cleanup = () => {
       if (!backdrop.isConnected) return;
-      const parent = document.querySelector("#screen-home .home-experience-stack") || document.querySelector("#screen-home .dashboard-main");
+      const parent = home.querySelector(".home-experience-stack") || home.querySelector(".dashboard-main");
       if (parent && trigger.isConnected) parent.insertBefore(card, trigger.nextSibling);
       card.hidden = true;
       backdrop.remove();
