@@ -6,10 +6,10 @@
     ["gei-vault-card", "🔐", "LEARNER IDENTITY", "Achievement Vault"],
     ["gei-journey-card", "🧭", "GEI PROGRESS", "Continue Your Journey"],
     ["gei-achievement-card", "🏆", "STREAK ACHIEVEMENTS", "Learning Rewards"],
-    ["gei-profile-card", "👤", "LEARNER PROFILE", "Blueprint Identity"]
+    ["gei-profile-card", "👤", "LEARNER PROFILE", "Blueprint Identity"],
+    ["gei-xp-card", "⭐", "XP INTELLIGENCE", "Learner Evolution"]
   ];
   const SELECTOR = CONFIG.map(([id]) => `#${id}`).join(",");
-  let observer;
 
   function configFor(card) { return CONFIG.find(([id]) => id === card.id); }
   function makeTrigger(card, cfg) {
@@ -22,11 +22,9 @@
     trigger.setAttribute("aria-label", `Open ${kicker}: ${title}`);
     trigger.innerHTML = `<span class="gei-popout-icon" aria-hidden="true">${icon}</span><span class="gei-popout-copy"><span class="gei-popout-kicker">${kicker}</span><span class="gei-popout-title">${title}</span></span><span class="gei-popout-arrow" aria-hidden="true">›</span>`;
     card.dataset.geiPopoutPrepared = "true";
-    card.dataset.geiPopoutDisplay = card.style.display;
     card.parentNode.insertBefore(trigger, card);
     card.hidden = true;
   }
-
   function prepare() {
     document.querySelectorAll(SELECTOR).forEach((card) => {
       if (card.closest(".gei-popout-dialog")) return;
@@ -34,13 +32,11 @@
       if (cfg) makeTrigger(card, cfg);
     });
   }
-
   function open(card, trigger) {
     if (document.getElementById("gei-section-popout")) return;
     const backdrop = document.createElement("div");
     backdrop.className = "gei-popout-backdrop";
     backdrop.id = "gei-section-popout";
-    backdrop.setAttribute("role", "presentation");
     const dialog = document.createElement("section");
     dialog.className = "gei-popout-dialog";
     dialog.setAttribute("role", "dialog");
@@ -68,27 +64,24 @@
     };
     close.addEventListener("click", cleanup);
     backdrop.addEventListener("click", (event) => { if (event.target === backdrop) cleanup(); });
-    document.addEventListener("keydown", function escape(event) { if (event.key === "Escape") { document.removeEventListener("keydown", escape); cleanup(); } }, { once: true });
+    const escape = (event) => { if (event.key === "Escape") cleanup(); };
+    document.addEventListener("keydown", escape, { once: true });
     close.focus();
   }
-
   function route(event) {
     const trigger = event.target.closest?.("[data-gei-popout-target]");
     if (!trigger) return;
     const card = document.getElementById(trigger.dataset.geiPopoutTarget);
     if (!card) return;
     event.preventDefault();
+    event.stopPropagation();
     open(card, trigger);
   }
-
   function init() {
     prepare();
     document.addEventListener("click", route, true);
     const home = document.getElementById("screen-home");
-    if (home) {
-      observer = new MutationObserver(() => prepare());
-      observer.observe(home, { childList: true, subtree: true });
-    }
+    if (home) new MutationObserver(prepare).observe(home, { childList: true, subtree: true });
   }
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", init, { once: true }); else init();
 })();
