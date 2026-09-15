@@ -1,0 +1,135 @@
+/* V1.17 — Readability Pass: Academy Path + Bottom Navigation */
+
+/* Academy: keep the six-stage path readable on the light academic surface. */
+#screen-academy .academy-section-label,
+#screen-academy .academy-path-heading h2,
+#screen-academy .academy-path-count {
+  color: #12304a !important;
+}
+
+#screen-academy .academy-section-label {
+  color: #087da5 !important;
+  font-size: 13px !important;
+  font-weight: 900;
+  letter-spacing: .13em;
+}
+
+#screen-academy .academy-path-heading h2 {
+  font-size: 27px !important;
+  line-height: 1.05;
+  font-weight: 900;
+}
+
+#screen-academy .academy-path-count {
+  color: #526b82 !important;
+  font-size: 13px !important;
+  font-weight: 900;
+}
+
+#screen-academy .academy-day-card {
+  opacity: 1 !important;
+  color: #17324b;
+}
+
+#screen-academy .academy-day-card.is-locked {
+  opacity: 1 !important;
+  background: #e7ebf0 !important;
+  border-color: #c8d0d9 !important;
+}
+
+#screen-academy .academy-day-number,
+#screen-academy .academy-day-status,
+#screen-academy .academy-day-card.is-locked .academy-day-number,
+#screen-academy .academy-day-card.is-locked .academy-day-status {
+  color: #526b82 !important;
+  font-size: 11px !important;
+  font-weight: 900;
+  letter-spacing: .08em;
+}
+
+#screen-academy .academy-day-card h3,
+#screen-academy .academy-day-card.is-locked h3 {
+  color: #27445f !important;
+  font-size: 16px !important;
+  line-height: 1.18;
+  font-weight: 900;
+  text-shadow: none;
+}
+
+#screen-academy .academy-day-card.is-active {
+  background: linear-gradient(145deg, #eefcff, #dfeaf2) !important;
+  border-color: #2fd2ff !important;
+}
+
+#screen-academy .academy-day-card.is-active .academy-day-number,
+#screen-academy .academy-day-card.is-active .academy-day-status {
+  color: #087da5 !important;
+}
+
+/* Bottom navigation: dark readable labels on the light navigation surface. */
+:root[data-skin="academic"] .bottom-navigation,
+:root[data-skin="pink"] .bottom-navigation,
+:root[data-skin="blue"] .bottom-navigation {
+  background: rgba(255,255,255,.97) !important;
+  border-color: #d4dce5 !important;
+  box-shadow: 0 16px 36px rgba(25,45,70,.16), inset 0 1px 0 rgba(255,255,255,.9) !important;
+}
+
+:root[data-skin="academic"] .bottom-navigation .nav-button,
+:root[data-skin="academic"] .bottom-navigation .nav-item,
+:root[data-skin="academic"] .bottom-navigation .bottom-nav-item,
+:root[data-skin="pink"] .bottom-navigation .nav-button,
+:root[data-skin="pink"] .bottom-navigation .nav-item,
+:root[data-skin="pink"] .bottom-navigation .bottom-nav-item,
+:root[data-skin="blue"] .bottom-navigation .nav-button,
+:root[data-skin="blue"] .bottom-navigation .nav-item,
+:root[data-skin="blue"] .bottom-navigation .bottom-nav-item {
+  color: #52627a !important;
+}
+
+:root[data-skin="academic"] .bottom-navigation .nav-button.active,
+:root[data-skin="academic"] .bottom-navigation .nav-item.is-active,
+:root[data-skin="academic"] .bottom-navigation .bottom-nav-item.active,
+:root[data-skin="pink"] .bottom-navigation .nav-button.active,
+:root[data-skin="pink"] .bottom-navigation .nav-item.is-active,
+:root[data-skin="pink"] .bottom-navigation .bottom-nav-item.active,
+:root[data-skin="blue"] .bottom-navigation .nav-button.active,
+:root[data-skin="blue"] .bottom-navigation .nav-item.is-active,
+:root[data-skin="blue"] .bottom-navigation .bottom-nav-item.active {
+  color: #17324b !important;
+  background: linear-gradient(145deg, #dff7ff, #dbe5ff) !important;
+  border-color: #a7dff2 !important;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.95), 0 5px 16px rgba(30,65,100,.12) !important;
+}
+
+:root[data-skin="academic"] .bottom-navigation .nav-label,
+:root[data-skin="academic"] .bottom-navigation .bottom-nav-label,
+:root[data-skin="pink"] .bottom-navigation .nav-label,
+:root[data-skin="pink"] .bottom-navigation .bottom-nav-label,
+:root[data-skin="blue"] .bottom-navigation .nav-label,
+:root[data-skin="blue"] .bottom-navigation .bottom-nav-label {
+  color: inherit !important;
+  font-size: 10px !important;
+  line-height: 1.1;
+  font-weight: 900;
+  letter-spacing: .045em;
+}
+
+:root[data-skin="academic"] .bottom-navigation .nav-icon,
+:root[data-skin="academic"] .bottom-navigation .bottom-nav-icon,
+:root[data-skin="pink"] .bottom-navigation .nav-icon,
+:root[data-skin="pink"] .bottom-navigation .bottom-nav-icon,
+:root[data-skin="blue"] .bottom-navigation .nav-icon,
+:root[data-skin="blue"] .bottom-navigation .bottom-nav-icon {
+  color: inherit !important;
+}
+
+@media (max-width: 360px) {
+  #screen-academy .academy-section-label { font-size: 12px !important; }
+  #screen-academy .academy-path-heading h2 { font-size: 24px !important; }
+  #screen-academy .academy-path-count { font-size: 12px !important; }
+  #screen-academy .academy-day-number,
+  #screen-academy .academy-day-status { font-size: 10px !important; }
+  #screen-academy .academy-day-card h3 { font-size: 15px !important; }
+  .nav-label, .bottom-nav-label { font-size: 9px !important; }
+}
