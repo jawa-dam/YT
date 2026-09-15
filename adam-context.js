@@ -1,4 +1,4 @@
-/* V1.26.2 — Adam Contextual Launcher — robust screen detection */
+/* V1.26.6 — Adam Guaranteed Launcher Mount */
 (() => {
   "use strict";
 
@@ -10,9 +10,9 @@
     "screen-support": { label: "SUPPORT", title: "Support the research", message: "You're viewing GEI Support. Your next step here can be learning, collaborating, or supporting the research.", action: "Back to Home", actionType: "home" }
   });
 
-  let lastScreenId = null;
   let refreshTimer = 0;
   let rendering = false;
+  let observer = null;
 
   function getProgress() {
     const api = window.GEI_PROGRESS;
@@ -31,13 +31,10 @@
 
   function getActiveScreen() {
     const screens = Array.from(document.querySelectorAll(".app-screen"));
-    // Navigation's is-active state is authoritative when it is not explicitly hidden.
     const active = screens.find((screen) => screen.classList.contains("is-active") && isVisible(screen));
     if (active) return active;
-    // Then honor the explicit accessibility state used by the app.
     const ariaActive = screens.find((screen) => screen.getAttribute("aria-hidden") === "false" && isVisible(screen));
     if (ariaActive) return ariaActive;
-    // Finally, use the first genuinely visible screen. This covers dynamically rendered screens.
     return screens.find(isVisible) || null;
   }
 
@@ -47,7 +44,7 @@
     const context = CONTEXTS[id] || { label: "HOME", title: "Your GEI command center", message: "You're on the GEI home screen. Adam is ready to guide your next move.", action: "Meet Adam", actionType: "home" };
     const progress = getProgress();
     const count = progress.completed.length;
-    return Object.freeze({ ...context, screenId: id, count, currentDay: count < 6 ? progress.currentDay : 1, xp: progress.xp, version: 1.2 });
+    return Object.freeze({ ...context, screenId: id, count, currentDay: count < 6 ? progress.currentDay : 1, xp: progress.xp, version: 1.3 });
   }
 
   function navigate(type) {
@@ -78,21 +75,18 @@
     document.querySelectorAll(".adam-context-launcher,.adam-context-panel").forEach((el) => el.remove());
   }
 
-  function render(force = false) {
-    if (rendering) return;
-    const active = getActiveScreen();
-    const activeId = active?.id || "screen-home";
-    if (!force && activeId === lastScreenId) return;
-    rendering = true;
-    removeContextUI();
-    lastScreenId = activeId;
-
-    if (!active || activeId === "screen-home") {
-      rendering = false;
+  function mount(active) {
+    if (!active || active.id === "screen-home") {
+      removeContextUI();
       return;
     }
+    const existing = active.querySelector(":scope > .adam-context-launcher");
+    const existingPanel = active.querySelector(":scope > .adam-context-panel");
+    if (existing && existingPanel) return;
 
+    active.querySelectorAll(":scope > .adam-context-launcher, :scope > .adam-context-panel").forEach((el) => el.remove());
     const context = getContext();
+
     const launcher = document.createElement("button");
     launcher.className = "adam-context-launcher";
     launcher.type = "button";
@@ -108,41 +102,35 @@
     launcher.addEventListener("click", () => { panel.classList.add("is-open"); closeButton?.focus(); });
     closeButton?.addEventListener("click", () => { panel.classList.remove("is-open"); launcher.focus(); });
     panel.querySelector(".adam-context-action")?.addEventListener("click", () => navigate(context.actionType));
-    rendering = false;
   }
 
-  function scheduleRefresh(force = false) {
+  function render() {
+    if (rendering) return;
+    rendering = true;
+    try { mount(getActiveScreen()); }
+    finally { rendering = false; }
+  }
+
+  function scheduleRefresh(delay = 80) {
     window.clearTimeout(refreshTimer);
-    refreshTimer = window.setTimeout(() => render(force), 80);
+    refreshTimer = window.setTimeout(render, delay);
   }
 
   function init() {
     ensureStyles();
-    window.GEI_ADAM_CONTEXT = Object.freeze({ version: 1.2, getContext, refresh: () => render(true) });
-    scheduleRefresh(true);
+    window.GEI_ADAM_CONTEXT = Object.freeze({ version: 1.3, getContext, refresh: render });
+    render();
 
     const root = document.getElementById("app-frame") || document.body;
-    const observer = new MutationObserver((mutations) => {
-      const relevant = mutations.some((mutation) => {
-        const target = mutation.target;
-        if (target?.closest?.(".adam-context-launcher,.adam-context-panel")) return false;
-        if (mutation.addedNodes?.length) {
-          for (const node of mutation.addedNodes) {
-            if (node.nodeType === 1 && node.matches?.(".adam-context-launcher,.adam-context-panel")) return false;
-          }
-        }
-        return true;
-      });
-      if (relevant) scheduleRefresh(false);
-    });
+    observer = new MutationObserver(() => scheduleRefresh(40));
     observer.observe(root, { subtree: true, childList: true, attributes: true, attributeFilter: ["class", "aria-hidden", "style"] });
 
     document.addEventListener("click", (event) => {
       const navItem = event.target.closest?.("#bottom-navigation button, #bottom-navigation a");
-      if (navItem) scheduleRefresh(true);
+      if (navItem) scheduleRefresh(20);
     }, true);
 
-    ["gei:progress-ready","gei:progress-updated","gei:xp-updated","gei:adam-memory-updated","gei:adam-milestone-updated"].forEach((name) => window.addEventListener(name, () => scheduleRefresh(true)));
+    ["gei:progress-ready","gei:progress-updated","gei:xp-updated","gei:adam-memory-updated","gei:adam-milestone-updated"].forEach((name) => window.addEventListener(name, () => scheduleRefresh(20)));
   }
 
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", init, { once: true });
