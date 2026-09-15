@@ -1,4 +1,4 @@
-/* V1.26.6 — Adam Guaranteed Launcher Mount */
+/* V1.26.8 — Adam Context Bound To Scrolling Academy Surface */
 (() => {
   "use strict";
 
@@ -75,16 +75,26 @@
     document.querySelectorAll(".adam-context-launcher,.adam-context-panel").forEach((el) => el.remove());
   }
 
+  function getMountTarget(active) {
+    if (!active) return null;
+    if (active.id === "screen-academy") return active.querySelector(".academy-view") || active;
+    return active;
+  }
+
   function mount(active) {
     if (!active || active.id === "screen-home") {
       removeContextUI();
       return;
     }
-    const existing = active.querySelector(":scope > .adam-context-launcher");
-    const existingPanel = active.querySelector(":scope > .adam-context-panel");
+
+    const target = getMountTarget(active);
+    if (!target) return;
+
+    const existing = target.querySelector(":scope > .adam-context-launcher");
+    const existingPanel = target.querySelector(":scope > .adam-context-panel");
     if (existing && existingPanel) return;
 
-    active.querySelectorAll(":scope > .adam-context-launcher, :scope > .adam-context-panel").forEach((el) => el.remove());
+    target.querySelectorAll(":scope > .adam-context-launcher, :scope > .adam-context-panel").forEach((el) => el.remove());
     const context = getContext();
 
     const launcher = document.createElement("button");
@@ -96,7 +106,7 @@
     const panel = document.createElement("div");
     panel.className = "adam-context-panel";
     panel.innerHTML = `<section class="adam-context-card" role="dialog" aria-modal="true" aria-label="Adam contextual guide"><header class="adam-context-head"><img class="adam-context-avatar" src="${MASCOT_URL}" alt="Adam, GEI Assistant"><div><span class="adam-context-kicker">ADAM • ${context.label}</span><strong>${context.title}</strong></div><button class="adam-context-close" type="button" aria-label="Close Adam guide">×</button></header><p class="adam-context-message">${context.message}</p><div class="adam-context-meta"><span>BLUEPRINT <b>${context.count}/6</b></span><span>XP <b>${context.xp}</b></span></div><button class="adam-context-action" type="button">${context.action}</button></section>`;
-    active.append(launcher, panel);
+    target.append(launcher, panel);
 
     const closeButton = panel.querySelector(".adam-context-close");
     launcher.addEventListener("click", () => { panel.classList.add("is-open"); closeButton?.focus(); });
@@ -118,7 +128,7 @@
 
   function init() {
     ensureStyles();
-    window.GEI_ADAM_CONTEXT = Object.freeze({ version: 1.3, getContext, refresh: render });
+    window.GEI_ADAM_CONTEXT = Object.freeze({ version: 1.4, getContext, refresh: render });
     render();
 
     const root = document.getElementById("app-frame") || document.body;
@@ -130,7 +140,7 @@
       if (navItem) scheduleRefresh(20);
     }, true);
 
-    ["gei:progress-ready","gei:progress-updated","gei:xp-updated","gei:adam-memory-updated","gei:adam-milestone-updated"].forEach((name) => window.addEventListener(name, () => scheduleRefresh(20)));
+    ["gei:progress-ready","gei:progress-updated","gei:xp-updated","gei:adam-memory-updated","gei:adam-milestone-updated","gei:navigation"].forEach((name) => window.addEventListener(name, () => scheduleRefresh(20)));
   }
 
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", init, { once: true });
