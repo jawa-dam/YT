@@ -59,7 +59,7 @@
     "https://assets.zyrosite.com/YZ9jg46Bljs5wOZR/wilbert-bouie-jr-gei-genesis-engineered-interpretations-kwSWnKWRiZVB9aDt.png",
     "https://assets.zyrosite.com/YZ9jg46Bljs5wOZR/wilbert-bouie-jr-gei-yall-too-eikvukiQnLbrcW6t.png",
     "https://assets.zyrosite.com/YZ9jg46Bljs5wOZR/doctor-god-ZFQq7gu0Uds2K8xg.png",
-    "https://assets.zyrosite.com/YZ9jg4-6Bljs5wOZR/guitar-god-PnQfaNx4157O1KXf.png",
+    "https://assets.zyrosite.com/YZ9jg46Bljs5wOZR/guitar-god-PnQfaNx4157O1KXf.png",
     "https://assets.zyrosite.com/YZ9jg46Bljs5wOZR/pirate-god-DOkoFBGTq5dMjWIr.png",
     "https://assets.zyrosite.com/YZ9jg46Bljs5wOZR/astronaut-god-eRqNNpho8vDZWJ82.png",
     "https://assets.zyrosite.com/YZ9jg46Bljs5wOZR/god-is-a-mountain-y-all-too-dot-com-hi3CNgf9RV4SqjHx.png",
@@ -260,7 +260,22 @@
     };
 
     const selectedImage = nextImage();
-    artwork.src = selectedImage;
+    artwork.src = LOCAL_FALLBACK_IMAGE;
+
+    const remoteArtwork = new Image();
+    remoteArtwork.decoding = "async";
+    remoteArtwork.onload = () => {
+      if (!fallbackApplied && state === SPLASH_ACTIVE) {
+        artwork.src = selectedImage;
+        if (status) status.textContent = "Ready to enter";
+      }
+      clearArtworkWatchdog();
+    };
+    remoteArtwork.onerror = () => {
+      if (status) status.textContent = "GEI artwork ready";
+      clearArtworkWatchdog();
+    };
+    remoteArtwork.src = selectedImage;
 
     artworkWatchdogId = window.setTimeout(() => {
       if (artwork.naturalWidth === 0) useLocalFallback();
