@@ -12,6 +12,14 @@
   const SELECTOR = CONFIG.map(([id]) => `#${id}`).join(",");
 
   function configFor(card) { return CONFIG.find(([id]) => id === card.id); }
+  function hideSource(card) {
+    card.hidden = true;
+    card.style.setProperty("display", "none", "important");
+  }
+  function showSource(card) {
+    card.hidden = false;
+    card.style.removeProperty("display");
+  }
   function makeTrigger(card, cfg) {
     if (card.dataset.geiPopoutPrepared === "true") return;
     const [id, icon, kicker, title] = cfg;
@@ -23,7 +31,7 @@
     trigger.innerHTML = `<span class="gei-popout-icon" aria-hidden="true">${icon}</span><span class="gei-popout-copy"><span class="gei-popout-kicker">${kicker}</span><span class="gei-popout-title">${title}</span></span><span class="gei-popout-arrow" aria-hidden="true">›</span>`;
     card.dataset.geiPopoutPrepared = "true";
     card.parentNode.insertBefore(trigger, card);
-    card.hidden = true;
+    hideSource(card);
   }
   function prepare() {
     document.querySelectorAll(SELECTOR).forEach((card) => {
@@ -53,14 +61,14 @@
     dialog.append(close, content);
     backdrop.appendChild(dialog);
     home.appendChild(backdrop);
-    card.hidden = false;
+    showSource(card);
     content.appendChild(card);
 
     const cleanup = () => {
       if (!backdrop.isConnected) return;
       const parent = home.querySelector(".home-experience-stack") || home.querySelector(".dashboard-main");
       if (parent && trigger.isConnected) parent.insertBefore(card, trigger.nextSibling);
-      card.hidden = true;
+      hideSource(card);
       backdrop.remove();
       trigger.focus();
       prepare();
