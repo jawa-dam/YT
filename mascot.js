@@ -78,9 +78,9 @@
 
   function personalizeHomeMascot() {
     const button = document.querySelector("#screen-home .home-mascot-button");
-    if (!button || button.dataset.adamAssistantLabelReady === "true") return;
-    button.dataset.adamAssistantLabelReady = "true";
+    if (!button) return;
     ensureHomeMascotLabelStyles();
+    button.dataset.adamAssistantLabelReady = "true";
     button.setAttribute("aria-label", "Ask Adam, your GEI Assistant");
     const badge = button.querySelector(".mascot-badge");
     const caption = button.querySelector(".mascot-caption");
@@ -184,10 +184,8 @@
   function routeHomeAdam(event) {
     const button = event.target.closest?.(".home-mascot-button");
     if (!button) return;
-
     const home = document.getElementById("screen-home");
     if (!home) return;
-
     event.preventDefault();
     event.stopImmediatePropagation();
     openAssistant();
@@ -196,6 +194,12 @@
   function init() {
     personalizeHomeCard();
     personalizeHomeMascot();
+    const home = document.getElementById("screen-home");
+    if (home) {
+      const observer = new MutationObserver(() => personalizeHomeMascot());
+      observer.observe(home, { childList: true, subtree: true });
+      window.setTimeout(() => personalizeHomeMascot(), 0);
+    }
     document.addEventListener("click", routeHomeAdam, true);
   }
 
