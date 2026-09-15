@@ -1,0 +1,8 @@
+/* V1.17 — Academy Path Readability */
+.academy-path-heading h2{font-size:24px!important;line-height:1.1;color:var(--text,#f6f8ff)!important}
+.academy-path-heading .academy-section-label{font-size:13px!important;letter-spacing:.12em}
+.academy-path-count{font-size:12px!important;color:#c5d0df!important}
+.academy-day-card{padding:12px!important}
+.academy-day-number,.academy-day-status{font-size:10px!important;color:#b9c6d8!important;letter-spacing:.08em}
+.academy-day-card h3{font-size:16px!important;line-height:1.18;color:#f6f8ff!important}
+@media(max-width:360px){.academy-path-heading h2{font-size:22px!important}.academy-path-heading .academy-section-label{font-size:12px!important}.academy-path-count{font-size:11px!important}.academy-day-card h3{font-size:15px!important}.academy-day-number,.academy-day-status{font-size:9px!important}}
