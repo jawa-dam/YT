@@ -142,14 +142,23 @@
   function setActiveScreen(id) {
     const item = NAV_ITEMS.find((entry) => entry.id === id) || NAV_ITEMS[0];
     state.activeScreen = item.id;
-    getScreens().forEach((screen) => screen.classList.toggle("active", screen.id === item.target));
-    getNavRoot()?.querySelectorAll("[data-nav-id]").forEach((button) => button.classList.toggle("active", button.dataset.navId === item.id));
+    getScreens().forEach((screen) => {
+      const isActive = screen.id === item.target;
+      screen.classList.toggle("active", isActive);
+      screen.classList.toggle("is-active", isActive);
+      screen.setAttribute("aria-hidden", isActive ? "false" : "true");
+    });
+    getNavRoot()?.querySelectorAll("[data-nav-id]").forEach((button) => {
+      const isActive = button.dataset.navId === item.id;
+      button.classList.toggle("active", isActive);
+      button.setAttribute("aria-current", isActive ? "page" : "false");
+    });
     if (item.id === "home") {
       replaceHomeMascot();
       replaceHomeBlueprint();
     }
     if (item.id === "support") renderSupport();
-    window.dispatchEvent(new CustomEvent("gei:navigation", { detail: { id: item.id } }));
+    window.dispatchEvent(new CustomEvent("gei:navigation", { detail: { id: item.id, target: item.target } }));
   }
 
   function init() {
