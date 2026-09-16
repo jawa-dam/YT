@@ -1,4 +1,4 @@
-/* V1.36.6 — Adam Assistant interaction failsafe */
+/* V1.36.7 — Adam Assistant interaction failsafe */
 (() => {
   "use strict";
 
@@ -48,6 +48,11 @@
     if (message) message.textContent = text;
   }
 
+  function closeAssistant(assistant) {
+    assistant.remove();
+    document.querySelector("#screen-home .home-mascot-button")?.focus({ preventScroll: true });
+  }
+
   function runAction(assistant, action) {
     if (!assistant || !action) return;
     const progress = getProgress();
@@ -95,6 +100,27 @@
     }
   }
 
+  function activateTarget(assistant, target, event) {
+    if (!assistant || !target || target.disabled) return false;
+
+    const now = Date.now();
+    if (now - lastActivation < 350) return true;
+    lastActivation = now;
+
+    event?.preventDefault?.();
+    event?.stopImmediatePropagation?.();
+
+    if (target.matches(".home-adam-assistant-close")) {
+      closeAssistant(assistant);
+      return true;
+    }
+
+    const action = target.dataset.adamAction;
+    if (!action) return false;
+    runAction(assistant, action);
+    return true;
+  }
+
   function activateAtPoint(event) {
     const assistant = document.getElementById(ASSISTANT_ID);
     if (!assistant) return;
@@ -104,32 +130,30 @@
 
     const close = elementAtPoint(assistant, point.x, point.y, ".home-adam-assistant-close");
     const action = elementAtPoint(assistant, point.x, point.y, "[data-adam-action]");
-    const target = close || action;
-    if (!target) return;
+    activateTarget(assistant, close || action, event);
+  }
 
-    const now = Date.now();
-    if (now - lastActivation < 350) return;
-    lastActivation = now;
+  function activateFromClick(event) {
+    const assistant = document.getElementById(ASSISTANT_ID);
+    if (!assistant) return;
 
-    event.preventDefault();
-    event.stopImmediatePropagation();
-
-    if (close) {
-      assistant.remove();
-      document.querySelector("#screen-home .home-mascot-button")?.focus({ preventScroll: true });
+    const direct = event.target?.closest?.(".home-adam-assistant-close, [data-adam-action]");
+    if (direct && assistant.contains(direct)) {
+      activateTarget(assistant, direct, event);
       return;
     }
 
-    runAction(assistant, action.dataset.adamAction);
+    activateAtPoint(event);
   }
 
   function init() {
     if (window.__GEI_ADAM_FAILSAFE_READY) return;
     window.__GEI_ADAM_FAILSAFE_READY = true;
 
-    /* Window capture runs before normal target/bubble handlers. The action is resolved
-       from viewport coordinates rather than event.target, so another visual layer
-       cannot make the assistant controls inert. */
+    /* V1.36.7: click is the device-independent activation event for mouse, touch,
+       keyboard and assistive technology. Keep pointer/touch coordinate fallbacks
+       for browsers where another layer interferes with normal target dispatch. */
+    window.addEventListener("click", activateFromClick, { capture: true, passive: false });
     window.addEventListener("pointerup", activateAtPoint, { capture: true, passive: false });
     window.addEventListener("touchend", activateAtPoint, { capture: true, passive: false });
   }
