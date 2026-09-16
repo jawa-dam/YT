@@ -42,34 +42,20 @@
 .academy-day-card.is-locked { pointer-events:none;cursor:not-allowed;opacity:.58; }
 .academy-day-card.is-locked .academy-day-status::after { content:" • LOCKED"; }
 
-/* V1.10.1 — Home is intentionally scrollable; the frame remains fixed. */
-#screen-home {
-  overflow-y:auto !important;
-  overflow-x:hidden !important;
-  overscroll-behavior-y:contain !important;
-  -webkit-overflow-scrolling:touch;
-  scrollbar-width:thin;
-  scrollbar-color:rgba(82,107,130,.42) transparent;
-  grid-template-rows:auto auto !important;
-  align-content:start !important;
-}
+#screen-home { overflow-y:auto !important;overflow-x:hidden !important;overscroll-behavior-y:contain !important;-webkit-overflow-scrolling:touch;scrollbar-width:thin;scrollbar-color:rgba(82,107,130,.42) transparent;grid-template-rows:auto auto !important;align-content:start !important; }
 #screen-home::-webkit-scrollbar { width:4px; }
 #screen-home::-webkit-scrollbar-track { background:transparent; }
 #screen-home::-webkit-scrollbar-thumb { background:rgba(82,107,130,.42);border-radius:999px; }
 #screen-home .dashboard-main { min-height:max-content !important; }
 
-/* V1.10.2 — Restore readable dark text on the Academy's light surfaces. */
 #screen-academy .academy-topbar h1 { color:#102a43 !important;text-shadow:none !important; }
 #screen-academy .academy-topbar p { color:#526b82 !important; }
-#screen-academy .academy-section-label,
-#screen-academy .academy-kicker { color:#168bb3 !important; }
+#screen-academy .academy-section-label,#screen-academy .academy-kicker { color:#168bb3 !important; }
 #screen-academy .academy-path-heading h2 { color:#102a43 !important;text-shadow:none !important; }
 #screen-academy .academy-path-count { color:#526b82 !important; }
-#screen-academy .academy-day-number,
-#screen-academy .academy-day-status { color:#526b82 !important; }
+#screen-academy .academy-day-number,#screen-academy .academy-day-status { color:#526b82 !important; }
 #screen-academy .academy-day-card h3 { color:#30465b !important;text-shadow:none !important; }
-#screen-academy .academy-day-card.is-active .academy-day-number,
-#screen-academy .academy-day-card.is-active .academy-day-status { color:#168bb3 !important; }
+#screen-academy .academy-day-card.is-active .academy-day-number,#screen-academy .academy-day-card.is-active .academy-day-status { color:#168bb3 !important; }
 #screen-academy .academy-guide-copy h2 { color:#dbe6f2 !important; }
 #screen-academy .academy-guide-copy p { color:#aebdce !important; }
 
@@ -83,4 +69,19 @@
   .home-dam-card { height:132px !important; }
   .home-product-card { min-height:82px !important; }
   .home-product-card img { height:82px !important; }
+}
+
+/* V1.34.2 — fixed Academy sequence; preserve splash/bootstrap and prevent row collapse. */
+#screen-academy .academy-view { grid-template-rows:auto auto auto auto auto auto !important;align-content:start !important; }
+#screen-academy .academy-view > .academy-topbar { grid-row:1 !important; }
+#screen-academy .academy-view > .academy-hero { grid-row:2 !important; }
+#screen-academy .academy-view > .adam-learning-objectives { grid-row:3 !important; }
+#screen-academy .academy-view > .gei-journey-card { grid-row:4 !important; }
+#screen-academy .academy-view > .adam-objective-mastery { grid-row:5 !important; }
+#screen-academy .academy-view > .academy-path { grid-row:6 !important; }
+
+@media(max-width:360px){
+  #screen-academy .academy-hero { min-height:250px !important; }
+  #screen-academy .academy-waterwheel { width:128px !important; }
+  #screen-academy .academy-waterwheel-glow { width:124px !important;height:124px !important; }
 }
