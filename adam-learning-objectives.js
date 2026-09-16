@@ -1,4 +1,4 @@
-/* V1.27/V1.28 — Adam Learning Objectives + Mastery Boot */
+/* V1.27/V1.28/V1.34.2 — Adam Learning Objectives + Mastery Boot */
 (() => {
   "use strict";
 
@@ -80,6 +80,7 @@
     const existing = view.querySelector(":scope > .adam-learning-objectives");
     if (existing?.dataset.objectivesDay === String(day)) {
       bootMastery();
+      window.dispatchEvent(new CustomEvent("gei:objectives-ready"));
       return;
     }
     existing?.remove();
@@ -88,6 +89,7 @@
     if (!target) return;
     view.insertBefore(buildObjectives(day), target);
     bootMastery();
+    window.dispatchEvent(new CustomEvent("gei:objectives-ready"));
   }
 
   function bootMastery() {
