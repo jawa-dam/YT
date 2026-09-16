@@ -51,20 +51,30 @@
 }
 .home-mascot-button:focus-visible { outline:2px solid var(--cyan);outline-offset:4px;border-radius:18px; }
 
-/* V1.36.1 — Explicitly restore touch/click hit-testing for the Adam assistant dialog. */
+/* V1.36.2 — Move the assistant into a viewport-level hit layer. */
 .home-adam-assistant {
-  z-index:10000!important;
+  position:fixed!important;
+  inset:0!important;
+  z-index:2147483647!important;
+  display:flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  padding:88px 12px!important;
+  box-sizing:border-box!important;
   pointer-events:auto!important;
   touch-action:manipulation!important;
   isolation:isolate;
 }
 .home-adam-assistant-backdrop {
-  z-index:0;
+  position:absolute!important;
+  inset:0!important;
+  z-index:0!important;
   pointer-events:none!important;
   touch-action:none!important;
 }
 .home-adam-assistant-card {
-  z-index:1;
+  position:relative!important;
+  z-index:1!important;
   pointer-events:auto!important;
   touch-action:manipulation!important;
 }
@@ -90,6 +100,7 @@
 
 @media (max-width:360px) {
   .home-mascot-button { width:clamp(108px,32vw,122px);height:clamp(120px,36vw,132px); }
+  .home-adam-assistant { padding:76px 8px 80px!important; }
 }
 @media (prefers-reduced-motion:reduce) {
   .gei-mascot-image--idle,.home-mascot-button .home-mascot-image { animation:none!important; }
