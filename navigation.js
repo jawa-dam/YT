@@ -127,7 +127,7 @@
     if (!orbit || orbit.dataset.mascotReady === "true") return;
     orbit.dataset.mascotReady = "true";
     orbit.setAttribute("aria-label", "Adam mascot");
-    orbit.innerHTML = `<button class="home-mascot-button gei-mascot-button gei-mascot-button--interactive" type="button" aria-label="${MASCOT.academyLabel}"><span class="mascot-ring" aria-hidden="true"></span><img class="home-mascot-image gei-mascot-image" src="${HOME_MASCOT_URL}" alt="Adam, the GEI dam guide mascot" /><span class="mascot-badge">ADAM</span><span class="mascot-caption">TAP TO MEET ADAM</span></button>`;
+    orbit.innerHTML = `<button class="home-mascot-button gei-mascot-button gei-mascot-button--interactive" type="button" aria-label="${MASCOT.academyLabel}"><span class="mascot-ring" aria-hidden="true"></span><img class="home-mascot-image gei-mascot-image" src="${HOME_MASCOT_URL}" alt="Adam, the GEI dam guide mascot" /></button>`;
     orbit.querySelector(".home-mascot-button")?.addEventListener("click", () => document.querySelector("#screen-academy .academy-mascot")?.click());
   }
 
