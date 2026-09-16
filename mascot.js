@@ -106,23 +106,23 @@
     const style = document.createElement("style");
     style.id = "home-adam-assistant-styles";
     style.textContent = `
-      .home-adam-assistant { position:absolute;z-index:40;left:12px;right:12px;top:88px;bottom:88px;display:flex;align-items:center;justify-content:center;pointer-events:none; }
-      .home-adam-assistant-backdrop { position:absolute;inset:0;border-radius:24px;background:rgba(2,5,11,.58);backdrop-filter:blur(5px);-webkit-backdrop-filter:blur(5px);opacity:0;animation:adamAssistantBackdrop .2s ease-out forwards; }
-      .home-adam-assistant-card { position:relative;width:min(100%,390px);max-height:100%;overflow:hidden;display:grid;grid-template-rows:auto auto auto 1fr auto;gap:10px;padding:14px;border:1px solid color-mix(in srgb,var(--skin-accent,#2fd2ff) 42%,rgba(255,255,255,.16));border-radius:22px;background:linear-gradient(145deg,color-mix(in srgb,var(--skin-surface,#fff) 94%,var(--skin-accent,#2fd2ff) 6%),var(--skin-surface,#fff));box-shadow:0 24px 60px rgba(0,0,0,.34),0 0 36px color-mix(in srgb,var(--skin-accent,#2fd2ff) 12%,transparent);color:var(--skin-text,#102a43);transform:translateY(10px) scale(.98);opacity:0;animation:adamAssistantIn .24s cubic-bezier(.2,.8,.2,1) forwards;pointer-events:auto; }
+      .home-adam-assistant { position:fixed;z-index:2147483647;inset:0;padding:88px 12px;box-sizing:border-box;display:flex;align-items:center;justify-content:center;pointer-events:auto;touch-action:manipulation;isolation:isolate; }
+      .home-adam-assistant-backdrop { position:absolute;inset:0;z-index:0;border-radius:0;background:rgba(2,5,11,.58);backdrop-filter:blur(5px);-webkit-backdrop-filter:blur(5px);opacity:0;animation:adamAssistantBackdrop .2s ease-out forwards;pointer-events:none;touch-action:none; }
+      .home-adam-assistant-card { position:relative;z-index:1;width:min(100%,390px);max-height:100%;overflow:hidden;display:grid;grid-template-rows:auto auto auto 1fr auto;gap:10px;padding:14px;border:1px solid color-mix(in srgb,var(--skin-accent,#2fd2ff) 42%,rgba(255,255,255,.16));border-radius:22px;background:linear-gradient(145deg,color-mix(in srgb,var(--skin-surface,#fff) 94%,var(--skin-accent,#2fd2ff) 6%),var(--skin-surface,#fff));box-shadow:0 24px 60px rgba(0,0,0,.34),0 0 36px color-mix(in srgb,var(--skin-accent,#2fd2ff) 12%,transparent);color:var(--skin-text,#102a43);transform:translateY(10px) scale(.98);opacity:0;animation:adamAssistantIn .24s cubic-bezier(.2,.8,.2,1) forwards;pointer-events:auto;touch-action:manipulation; }
       .home-adam-assistant-head { display:flex;align-items:center;gap:10px;min-width:0; }
-      .home-adam-assistant-avatar { width:48px;height:48px;flex:0 0 48px;object-fit:contain;filter:drop-shadow(0 7px 10px rgba(0,0,0,.18)); }
+      .home-adam-assistant-avatar { width:48px;height:48px;flex:0 0 48px;object-fit:contain;filter:drop-shadow(0 7px 10px rgba(0,0,0,.18));pointer-events:none; }
       .home-adam-assistant-heading { min-width:0;flex:1; }
       .home-adam-assistant-kicker { display:block;color:var(--skin-accent,#2fd2ff);font-size:10px;font-weight:900;letter-spacing:.13em;text-transform:uppercase; }
       .home-adam-assistant-heading strong { display:block;margin-top:2px;font-size:24px;line-height:1.05;letter-spacing:-.025em; }
-      .home-adam-assistant-close { width:38px;height:38px;flex:0 0 38px;display:grid;place-items:center;padding:0;border:1px solid color-mix(in srgb,var(--skin-accent,#2fd2ff) 28%,transparent);border-radius:11px;background:var(--skin-soft,#f1f4f8);color:var(--skin-text,#102a43);font-size:22px;line-height:1;cursor:pointer; }
+      .home-adam-assistant-close { width:38px;height:38px;flex:0 0 38px;display:grid;place-items:center;padding:0;border:1px solid color-mix(in srgb,var(--skin-accent,#2fd2ff) 28%,transparent);border-radius:11px;background:var(--skin-soft,#f1f4f8);color:var(--skin-text,#102a43);font-size:22px;line-height:1;cursor:pointer;pointer-events:auto;touch-action:manipulation; }
       .home-adam-assistant-close:focus-visible,.home-adam-assistant-choice:focus-visible { outline:3px solid var(--skin-accent,#2fd2ff);outline-offset:2px; }
       .home-adam-assistant-message { margin:0;padding:12px 13px;border-left:3px solid var(--skin-accent,#2fd2ff);border-radius:12px;background:var(--skin-soft,#f1f4f8);font-size:16px;line-height:1.45;color:var(--skin-text,#102a43); }
       .home-adam-assistant-next { display:flex;align-items:center;justify-content:space-between;gap:8px;padding:9px 11px;border:1px solid color-mix(in srgb,var(--skin-accent,#2fd2ff) 25%,transparent);border-radius:13px;background:color-mix(in srgb,var(--skin-accent,#2fd2ff) 8%,var(--skin-surface,#fff)); }
       .home-adam-assistant-next-label { color:var(--skin-muted,#526b82);font-size:9px;font-weight:900;letter-spacing:.11em;text-transform:uppercase; }
       .home-adam-assistant-next-value { color:var(--skin-accent,#2fd2ff);font-size:12px;font-weight:900;white-space:nowrap; }
       .home-adam-assistant-label { margin:0 2px -3px;color:var(--skin-muted,#526b82);font-size:10px;font-weight:900;letter-spacing:.11em;text-transform:uppercase; }
-      .home-adam-assistant-choices { min-height:0;display:grid;grid-template-columns:1fr 1fr;gap:8px;align-content:start;overflow:auto; }
-      .home-adam-assistant-choice { min-height:54px;padding:10px 11px;border:1px solid color-mix(in srgb,var(--skin-accent,#2fd2ff) 25%,transparent);border-radius:13px;background:var(--skin-surface,#fff);color:var(--skin-text,#102a43);font-size:14px;font-weight:800;line-height:1.25;text-align:left;cursor:pointer; }
+      .home-adam-assistant-choices { min-height:0;display:grid;grid-template-columns:1fr 1fr;gap:8px;align-content:start;overflow:auto;touch-action:pan-y; }
+      .home-adam-assistant-choice { min-height:54px;padding:10px 11px;border:1px solid color-mix(in srgb,var(--skin-accent,#2fd2ff) 25%,transparent);border-radius:13px;background:var(--skin-surface,#fff);color:var(--skin-text,#102a43);font-size:14px;font-weight:800;line-height:1.25;text-align:left;cursor:pointer;pointer-events:auto;touch-action:manipulation;-webkit-tap-highlight-color:transparent;user-select:none; }
       .home-adam-assistant-choice.primary { border-color:color-mix(in srgb,var(--skin-accent,#2fd2ff) 55%,transparent);background:linear-gradient(145deg,color-mix(in srgb,var(--skin-accent,#2fd2ff) 13%,var(--skin-surface,#fff)),var(--skin-surface,#fff)); }
       .home-adam-assistant-choice:active { transform:scale(.985); }
       .home-adam-assistant-footer { display:flex;align-items:center;justify-content:space-between;gap:8px;padding-top:2px;color:var(--skin-muted,#526b82);font-size:10px;font-weight:800; }
@@ -130,7 +130,7 @@
       @keyframes adamAssistantBackdrop { to { opacity:1; } }
       @keyframes adamAssistantIn { to { transform:translateY(0) scale(1);opacity:1; } }
       @media(max-width:360px){
-        .home-adam-assistant{left:8px;right:8px;top:76px;bottom:80px;}
+        .home-adam-assistant{padding:76px 8px 80px;}
         .home-adam-assistant-card{padding:11px;border-radius:19px;gap:8px;}
         .home-adam-assistant-avatar{width:42px;height:42px;flex-basis:42px;}
         .home-adam-assistant-heading strong{font-size:22px;}
@@ -222,18 +222,58 @@
         <footer class="home-adam-assistant-footer"><span>Ask Adam anytime.</span><span class="home-adam-assistant-status">● ONLINE</span></footer>
       </section>
     `;
-    home.appendChild(assistant);
+
+    /* V1.36.3: mount at document.body so Home-screen overflow, stacking and inertness cannot disable the dialog. */
+    document.body.appendChild(assistant);
 
     const close = () => {
       assistant.remove();
-      document.querySelector(".home-mascot-button")?.focus();
+      document.querySelector("#screen-home .home-mascot-button")?.focus({ preventScroll: true });
     };
-    assistant.querySelector(".home-adam-assistant-close")?.addEventListener("click", close);
-    assistant.querySelector(".home-adam-assistant-backdrop")?.addEventListener("click", close);
-    assistant.querySelectorAll("[data-adam-action]").forEach((button) => {
-      button.addEventListener("click", () => handleAction(assistant, button.dataset.adamAction));
+
+    const activateAction = (button, event) => {
+      if (!button || button.disabled) return;
+      const action = button.dataset.adamAction;
+      if (!action) return;
+      if (event) {
+        event.preventDefault();
+        event.stopPropagation();
+      }
+      handleAction(assistant, action);
+    };
+
+    const activateClose = (event) => {
+      if (event) {
+        event.preventDefault();
+        event.stopPropagation();
+      }
+      close();
+    };
+
+    assistant.addEventListener("pointerup", (event) => {
+      const closeButton = event.target.closest?.(".home-adam-assistant-close");
+      if (closeButton) {
+        activateClose(event);
+        return;
+      }
+      const button = event.target.closest?.("[data-adam-action]");
+      if (!button) return;
+      activateAction(button, event);
+    }, { passive: false });
+
+    assistant.addEventListener("keydown", (event) => {
+      const closeButton = event.target.closest?.(".home-adam-assistant-close");
+      if (closeButton && (event.key === "Enter" || event.key === " ")) {
+        activateClose(event);
+        return;
+      }
+      const button = event.target.closest?.("[data-adam-action]");
+      if (button && (event.key === "Enter" || event.key === " ")) {
+        activateAction(button, event);
+      }
     });
-    assistant.querySelector(".home-adam-assistant-close")?.focus();
+
+    assistant.querySelector(".home-adam-assistant-close")?.focus({ preventScroll: true });
   }
 
   function routeHomeAdam(event) {
