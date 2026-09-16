@@ -257,10 +257,6 @@
       activateAction(button, event);
     });
 
-    assistant.querySelectorAll("[data-adam-action]").forEach((button) => {
-      button.addEventListener("click", () => handleAction(assistant, button.dataset.adamAction));
-    });
-
     assistant.querySelector(".home-adam-assistant-close")?.focus({ preventScroll: true });
   }
 
