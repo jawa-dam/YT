@@ -12,26 +12,18 @@
   filter:drop-shadow(0 12px 18px rgba(0,0,0,.2));
 }
 
-.gei-mascot-button {
-  -webkit-tap-highlight-color:transparent;
-}
+.gei-mascot-button { -webkit-tap-highlight-color:transparent; }
+.gei-mascot-image--idle { animation:geiAdamFloat 3.8s ease-in-out infinite; }
+.gei-mascot-button--interactive .gei-mascot-image--idle { will-change:transform; }
 
-.gei-mascot-image--idle {
-  animation:geiAdamFloat 3.8s ease-in-out infinite;
-}
-
-.gei-mascot-button--interactive .gei-mascot-image--idle {
-  will-change:transform;
-}
-
-/* Home Adam: larger, transparent cutout presentation with a gentle pulse. */
+/* V1.36 — Home Adam: larger presentation; remove the name below his feet. */
 .home-mascot-button {
   position:relative;
   z-index:2;
   display:grid;
   place-items:center;
-  width:clamp(96px,28vw,126px);
-  height:clamp(112px,31vw,138px);
+  width:clamp(126px,32vw,148px);
+  height:clamp(136px,35vw,156px);
   padding:0;
   margin:0 auto;
   border:0;
@@ -41,52 +33,21 @@
   cursor:pointer;
   overflow:visible;
 }
-
-.home-mascot-button .mascot-ring {
-  z-index:-1;
-}
-
+.home-mascot-button .mascot-ring { z-index:-1; }
 .home-mascot-button .home-mascot-image {
-  width:100%;
-  height:100%;
-  max-width:none;
-  max-height:none;
-  object-fit:contain;
+  width:100%;height:100%;max-width:none;max-height:none;object-fit:contain;
   animation:geiAdamPulse 2.8s ease-in-out infinite;
-  transform-origin:center 62%;
-  will-change:transform;
+  transform-origin:center 62%;will-change:transform;
 }
+.home-mascot-button .mascot-caption { display:none!important; }
+.home-mascot-button:focus-visible { outline:2px solid var(--cyan);outline-offset:4px;border-radius:18px; }
 
-.home-mascot-button .mascot-caption {
-  z-index:3;
-  bottom:-1px;
-  pointer-events:none;
-}
-
-.home-mascot-button:focus-visible {
-  outline:2px solid var(--cyan);
-  outline-offset:4px;
-  border-radius:18px;
-}
-
-@keyframes geiAdamFloat {
-  0%,100% { transform:translateY(0); }
-  50% { transform:translateY(-3px); }
-}
-
-@keyframes geiAdamPulse {
-  0%,100% { transform:translateY(0) scale(1); }
-  50% { transform:translateY(-3px) scale(1.045); }
-}
+@keyframes geiAdamFloat { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-3px)} }
+@keyframes geiAdamPulse { 0%,100%{transform:translateY(0) scale(1)} 50%{transform:translateY(-3px) scale(1.045)} }
 
 @media (max-width:360px) {
-  .home-mascot-button {
-    width:clamp(88px,29vw,104px);
-    height:clamp(102px,33vw,116px);
-  }
+  .home-mascot-button { width:clamp(108px,32vw,122px);height:clamp(120px,36vw,132px); }
 }
-
 @media (prefers-reduced-motion:reduce) {
-  .gei-mascot-image--idle,
-  .home-mascot-button .home-mascot-image { animation:none!important; }
+  .gei-mascot-image--idle,.home-mascot-button .home-mascot-image { animation:none!important; }
 }
