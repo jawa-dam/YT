@@ -242,19 +242,35 @@
       handleAction(assistant, action);
     };
 
-    assistant.querySelector(".home-adam-assistant-close")?.addEventListener("click", close);
-    assistant.querySelector(".home-adam-assistant-backdrop")?.addEventListener("click", close);
+    const activateClose = (event) => {
+      if (event) {
+        event.preventDefault();
+        event.stopPropagation();
+      }
+      close();
+    };
 
     assistant.addEventListener("pointerup", (event) => {
+      const closeButton = event.target.closest?.(".home-adam-assistant-close");
+      if (closeButton) {
+        activateClose(event);
+        return;
+      }
       const button = event.target.closest?.("[data-adam-action]");
       if (!button) return;
       activateAction(button, event);
     }, { passive: false });
 
-    assistant.addEventListener("click", (event) => {
+    assistant.addEventListener("keydown", (event) => {
+      const closeButton = event.target.closest?.(".home-adam-assistant-close");
+      if (closeButton && (event.key === "Enter" || event.key === " ")) {
+        activateClose(event);
+        return;
+      }
       const button = event.target.closest?.("[data-adam-action]");
-      if (!button) return;
-      activateAction(button, event);
+      if (button && (event.key === "Enter" || event.key === " ")) {
+        activateAction(button, event);
+      }
     });
 
     assistant.querySelector(".home-adam-assistant-close")?.focus({ preventScroll: true });
