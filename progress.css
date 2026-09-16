@@ -35,7 +35,6 @@
 .home-dam-card { height:150px !important; }
 .home-product-card { min-height:92px !important; }
 .home-product-card img { height:92px !important; }
-
 .academy-progress-chip { border-color:color-mix(in srgb,var(--skin-accent,#2fd2ff) 30%,transparent) !important; }
 .academy-day-card.is-completed { border-color:color-mix(in srgb,var(--skin-accent,#2fd2ff) 44%,transparent) !important;background:linear-gradient(145deg,color-mix(in srgb,var(--skin-accent,#2fd2ff) 12%,var(--skin-surface,#fff)),var(--skin-surface,#fff)) !important; }
 .academy-day-card.is-current { box-shadow:0 0 0 2px color-mix(in srgb,var(--skin-accent,#2fd2ff) 18%,transparent),0 10px 24px rgba(0,0,0,.07); }
@@ -71,17 +70,18 @@
   .home-product-card img { height:82px !important; }
 }
 
-/* V1.34.2 — fixed Academy sequence; preserve splash/bootstrap and prevent row collapse. */
+/* V1.34.2 — deterministic Academy sequence; no splash/bootstrap changes. */
 #screen-academy .academy-view { grid-template-rows:auto auto auto auto auto auto !important;align-content:start !important; }
 #screen-academy .academy-view > .academy-topbar { grid-row:1 !important; }
 #screen-academy .academy-view > .academy-hero { grid-row:2 !important; }
 #screen-academy .academy-view > .adam-learning-objectives { grid-row:3 !important; }
 #screen-academy .academy-view > .gei-journey-card { grid-row:4 !important; }
 #screen-academy .academy-view > .adam-objective-mastery { grid-row:5 !important; }
-#screen-academy .academy-view > .academy-path { grid-row:6 !important; }
+#screen-academy .academy-view > .academy-path { grid-row:6 !important;min-height:max-content !important; }
+#screen-academy .academy-view > .academy-path .academy-day-grid { grid-auto-rows:minmax(62px,auto) !important; }
 
 @media(max-width:360px){
-  #screen-academy .academy-hero { min-height:250px !important; }
+  #screen-academy .academy-hero { min-height:220px !important; }
   #screen-academy .academy-waterwheel { width:128px !important; }
   #screen-academy .academy-waterwheel-glow { width:124px !important;height:124px !important; }
 }
