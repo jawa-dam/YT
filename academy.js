@@ -2,12 +2,12 @@
   "use strict";
 
   const ACADEMY_DAYS = [
-    { id: 1, label: "DAY 1", title: "Water & Light", status: "START HERE", active: true, url: "https://www.yalltoo.com/genesis-engineered-day-1" },
-    { id: 2, label: "DAY 2", title: "The Firmament", status: "COMING NEXT", active: false, url: "https://www.yalltoo.com/genesis-engineered-day-2-firmament-dam-wall" },
-    { id: 3, label: "DAY 3", title: "Reservoir & Dry Land", status: "LOCKED", active: false, url: "https://www.yalltoo.com/genesis-engineered-day-3-waters-land" },
-    { id: 4, label: "DAY 4", title: "The Sluice", status: "LOCKED", active: false, url: "https://www.yalltoo.com/day-4-mill-of-the-dam" },
-    { id: 5, label: "DAY 5", title: "The Waterwheel", status: "LOCKED", active: false, url: "https://www.yalltoo.com/day-5-mill-activation" },
-    { id: 6, label: "DAY 6", title: "The Beast System", status: "LOCKED", active: false, url: "https://www.yalltoo.com/genesis-engineered-day-6-final-operator" }
+    { id: 1, label: "DAY 1", title: "Water & Light", status: "START HERE", active: true, url: "day-1.html" },
+    { id: 2, label: "DAY 2", title: "The Firmament", status: "LOCKED", active: false, url: "day-2.html" },
+    { id: 3, label: "DAY 3", title: "Reservoir & Dry Land", status: "LOCKED", active: false, url: "day-3.html" },
+    { id: 4, label: "DAY 4", title: "The Sluice", status: "LOCKED", active: false, url: "day-4.html" },
+    { id: 5, label: "DAY 5", title: "The Waterwheel", status: "LOCKED", active: false, url: "day-5.html" },
+    { id: 6, label: "DAY 6", title: "The Beast System", status: "LOCKED", active: false, url: "day-6.html" }
   ];
 
   const MASCOT = window.GEI_MASCOT || {
@@ -15,6 +15,33 @@
     alt: "Adam, the YallToo mascot",
     academyLabel: "Open Adam Academy guide"
   };
+  const COMPLETION_KEY = "geiDayCompletionV1";
+
+  function readCompletion() {
+    try { return JSON.parse(localStorage.getItem(COMPLETION_KEY) || "{}"); } catch (_) { return {}; }
+  }
+
+  function syncDayState() {
+    const completion = readCompletion();
+    document.querySelectorAll("#screen-academy .academy-day-card").forEach((card) => {
+      const day = Number(card.dataset.day);
+      const unlocked = day === 1 || !!completion[day - 1];
+      const complete = !!completion[day];
+      card.href = ACADEMY_DAYS[day - 1].url;
+      card.target = "_self";
+      card.rel = "";
+      card.classList.toggle("is-locked", !unlocked);
+      card.classList.toggle("is-complete", complete);
+      card.dataset.geiLocked = String(!unlocked);
+      card.setAttribute("aria-disabled", String(!unlocked));
+      const status = card.querySelector(".academy-day-status");
+      if (status) status.textContent = complete ? "COMPLETED" : unlocked ? (day === 1 ? "START HERE" : "UNLOCKED") : "LOCKED";
+    });
+    const begin = document.querySelector("#screen-academy .academy-primary-action");
+    if (begin) { begin.href = "day-1.html"; begin.target = "_self"; begin.rel = ""; }
+    const guide = document.querySelector("#screen-academy .academy-guide-action");
+    if (guide) { guide.href = "day-1.html"; guide.target = "_self"; guide.rel = ""; }
+  }
 
   function wheelMarkup() {
     const paddles = Array.from({ length: 8 }, (_, i) => {
@@ -52,7 +79,7 @@
             <span class="academy-section-label">ADAM • ACADEMY GUIDE</span>
             <h2 id="academy-guide-title">Welcome to the Water Blueprint.</h2>
             <p>Explore the six stages, observe the design, and begin with Day 1 when you're ready.</p>
-            <a class="academy-guide-action" href="${ACADEMY_DAYS[0].url}" target="_blank" rel="noopener noreferrer">BEGIN DAY 1 <strong aria-hidden="true">→</strong></a>
+            <a class="academy-guide-action" href="day-1.html">BEGIN DAY 1 <strong aria-hidden="true">→</strong></a>
           </div>
         </section>
       </div>`;
@@ -61,8 +88,6 @@
   function renderAcademy() {
     const screen = document.getElementById("screen-academy");
     if (!screen) return;
-    const dayOneUrl = ACADEMY_DAYS[0].url;
-
     screen.innerHTML = `
       <div class="academy-view">
         <header class="academy-topbar">
@@ -73,14 +98,14 @@
         </header>
 
         <section class="academy-hero academy-waterwheel-hero" aria-labelledby="academy-hero-title">
-          <div class="academy-hero-copy"><span class="academy-section-label">EXPLORE THE WATER BLUEPRINT</span><h2 id="academy-hero-title">6-Day Water Blueprint</h2><p>Turn the wheel and enter the first stage of the Genesis Engineered Interpretations learning path.</p><a class="academy-primary-action" href="${dayOneUrl}" target="_blank" rel="noopener noreferrer"><span>Begin Day 1</span><strong aria-hidden="true">→</strong></a></div>
+          <div class="academy-hero-copy"><span class="academy-section-label">EXPLORE THE WATER BLUEPRINT</span><h2 id="academy-hero-title">6-Day Water Blueprint</h2><p>Turn the wheel and enter the first stage of the Genesis Engineered Interpretations learning path.</p><a class="academy-primary-action" href="day-1.html"><span>Begin Day 1</span><strong aria-hidden="true">→</strong></a></div>
           ${wheelMarkup()}
         </section>
 
         <section class="academy-path" aria-labelledby="academy-path-title">
           <div class="academy-path-heading"><div><span class="academy-section-label">THE PATH</span><h2 id="academy-path-title">Six stages</h2></div><span class="academy-path-count">01 / 06</span></div>
           <div class="academy-day-grid">
-            ${ACADEMY_DAYS.map((day) => `<a class="academy-day-card${day.active ? " is-active" : ""}${day.id > 1 ? " is-locked" : ""}" data-day="${day.id}" href="${day.url}" target="_blank" rel="noopener noreferrer" aria-label="Open ${day.label}: ${day.title}"><span class="academy-day-number">${day.label}</span><h3>${day.title}</h3><span class="academy-day-status">${day.status}</span></a>`).join("")}
+            ${ACADEMY_DAYS.map((day) => `<a class="academy-day-card${day.active ? " is-active" : ""}${day.id > 1 ? " is-locked" : ""}" data-day="${day.id}" href="${day.url}" aria-label="Open ${day.label}: ${day.title}"><span class="academy-day-number">${day.label}</span><h3>${day.title}</h3><span class="academy-day-status">${day.status}</span></a>`).join("")}
           </div>
         </section>
         ${mascotGuideMarkup()}
@@ -103,6 +128,15 @@
       turnButton.addEventListener("click", () => { speed = Math.min(300, speed + 115); turnButton.classList.remove("is-active"); void turnButton.offsetWidth; turnButton.classList.add("is-active"); });
     }
 
+    document.querySelectorAll("#screen-academy .academy-day-card").forEach((card) => {
+      card.addEventListener("click", (event) => {
+        if (card.dataset.geiLocked === "true") {
+          event.preventDefault();
+          window.dispatchEvent(new CustomEvent("gei:day-locked", { detail: { day: Number(card.dataset.day) } }));
+        }
+      });
+    });
+
     const mascot = document.getElementById("academy-mascot"), guide = document.getElementById("academy-guide"), closeButton = document.getElementById("academy-guide-close"), backdrop = document.getElementById("academy-guide-backdrop");
     if (!mascot || !guide || !closeButton || !backdrop) return;
     let previousFocus = null;
@@ -113,8 +147,15 @@
     closeButton.addEventListener("click", closeGuide);
     backdrop.addEventListener("click", closeGuide);
     guide.addEventListener("keydown", (event) => { if (event.key === "Escape") closeGuide(); });
+
+    syncDayState();
   }
 
-  function init() { renderAcademy(); }
+  function init() {
+    renderAcademy();
+    window.addEventListener("storage", syncDayState);
+    window.addEventListener("gei:day-completion", syncDayState);
+    window.setInterval(syncDayState, 1000);
+  }
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", init, { once: true }); else init();
 })();
