@@ -1,87 +1,17 @@
 /* V1.10 — GEI Guided Entry & Progress Experience */
-.gei-journey-card {
-  position:relative;
-  display:grid;
-  gap:9px;
-  width:100%;
-  min-height:108px;
-  box-sizing:border-box;
-  padding:13px 14px;
-  border:1px solid color-mix(in srgb,var(--skin-accent,#2fd2ff) 38%,transparent);
-  border-radius:21px;
-  background:linear-gradient(145deg,color-mix(in srgb,var(--skin-accent,#2fd2ff) 11%,var(--skin-surface,#fff)),var(--skin-surface,#fff));
-  box-shadow:0 12px 28px rgba(0,0,0,.07);
-  color:var(--skin-text,#102a43);
-}
-.gei-journey-top { display:flex;align-items:flex-start;justify-content:space-between;gap:10px; }
-.gei-journey-kicker { display:block;color:var(--skin-accent,#2fd2ff);font-size:9px;font-weight:900;letter-spacing:.13em;text-transform:uppercase; }
-.gei-journey-title { margin:3px 0 0;font-size:19px;line-height:1.02;letter-spacing:-.025em; }
-.gei-journey-count { flex:0 0 auto;padding:6px 8px;border:1px solid color-mix(in srgb,var(--skin-accent,#2fd2ff) 24%,transparent);border-radius:10px;background:var(--skin-soft,#f1f4f8);color:var(--skin-accent,#2fd2ff);font-size:11px;font-weight:900;line-height:1; }
-.gei-journey-copy { margin:0;color:var(--skin-muted,#526b82);font-size:11px;line-height:1.25; }
-.gei-journey-track { height:5px;overflow:hidden;border-radius:999px;background:color-mix(in srgb,var(--skin-muted,#526b82) 13%,transparent); }
-.gei-journey-fill { display:block;width:0;height:100%;border-radius:inherit;background:linear-gradient(90deg,var(--skin-accent,#2fd2ff),#3d3dea);transition:width 220ms ease; }
-.gei-journey-actions { display:flex;align-items:center;gap:7px; }
-.gei-journey-primary,.gei-journey-complete { appearance:none;min-width:0;min-height:34px;padding:7px 10px;border-radius:11px;font:inherit;font-size:10px;font-weight:900;letter-spacing:.04em;text-transform:uppercase;cursor:pointer;text-decoration:none;text-align:center;-webkit-tap-highlight-color:transparent; }
-.gei-journey-primary { flex:1 1 auto;border:1px solid color-mix(in srgb,var(--skin-accent,#2fd2ff) 45%,transparent);background:var(--skin-accent,#2fd2ff);color:#061018; }
-.gei-journey-primary:active,.gei-journey-complete:active { transform:scale(.98); }
-.gei-journey-complete { flex:0 1 45%;border:1px solid color-mix(in srgb,var(--skin-accent,#2fd2ff) 28%,transparent);background:var(--skin-surface,#fff);color:var(--skin-text,#102a43); }
-.gei-journey-complete.is-done { background:var(--skin-soft,#f1f4f8);color:var(--skin-accent,#2fd2ff); }
-.gei-journey-primary:focus-visible,.gei-journey-complete:focus-visible { outline:3px solid var(--skin-accent,#2fd2ff);outline-offset:2px; }
-.gei-journey-milestone { display:none;align-items:center;justify-content:space-between;gap:8px;padding:6px 8px;border-radius:10px;background:var(--skin-soft,#f1f4f8);font-size:9px;font-weight:800;color:var(--skin-muted,#526b82); }
-.gei-journey-milestone.is-visible { display:flex; }
-.gei-journey-xp { color:var(--skin-accent,#2fd2ff);font-weight:900; }
-
-.home-experience-stack { gap:8px !important; }
-.home-dam-card { height:150px !important; }
-.home-product-card { min-height:92px !important; }
-.home-product-card img { height:92px !important; }
-.academy-progress-chip { border-color:color-mix(in srgb,var(--skin-accent,#2fd2ff) 30%,transparent) !important; }
-.academy-day-card.is-completed { border-color:color-mix(in srgb,var(--skin-accent,#2fd2ff) 44%,transparent) !important;background:linear-gradient(145deg,color-mix(in srgb,var(--skin-accent,#2fd2ff) 12%,var(--skin-surface,#fff)),var(--skin-surface,#fff)) !important; }
-.academy-day-card.is-current { box-shadow:0 0 0 2px color-mix(in srgb,var(--skin-accent,#2fd2ff) 18%,transparent),0 10px 24px rgba(0,0,0,.07); }
-.academy-day-card.is-locked { pointer-events:none;cursor:not-allowed;opacity:.58; }
-.academy-day-card.is-locked .academy-day-status::after { content:" • LOCKED"; }
-
-#screen-home { overflow-y:auto !important;overflow-x:hidden !important;overscroll-behavior-y:contain !important;-webkit-overflow-scrolling:touch;scrollbar-width:thin;scrollbar-color:rgba(82,107,130,.42) transparent;grid-template-rows:auto auto !important;align-content:start !important; }
-#screen-home::-webkit-scrollbar { width:4px; }
-#screen-home::-webkit-scrollbar-track { background:transparent; }
-#screen-home::-webkit-scrollbar-thumb { background:rgba(82,107,130,.42);border-radius:999px; }
-#screen-home .dashboard-main { min-height:max-content !important; }
-
-#screen-academy .academy-topbar h1 { color:#102a43 !important;text-shadow:none !important; }
-#screen-academy .academy-topbar p { color:#526b82 !important; }
-#screen-academy .academy-section-label,#screen-academy .academy-kicker { color:#168bb3 !important; }
-#screen-academy .academy-path-heading h2 { color:#102a43 !important;text-shadow:none !important; }
-#screen-academy .academy-path-count { color:#526b82 !important; }
-#screen-academy .academy-day-number,#screen-academy .academy-day-status { color:#526b82 !important; }
-#screen-academy .academy-day-card h3 { color:#30465b !important;text-shadow:none !important; }
-#screen-academy .academy-day-card.is-active .academy-day-number,#screen-academy .academy-day-card.is-active .academy-day-status { color:#168bb3 !important; }
-#screen-academy .academy-guide-copy h2 { color:#dbe6f2 !important; }
-#screen-academy .academy-guide-copy p { color:#aebdce !important; }
-
-@media(max-width:360px){
-  .gei-journey-card { min-height:101px;padding:11px 12px;gap:7px;border-radius:19px; }
-  .gei-journey-title { font-size:17px; }
-  .gei-journey-count { font-size:10px;padding:5px 7px; }
-  .gei-journey-copy { font-size:10px; }
-  .gei-journey-actions { gap:6px; }
-  .gei-journey-primary,.gei-journey-complete { min-height:31px;padding:6px 8px;font-size:9px; }
-  .home-dam-card { height:132px !important; }
-  .home-product-card { min-height:82px !important; }
-  .home-product-card img { height:82px !important; }
-}
-
-/* V1.34.2 — deterministic Academy sequence; no splash/bootstrap changes. */
-#screen-academy .academy-view { grid-template-rows:auto auto auto auto auto auto !important;align-content:start !important; }
-#screen-academy .academy-view > .academy-topbar { grid-row:1 !important; }
-#screen-academy .academy-view > .academy-hero { grid-row:2 !important; }
-#screen-academy .academy-view > .adam-learning-objectives { grid-row:3 !important; }
-#screen-academy .academy-view > .gei-journey-card { grid-row:4 !important; }
-#screen-academy .academy-view > .adam-objective-mastery { grid-row:5 !important; }
-#screen-academy .academy-view > .academy-path { grid-row:6 !important;min-height:max-content !important; }
-#screen-academy .academy-view > .academy-path .academy-day-grid { grid-auto-rows:minmax(62px,auto) !important; }
-
-@media(max-width:360px){
-  #screen-academy .academy-hero { min-height:220px !important; }
-  #screen-academy .academy-waterwheel { width:128px !important; }
-  #screen-academy .academy-waterwheel-glow { width:124px !important;height:124px !important; }
-}
+.gei-journey-card{position:relative;display:grid;gap:9px;width:100%;min-height:108px;box-sizing:border-box;padding:13px 14px;border:1px solid color-mix(in srgb,var(--skin-accent,#2fd2ff) 38%,transparent);border-radius:21px;background:linear-gradient(145deg,color-mix(in srgb,var(--skin-accent,#2fd2ff) 11%,var(--skin-surface,#fff)),var(--skin-surface,#fff));box-shadow:0 12px 28px rgba(0,0,0,.07);color:var(--skin-text,#102a43)}
+.gei-journey-top{display:flex;align-items:flex-start;justify-content:space-between;gap:10px}.gei-journey-kicker{display:block;color:var(--skin-accent,#2fd2ff);font-size:9px;font-weight:900;letter-spacing:.13em;text-transform:uppercase}.gei-journey-title{margin:3px 0 0;font-size:19px;line-height:1.02;letter-spacing:-.025em}.gei-journey-count{flex:0 0 auto;padding:6px 8px;border:1px solid color-mix(in srgb,var(--skin-accent,#2fd2ff) 24%,transparent);border-radius:10px;background:var(--skin-soft,#f1f4f8);color:var(--skin-accent,#2fd2ff);font-size:11px;font-weight:900;line-height:1}.gei-journey-copy{margin:0;color:var(--skin-muted,#526b82);font-size:11px;line-height:1.25}.gei-journey-track{height:5px;overflow:hidden;border-radius:999px;background:color-mix(in srgb,var(--skin-muted,#526b82) 13%,transparent)}.gei-journey-fill{display:block;width:0;height:100%;border-radius:inherit;background:linear-gradient(90deg,var(--skin-accent,#2fd2ff),#3d3dea);transition:width 220ms ease}.gei-journey-actions{display:flex;align-items:center;gap:7px}.gei-journey-primary,.gei-journey-complete{appearance:none;min-width:0;min-height:34px;padding:7px 10px;border-radius:11px;font:inherit;font-size:10px;font-weight:900;letter-spacing:.04em;text-transform:uppercase;cursor:pointer;text-decoration:none;text-align:center;-webkit-tap-highlight-color:transparent}.gei-journey-primary{flex:1 1 auto;border:1px solid color-mix(in srgb,var(--skin-accent,#2fd2ff) 45%,transparent);background:var(--skin-accent,#2fd2ff);color:#061018}.gei-journey-primary:active,.gei-journey-complete:active{transform:scale(.98)}.gei-journey-complete{flex:0 1 45%;border:1px solid color-mix(in srgb,var(--skin-accent,#2fd2ff) 28%,transparent);background:var(--skin-surface,#fff);color:var(--skin-text,#102a43)}.gei-journey-complete.is-done{background:var(--skin-soft,#f1f4f8);color:var(--skin-accent,#2fd2ff)}.gei-journey-primary:focus-visible,.gei-journey-complete:focus-visible{outline:3px solid var(--skin-accent,#2fd2ff);outline-offset:2px}.gei-journey-milestone{display:none;align-items:center;justify-content:space-between;gap:8px;padding:6px 8px;border-radius:10px;background:var(--skin-soft,#f1f4f8);font-size:9px;font-weight:800;color:var(--skin-muted,#526b82)}.gei-journey-milestone.is-visible{display:flex}.gei-journey-xp{color:var(--skin-accent,#2fd2ff);font-weight:900}
+.home-experience-stack{gap:8px!important}.home-dam-card{height:150px!important}.home-product-card{min-height:92px!important}.home-product-card img{height:92px!important}.academy-progress-chip{border-color:color-mix(in srgb,var(--skin-accent,#2fd2ff) 30%,transparent)!important}.academy-day-card.is-completed{border-color:color-mix(in srgb,var(--skin-accent,#2fd2ff) 44%,transparent)!important;background:linear-gradient(145deg,color-mix(in srgb,var(--skin-accent,#2fd2ff) 12%,var(--skin-surface,#fff)),var(--skin-surface,#fff))!important}.academy-day-card.is-current{box-shadow:0 0 0 2px color-mix(in srgb,var(--skin-accent,#2fd2ff) 18%,transparent),0 10px 24px rgba(0,0,0,.07)}.academy-day-card.is-locked{pointer-events:none;cursor:not-allowed;opacity:.58}.academy-day-card.is-locked .academy-day-status::after{content:" • LOCKED"}
+#screen-home{overflow-y:auto!important;overflow-x:hidden!important;overscroll-behavior-y:contain!important;-webkit-overflow-scrolling:touch;scrollbar-width:thin;scrollbar-color:rgba(82,107,130,.42) transparent;grid-template-rows:auto auto!important;align-content:start!important}#screen-home::-webkit-scrollbar{width:4px}#screen-home::-webkit-scrollbar-track{background:transparent}#screen-home::-webkit-scrollbar-thumb{background:rgba(82,107,130,.42);border-radius:999px}#screen-home .dashboard-main{min-height:max-content!important}
+#screen-academy .academy-topbar h1{color:#102a43!important;text-shadow:none!important}#screen-academy .academy-topbar p{color:#526b82!important}#screen-academy .academy-section-label,#screen-academy .academy-kicker{color:#168bb3!important}#screen-academy .academy-path-heading h2{color:#102a43!important;text-shadow:none!important}#screen-academy .academy-path-count{color:#526b82!important}#screen-academy .academy-day-number,#screen-academy .academy-day-status{color:#526b82!important}#screen-academy .academy-day-card h3{color:#30465b!important;text-shadow:none!important}#screen-academy .academy-day-card.is-active .academy-day-number,#screen-academy .academy-day-card.is-active .academy-day-status{color:#168bb3!important}#screen-academy .academy-guide-copy h2{color:#dbe6f2!important}#screen-academy .academy-guide-copy p{color:#aebdce!important}
+@media(max-width:360px){.gei-journey-card{min-height:101px;padding:11px 12px;gap:7px;border-radius:19px}.gei-journey-title{font-size:17px}.gei-journey-count{font-size:10px;padding:5px 7px}.gei-journey-copy{font-size:10px}.gei-journey-actions{gap:6px}.gei-journey-primary,.gei-journey-complete{min-height:31px;padding:6px 8px;font-size:9px}.home-dam-card{height:132px!important}.home-product-card{min-height:82px!important}.home-product-card img{height:82px!important}}
+/* V1.34.2 — deterministic Academy flow; keep all learning controls in normal document flow. */
+#screen-academy .academy-view{display:flex!important;flex-direction:column!important;align-items:stretch!important;gap:14px!important;height:100%!important;min-height:0!important;align-content:initial!important}
+#screen-academy .academy-view > .academy-topbar,#screen-academy .academy-view > .academy-hero,#screen-academy .academy-view > .adam-learning-objectives,#screen-academy .academy-view > .gei-journey-card,#screen-academy .academy-view > .adam-objective-mastery,#screen-academy .academy-view > .academy-path{flex:0 0 auto!important;width:100%;box-sizing:border-box}
+#screen-academy .academy-view > .academy-path{min-height:0!important}
+#screen-academy .academy-view > .academy-path .academy-day-grid{grid-auto-rows:minmax(62px,auto)!important}
+#screen-academy .academy-view > .academy-hero{min-height:300px!important;overflow:visible!important}
+#screen-academy .academy-view > .academy-hero .academy-waterwheel-wrap{min-height:220px!important;align-self:stretch!important}
+#screen-academy .academy-view > .academy-hero .academy-waterwheel{width:150px!important;max-width:100%!important}
+#screen-academy .academy-view > .academy-hero .academy-waterwheel-glow{width:142px!important;height:142px!important}
+@media(max-width:360px){#screen-academy .academy-view{gap:10px!important}#screen-academy .academy-view > .academy-hero{min-height:270px!important}#screen-academy .academy-view > .academy-hero .academy-waterwheel-wrap{min-height:210px!important}#screen-academy .academy-view > .academy-hero .academy-waterwheel{width:128px!important}}
