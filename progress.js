@@ -1,15 +1,15 @@
-/* V1.10/V1.11/V1.12/V1.13/V1.34.2 — GEI Guided Entry, Progress & Academy Learning Flow */
+/* V1.10/V1.11/V1.12/V1.13/V1.34.2/V1.38 — GEI Guided Entry, Progress & Academy Learning Flow */
 (() => {
   "use strict";
 
   const STORAGE_KEY = "geiAcademyProgressV1";
   const DAYS = [
-    { id: 1, title: "Day 1", url: "https://www.yalltoo.com/genesis-engineered-day-1" },
-    { id: 2, title: "Day 2", url: "https://www.yalltoo.com/genesis-engineered-day-2-firmament-dam-wall" },
-    { id: 3, title: "Day 3", url: "https://www.yalltoo.com/genesis-engineered-day-3-waters-land" },
-    { id: 4, title: "Day 4", url: "https://www.yalltoo.com/day-4-mill-of-the-dam" },
-    { id: 5, title: "Day 5", url: "https://www.yalltoo.com/day-5-mill-activation" },
-    { id: 6, title: "Day 6", url: "https://www.yalltoo.com/genesis-engineered-day-6-final-operator" }
+    { id: 1, title: "Day 1", url: "day-1.html" },
+    { id: 2, title: "Day 2", url: "day-2.html" },
+    { id: 3, title: "Day 3", url: "day-3.html" },
+    { id: 4, title: "Day 4", url: "day-4.html" },
+    { id: 5, title: "Day 5", url: "day-5.html" },
+    { id: 6, title: "Day 6", url: "day-6.html" }
   ];
   const DEFAULT_STATE = { completed: [], xp: 0 };
   let state = loadState();
@@ -42,7 +42,7 @@
     window.dispatchEvent(new CustomEvent("gei:progress-updated", { detail: { ...state, currentDay: currentDayId() } }));
   }
   function journeyMarkup() {
-    return `<section class="gei-journey-card" id="gei-journey-card" aria-labelledby="gei-journey-title"><div class="gei-journey-top"><div><span class="gei-journey-kicker">GEI PROGRESS</span><h2 class="gei-journey-title" id="gei-journey-title">Continue Your Journey</h2></div><span class="gei-journey-count" id="gei-journey-count">0 / 6</span></div><p class="gei-journey-copy" id="gei-journey-copy">You're ready for Day 1. Start with the source, water, engineering and interpretation.</p><div class="gei-journey-track" role="progressbar" aria-label="GEI learning progress" aria-valuemin="0" aria-valuemax="6" aria-valuenow="0"><span class="gei-journey-fill" id="gei-journey-fill"></span></div><div class="gei-journey-milestone" id="gei-journey-milestone"><span id="gei-journey-milestone-text">DAY 1 COMPLETE</span><span class="gei-journey-xp" id="gei-journey-xp">+100 XP</span></div><div class="gei-journey-actions"><a class="gei-journey-primary" id="gei-journey-primary" href="${DAYS[0].url}" target="_blank" rel="noopener noreferrer">START DAY 1 →</a><button class="gei-journey-complete" id="gei-journey-complete" type="button">MARK COMPLETE</button></div></section>`;
+    return `<section class="gei-journey-card" id="gei-journey-card" aria-labelledby="gei-journey-title"><div class="gei-journey-top"><div><span class="gei-journey-kicker">GEI PROGRESS</span><h2 class="gei-journey-title" id="gei-journey-title">Continue Your Journey</h2></div><span class="gei-journey-count" id="gei-journey-count">0 / 6</span></div><p class="gei-journey-copy" id="gei-journey-copy">You're ready for Day 1. Start with the source, water, engineering and interpretation.</p><div class="gei-journey-track" role="progressbar" aria-label="GEI learning progress" aria-valuemin="0" aria-valuemax="6" aria-valuenow="0"><span class="gei-journey-fill" id="gei-journey-fill"></span></div><div class="gei-journey-milestone" id="gei-journey-milestone"><span id="gei-journey-milestone-text">DAY 1 COMPLETE</span><span class="gei-journey-xp" id="gei-journey-xp">+100 XP</span></div><div class="gei-journey-actions"><a class="gei-journey-primary" id="gei-journey-primary" href="day-1.html">START DAY 1 →</a><button class="gei-journey-complete" id="gei-journey-complete" type="button">MARK COMPLETE</button></div></section>`;
   }
   function ensureJourneyCard() {
     const screen = document.getElementById("screen-academy");
@@ -76,12 +76,14 @@
   function renderAll() { ensureJourneyCard(); updateJourney(); updateAcademy(); updateAdamContext(); }
   function loadStreakEngine() { if (document.querySelector('script[data-gei-streak-engine]')) return; const script = document.createElement("script"); script.src = "streak.js"; script.defer = true; script.dataset.geiStreakEngine = "true"; document.head.appendChild(script); }
   function loadAchievementEngine() { if (document.querySelector('script[data-gei-achievement-engine]')) return; const script = document.createElement("script"); script.src = "achievement.js"; script.defer = true; script.dataset.geiAchievementEngine = "true"; document.head.appendChild(script); }
+  function loadProgressHub() { if (document.querySelector('script[data-gei-progress-hub]')) return; const css = document.createElement("link"); css.rel = "stylesheet"; css.href = "academy-progress-hub.css"; css.dataset.geiProgressHubStyle = "true"; document.head.appendChild(css); const script = document.createElement("script"); script.src = "academy-progress-hub.js"; script.defer = true; script.dataset.geiProgressHub = "true"; document.head.appendChild(script); }
   function init() {
     renderAll(); document.addEventListener("click", guardLockedAcademyLinks, true); document.addEventListener("click", (event) => { if (event.target.closest?.(".home-mascot-button")) window.setTimeout(updateAdamContext, 0); }, true);
     window.addEventListener("gei:objectives-ready", renderAll);
+    window.addEventListener("gei:day-completion", () => { state = loadState(); renderAll(); });
     window.GEI_PROGRESS = Object.freeze({ getState: () => ({ ...state }), getCurrentDay: currentDayId, getDayUrl: (id) => DAYS.find((day) => day.id === Number(id))?.url || null, completeDay, addXP, resetProgress });
     window.dispatchEvent(new CustomEvent("gei:progress-ready", { detail: { ...state, currentDay: currentDayId() } }));
-    loadStreakEngine(); loadAchievementEngine();
+    loadStreakEngine(); loadAchievementEngine(); loadProgressHub();
   }
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", init, { once: true }); else init();
 })();
