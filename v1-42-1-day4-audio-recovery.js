@@ -1,0 +1,33 @@
+(()=>{"use strict";
+const root=document.querySelector('[data-gei-day="4"]');
+if(!root)return;
+const audio=document.getElementById("day-audio");
+if(!audio)return;
+const expected="https://assets.zyrosite.com/YZ9jg46Bljs5wOZR/genesis-engineered-day-4-yalltoo-A1a5bjkZl5iPPXoG4.mp3";
+const recoveryClass="day4-audio-recovery";
+const removeRecovery=()=>root.querySelector(`.${recoveryClass}`)?.remove();
+const showRecovery=()=>{
+  if(root.querySelector(`.${recoveryClass}`))return;
+  const fallback=document.createElement("a");
+  fallback.href=expected;
+  fallback.target="_blank";
+  fallback.rel="noopener noreferrer";
+  fallback.textContent="Open Day 4 audio directly";
+  fallback.className="day4-audio-fallback";
+  const wrap=document.createElement("div");
+  wrap.className=recoveryClass;
+  wrap.setAttribute("role","status");
+  wrap.append("The Day 4 player could not load the lesson audio. ",fallback);
+  audio.insertAdjacentElement("afterend",wrap);
+};
+const healthy=()=>audio.readyState>=1||Number.isFinite(audio.duration);
+const clear=()=>removeRecovery();
+if(audio.getAttribute("src")!==expected){audio.src=expected;audio.load()}
+audio.addEventListener("error",showRecovery);
+audio.addEventListener("loadedmetadata",clear);
+audio.addEventListener("loadeddata",clear);
+audio.addEventListener("canplay",clear);
+audio.addEventListener("playing",clear);
+audio.addEventListener("stalled",()=>{if(audio.error)showRecovery()});
+if(healthy())clear();
+})();
