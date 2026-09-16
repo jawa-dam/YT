@@ -48,8 +48,9 @@
     const screen = document.getElementById("screen-academy");
     const view = screen?.querySelector(".academy-view");
     const objectives = view?.querySelector(":scope > .adam-learning-objectives");
-    if (!view || !objectives || document.getElementById("gei-journey-card")) return;
-    objectives.insertAdjacentHTML("afterend", journeyMarkup());
+    const mastery = view?.querySelector(":scope > .adam-objective-mastery");
+    if (!view || !objectives || !mastery || document.getElementById("gei-journey-card")) return;
+    mastery.insertAdjacentHTML("beforebegin", journeyMarkup());
     document.getElementById("gei-journey-complete")?.addEventListener("click", () => completeDay(currentDayId()));
   }
   function updateJourney() {
