@@ -32,6 +32,8 @@
   color:inherit;
   cursor:pointer;
   overflow:visible;
+  pointer-events:auto;
+  touch-action:manipulation;
 }
 .home-mascot-button .mascot-ring { z-index:-1; }
 .home-mascot-button .home-mascot-image {
@@ -48,6 +50,40 @@
   pointer-events:none!important;
 }
 .home-mascot-button:focus-visible { outline:2px solid var(--cyan);outline-offset:4px;border-radius:18px; }
+
+/* V1.36.1 — Explicitly restore touch/click hit-testing for the Adam assistant dialog. */
+.home-adam-assistant {
+  z-index:10000!important;
+  pointer-events:auto!important;
+  touch-action:manipulation!important;
+  isolation:isolate;
+}
+.home-adam-assistant-backdrop {
+  z-index:0;
+  pointer-events:auto!important;
+  touch-action:manipulation!important;
+}
+.home-adam-assistant-card {
+  z-index:1;
+  pointer-events:auto!important;
+  touch-action:manipulation!important;
+}
+.home-adam-assistant-choice,
+.home-adam-assistant-close {
+  position:relative;
+  z-index:2;
+  pointer-events:auto!important;
+  touch-action:manipulation!important;
+  cursor:pointer!important;
+}
+.home-adam-assistant-choice:not(:disabled),
+.home-adam-assistant-close:not(:disabled) {
+  opacity:1!important;
+}
+.home-adam-assistant-choice:disabled,
+.home-adam-assistant-close:disabled {
+  pointer-events:none!important;
+}
 
 @keyframes geiAdamFloat { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-3px)} }
 @keyframes geiAdamPulse { 0%,100%{transform:translateY(0) scale(1)} 50%{transform:translateY(-3px) scale(1.045)} }
