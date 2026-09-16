@@ -60,8 +60,8 @@
 }
 .home-adam-assistant-backdrop {
   z-index:0;
-  pointer-events:auto!important;
-  touch-action:manipulation!important;
+  pointer-events:none!important;
+  touch-action:none!important;
 }
 .home-adam-assistant-card {
   z-index:1;
