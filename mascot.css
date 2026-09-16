@@ -16,7 +16,7 @@
 .gei-mascot-image--idle { animation:geiAdamFloat 3.8s ease-in-out infinite; }
 .gei-mascot-button--interactive .gei-mascot-image--idle { will-change:transform; }
 
-/* V1.36 — Home Adam: larger presentation; remove the name below his feet. */
+/* V1.36 — Home Adam: larger presentation; remove every visible name label below the mascot. */
 .home-mascot-button {
   position:relative;
   z-index:2;
@@ -39,7 +39,14 @@
   animation:geiAdamPulse 2.8s ease-in-out infinite;
   transform-origin:center 62%;will-change:transform;
 }
-.home-mascot-button .mascot-caption { display:none!important; }
+/* Defense-in-depth: hide both legacy DOM labels if any cached/fallback markup survives. */
+.home-mascot-button .mascot-badge,
+.home-mascot-button .mascot-caption {
+  display:none!important;
+  visibility:hidden!important;
+  opacity:0!important;
+  pointer-events:none!important;
+}
 .home-mascot-button:focus-visible { outline:2px solid var(--cyan);outline-offset:4px;border-radius:18px; }
 
 @keyframes geiAdamFloat { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-3px)} }
