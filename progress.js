@@ -1,4 +1,4 @@
-/* V1.10/V1.11/V1.12/V1.13/V1.34.2/V1.38/V1.40 — GEI Guided Entry, Progress & Academy Learning Flow */
+/* V1.10/V1.11/V1.12/V1.13/V1.34.2/V1.38/V1.40/V1.41 — GEI Guided Entry, Progress & Academy Learning Flow */
 (() => {
   "use strict";
 
@@ -48,6 +48,10 @@
     }
   }
 
+  function isDayLessonComplete(id) {
+    return loadDayCompletions().includes(Number(id));
+  }
+
   function saveState() {
     try {
       localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
@@ -72,15 +76,22 @@
   function isUnlocked(id) { return id === 1 || state.completed.includes(id - 1); }
 
   function completeDay(id) {
-    if (id < 1 || id > 6 || isComplete(id)) return;
-    state.completed.push(id);
+    const dayId = Number(id);
+    if (!Number.isInteger(dayId) || dayId < 1 || dayId > 6 || isComplete(dayId)) return false;
+    if (!isDayLessonComplete(dayId)) {
+      window.dispatchEvent(new CustomEvent("gei:completion-guarded", {
+        detail: { dayId, reason: "lesson-not-complete" }
+      }));
+      return false;
+    }
+    state.completed.push(dayId);
     state.completed = [...new Set(state.completed)].sort((a, b) => a - b);
-    state.xp += 100;
     saveState();
     renderAll();
     window.dispatchEvent(new CustomEvent("gei:progress-updated", {
-      detail: { ...state, completedDay: id, currentDay: currentDayId() }
+      detail: { ...state, completedDay: dayId, currentDay: currentDayId(), xpAwarded: 0, source: "day-completion-ledger" }
     }));
+    return true;
   }
 
   function addXP(amount, source = "reward") {
