@@ -152,6 +152,14 @@
   }
 
   function init() {
+    const vaultCss = document.createElement("link");
+    vaultCss.rel = "stylesheet";
+    vaultCss.href = "v1-45-academy-achievement-vault.css";
+    document.head.appendChild(vaultCss);
+    const vaultScript = document.createElement("script");
+    vaultScript.src = "v1-45-academy-achievement-vault.js";
+    vaultScript.defer = true;
+    document.head.appendChild(vaultScript);
     renderAcademy();
     window.addEventListener("storage", syncDayState);
     window.addEventListener("gei:day-completion", syncDayState);
