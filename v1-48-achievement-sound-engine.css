@@ -1,0 +1,6 @@
+/* V1.48 — Achievement Sound Engine UI */
+.v1-48-sound-toggle{margin-left:auto;align-self:center;min-height:30px;padding:0 9px;border:1px solid rgba(47,210,255,.32);border-radius:999px;background:rgba(47,210,255,.07);color:#cfeeff;font-size:8px;font-weight:900;letter-spacing:.08em;cursor:pointer;white-space:nowrap;-webkit-tap-highlight-color:transparent}
+.v1-48-sound-toggle[aria-pressed="false"]{border-color:rgba(255,255,255,.14);background:rgba(255,255,255,.04);color:#8996aa}
+.v1-48-sound-toggle:focus-visible{outline:3px solid #ff9df2;outline-offset:2px}
+@media(max-width:360px){.v1-48-sound-toggle{font-size:7px;padding:0 7px;min-height:28px}}
+@media(prefers-reduced-motion:reduce){.v1-48-sound-toggle{transition:none!important}}
