@@ -216,6 +216,16 @@
     const frame = document.getElementById(APP_FRAME_ID);
     if (!frame) return;
     const splash = frame.querySelector(".splash-layer") || installSplashMarkup(frame);
+
+    // Deep links into the Academy should open the Academy directly.
+    // Lesson pages use index.html#academy; do not force those users through
+    // the 10-second splash experience before navigation.js activates the
+    // Academy screen.
+    const isAcademyDeepLink = window.location.hash === "#academy";
+    if (isAcademyDeepLink) {
+      completeSplash("academy-deep-link");
+      return;
+    }
     const artwork = splash.querySelector(".splash-artwork");
     const enter = splash.querySelector("#splash-enter");
     const status = splash.querySelector("#splash-status");
