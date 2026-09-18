@@ -168,7 +168,8 @@
     replaceHomeMascot();
     replaceHomeBlueprint();
     renderSupport();
-    setActiveScreen("home");
+    setActiveScreen(location.hash === "#academy" ? "academy" : "home");
+    window.addEventListener("hashchange", () => { if (location.hash === "#academy") setActiveScreen("academy"); });
   }
 
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", init, { once: true });
