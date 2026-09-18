@@ -68,18 +68,49 @@
       </div>`;
   }
 
+  function getAdamGuideState() {
+    const completion = readCompletion();
+    const completed = Array.from({ length: 6 }, (_, i) => i + 1)
+      .filter((day) => completion[day]?.completed === true && Number(completion[day]?.audioPercent || 0) >= 90);
+    const currentDay = completed.length < 6 ? completed.length + 1 : 1;
+    const xp = Math.max(0, Number(window.GEI_PROGRESS?.getState?.()?.xp) || 0);
+    return {
+      completed,
+      count: completed.length,
+      currentDay,
+      xp,
+      complete: completed.length === 6
+    };
+  }
+
   function mascotGuideMarkup() {
+    const state = getAdamGuideState();
+    const day = state.currentDay;
+    const message = state.complete
+      ? "You completed the full six-day blueprint. I can help you review the path, your progress, or the GEI interpretation."
+      : state.count === 0
+        ? "I’m your all-in-one GEI guide. Start with Day 1, and I’ll keep your blueprint progress right here."
+        : `Day ${day} is your next unlocked lesson. Your completed days and audio integrity stay synchronized with this guide.`;
     return `
       <div class="academy-guide" id="academy-guide" hidden>
         <button class="academy-guide-backdrop" id="academy-guide-backdrop" type="button" aria-label="Close Adam guide"></button>
-        <section class="academy-guide-card" role="dialog" aria-modal="true" aria-labelledby="academy-guide-title">
+        <section class="academy-guide-card" role="dialog" aria-modal="true" aria-labelledby="academy-guide-title" aria-describedby="academy-guide-message">
           <button class="academy-guide-close" id="academy-guide-close" type="button" aria-label="Close Adam guide">×</button>
           <div class="academy-guide-mascot"><img class="gei-mascot-image" src="${MASCOT.url}" alt="${MASCOT.alt}" loading="eager" decoding="async" /></div>
           <div class="academy-guide-copy">
-            <span class="academy-section-label">ADAM • ACADEMY GUIDE</span>
-            <h2 id="academy-guide-title">Welcome to the Water Blueprint.</h2>
-            <p>Explore the six stages, observe the design, and begin with Day 1 when you're ready.</p>
-            <a class="academy-guide-action" href="day-1.html">BEGIN DAY 1 <strong aria-hidden="true">→</strong></a>
+            <span class="academy-section-label">ADAM • ALL-IN-ONE GUIDE</span>
+            <h2 id="academy-guide-title">Your GEI Guide.</h2>
+            <p id="academy-guide-message">${message}</p>
+            <div class="academy-guide-meta" aria-label="Adam guide progress">
+              <span>BLUEPRINT <b id="academy-guide-count">${state.count}/6</b></span>
+              <span>XP <b id="academy-guide-xp">${state.xp}</b></span>
+              <span>NEXT <b id="academy-guide-day">DAY ${day}</b></span>
+            </div>
+            <div class="academy-guide-actions" aria-label="Adam quick actions">
+              <a class="academy-guide-action academy-guide-primary" id="academy-guide-continue" href="day-${day}.html">${state.complete ? "REVIEW DAY 1" : `CONTINUE DAY ${day}`} <strong aria-hidden="true">→</strong></a>
+              <button class="academy-guide-secondary" id="academy-guide-progress" type="button">MY PROGRESS</button>
+              <button class="academy-guide-secondary" id="academy-guide-gei" type="button">WHAT IS GEI?</button>
+            </div>
           </div>
         </section>
       </div>`;
@@ -140,13 +171,56 @@
     const mascot = document.getElementById("academy-mascot"), guide = document.getElementById("academy-guide"), closeButton = document.getElementById("academy-guide-close"), backdrop = document.getElementById("academy-guide-backdrop");
     if (!mascot || !guide || !closeButton || !backdrop) return;
     let previousFocus = null;
+
+    const refreshGuide = () => {
+      const state = getAdamGuideState();
+      const day = state.currentDay;
+      const message = guide.querySelector("#academy-guide-message");
+      const count = guide.querySelector("#academy-guide-count");
+      const xp = guide.querySelector("#academy-guide-xp");
+      const next = guide.querySelector("#academy-guide-day");
+      const continueLink = guide.querySelector("#academy-guide-continue");
+      if (message) message.textContent = state.complete
+        ? "You completed the full six-day blueprint. I can help you review the path, your progress, or the GEI interpretation."
+        : state.count === 0
+          ? "I’m your all-in-one GEI guide. Start with Day 1, and I’ll keep your blueprint progress right here."
+          : `Day ${day} is your next unlocked lesson. Your completed days and audio integrity stay synchronized with this guide.`;
+      if (count) count.textContent = `${state.count}/6`;
+      if (xp) xp.textContent = String(state.xp);
+      if (next) next.textContent = `DAY ${day}`;
+      if (continueLink) {
+        continueLink.href = `day-${day}.html`;
+        continueLink.textContent = `${state.complete ? "REVIEW DAY 1" : `CONTINUE DAY ${day}`} `;
+        const arrow = document.createElement("strong");
+        arrow.setAttribute("aria-hidden", "true");
+        arrow.textContent = "→";
+        continueLink.appendChild(arrow);
+      }
+    };
+
     const closeGuide = () => { guide.hidden = true; mascot.setAttribute("aria-expanded", "false"); document.body.classList.remove("academy-guide-open"); if (previousFocus) previousFocus.focus(); previousFocus = null; };
-    const openGuide = () => { previousFocus = document.activeElement; guide.hidden = false; mascot.setAttribute("aria-expanded", "true"); document.body.classList.add("academy-guide-open"); requestAnimationFrame(() => closeButton.focus()); };
+    const openGuide = () => { previousFocus = document.activeElement; refreshGuide(); guide.hidden = false; mascot.setAttribute("aria-expanded", "true"); document.body.classList.add("academy-guide-open"); requestAnimationFrame(() => closeButton.focus()); };
     mascot.addEventListener("click", openGuide);
     window.addEventListener("gei:open-adam-guide", openGuide);
     closeButton.addEventListener("click", closeGuide);
     backdrop.addEventListener("click", closeGuide);
+
+    guide.querySelector("#academy-guide-progress")?.addEventListener("click", () => {
+      const state = getAdamGuideState();
+      const message = guide.querySelector("#academy-guide-message");
+      if (message) message.textContent = state.complete
+        ? "6 of 6 days complete. Your six-day blueprint is fully recorded."
+        : `${state.count} of 6 days complete. Day ${state.currentDay} is your next unlocked lesson.`;
+    });
+
+    guide.querySelector("#academy-guide-gei")?.addEventListener("click", () => {
+      const message = guide.querySelector("#academy-guide-message");
+      if (message) message.textContent = "GEI stands for Genesis Engineered Interpretations — this Academy explores Genesis Chapter 1 through water, engineering, language and interpretation.";
+    });
+
     guide.addEventListener("keydown", (event) => { if (event.key === "Escape") closeGuide(); });
+
+    ["gei:progress-ready","gei:progress-updated","gei:day-completion"].forEach((name) => window.addEventListener(name, refreshGuide));
 
     syncDayState();
   }
