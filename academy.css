@@ -219,3 +219,102 @@ body.academy-guide-open { overflow:hidden; }
 @media (prefers-reduced-motion: reduce) {
   .academy-primary-action,.academy-mascot,.academy-wheel-rotor { transition:none!important; }
 }
+
+
+/* V1.50 — Adam mascot owns the full guide interaction. */
+.academy-guide-card {
+  grid-template-columns:82px minmax(0,1fr);
+  gap:12px;
+  padding:14px;
+}
+.academy-guide-mascot {
+  width:82px;
+  height:82px;
+}
+.academy-guide-copy h2 {
+  margin-right:30px;
+}
+.academy-guide-meta {
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:6px;
+  margin:0 0 9px;
+}
+.academy-guide-meta span {
+  min-width:0;
+  padding:7px 6px;
+  border:1px solid rgba(47,210,255,.2);
+  border-radius:10px;
+  background:rgba(47,210,255,.06);
+  color:#8fa0b7;
+  font-size:7px;
+  font-weight:900;
+  letter-spacing:.09em;
+  text-align:center;
+}
+.academy-guide-meta b {
+  display:block;
+  margin-top:2px;
+  color:var(--cyan);
+  font-size:10px;
+  letter-spacing:.02em;
+}
+.academy-guide-actions {
+  display:grid;
+  grid-template-columns:minmax(0,1.25fr) minmax(0,1fr);
+  gap:7px;
+}
+.academy-guide-action,
+.academy-guide-secondary {
+  min-width:0;
+  min-height:36px;
+  padding:0 9px;
+  border-radius:11px;
+  font-size:8px;
+  font-weight:900;
+  letter-spacing:.06em;
+  text-transform:uppercase;
+  cursor:pointer;
+  -webkit-tap-highlight-color:transparent;
+}
+.academy-guide-action.academy-guide-primary {
+  width:auto;
+  margin:0;
+}
+.academy-guide-secondary {
+  border:1px solid rgba(255,255,255,.16);
+  background:rgba(255,255,255,.06);
+  color:#dce7f5;
+}
+.academy-guide-secondary:focus-visible,
+.academy-guide-action:focus-visible {
+  outline:3px solid var(--pink);
+  outline-offset:2px;
+}
+@media(max-width:360px){
+  .academy-guide-card {
+    grid-template-columns:58px minmax(0,1fr);
+    gap:9px;
+    padding:11px;
+  }
+  .academy-guide-mascot {
+    width:58px;
+    height:58px;
+  }
+  .academy-guide-meta span {
+    padding:6px 3px;
+    font-size:6px;
+  }
+  .academy-guide-meta b {
+    font-size:9px;
+  }
+  .academy-guide-actions {
+    grid-template-columns:1fr 1fr;
+  }
+  .academy-guide-action,
+  .academy-guide-secondary {
+    min-height:34px;
+    padding:0 6px;
+    font-size:7px;
+  }
+}
