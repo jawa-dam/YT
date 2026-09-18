@@ -18,7 +18,7 @@ subtitle.textContent=count===6?"All six achievements mastered. Blueprint Master 
 for(const [key,item] of Object.entries(items)){
   const n=Number(key),isEarned=earned.includes(n);
   let card=grid.querySelector('[data-v1-45-day="'+n+'"]');
-  if(!card){card=document.createElement("article");card.className="v1-45-vault-item";card.dataset.v1_45Day=String(n);grid.appendChild(card)}
+  if(!card){card=document.createElement("article");card.className="v1-45-vault-item";card.setAttribute("data-v1-45-day",String(n));grid.appendChild(card)}
   card.classList.toggle("is-earned",isEarned);card.classList.toggle("is-locked",!isEarned);card.setAttribute("aria-label",item.title+": "+(isEarned?"earned":"locked"));
   card.innerHTML='<span class="v1-45-vault-icon" aria-hidden="true">'+(isEarned?item.icon:"🔒")+'</span><span class="v1-45-vault-day">DAY '+n+'</span><strong>'+item.title+'</strong><span class="v1-45-vault-copy">'+(isEarned?item.short:"Complete this lesson to unlock")+'</span>';
 }
