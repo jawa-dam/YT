@@ -48,7 +48,7 @@ function waterCelebration(day){
  const count=38;
  for(let i=0;i<count;i++){
    const p=document.createElement("span");p.className="gei-water-burst";
-   const angle=(Math.PI*2*i/count)+(Math.random()-.5)*.28,dist=90+Math.random()*min(window.innerWidth,window.innerHeight)*.42;
+   const angle=(Math.PI*2*i/count)+(Math.random()-.5)*.28,dist=90+Math.random()*Math.min(window.innerWidth,window.innerHeight)*.42;
    p.style.setProperty("--x",Math.cos(angle)*dist+"px");p.style.setProperty("--y",Math.sin(angle)*dist+"px");
    p.style.setProperty("--scale",(0.45+Math.random()*1.2).toFixed(2));
    p.style.setProperty("--dur",(900+Math.random()*850)+"ms");
