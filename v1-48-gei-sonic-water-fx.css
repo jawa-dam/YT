@@ -1,0 +1,41 @@
+/* V1.48 — GEI Sonic & Water Celebration Layer */
+:root{
+  --gei-fx-cyan:#2fd2ff;
+  --gei-fx-blue:#155eef;
+  --gei-fx-pink:#ff1493;
+}
+.gei-sonic-ripple{
+  position:absolute;inset:50% auto auto 50%;width:18px;height:18px;border:2px solid currentColor;
+  border-radius:50%;transform:translate(-50%,-50%) scale(.3);pointer-events:none;opacity:.9;
+  animation:geiSonicRipple .62s cubic-bezier(.2,.75,.25,1) forwards;z-index:9999;
+}
+.gei-sonic-hit{animation:geiSonicHit .42s cubic-bezier(.18,.9,.25,1)}
+.gei-mascot-button.gei-sonic-hit .gei-mascot-image,.academy-mascot.gei-sonic-hit .gei-mascot-image{animation:geiAdamHit .7s cubic-bezier(.2,.85,.25,1)}
+.gei-water-celebration{
+  position:fixed;inset:0;z-index:10000;pointer-events:none;overflow:hidden;
+}
+.gei-water-burst{
+  position:absolute;left:50%;top:52%;width:12px;height:12px;border-radius:50%;
+  background:radial-gradient(circle,#fff 0 12%,var(--gei-fx-cyan) 30%,var(--gei-fx-blue) 62%,transparent 72%);
+  filter:drop-shadow(0 0 9px rgba(47,210,255,.55));
+  animation:geiWaterBurst var(--dur) cubic-bezier(.16,.78,.2,1) forwards;
+}
+.gei-water-wave{
+  position:absolute;left:50%;top:52%;width:30px;height:30px;border:3px solid rgba(47,210,255,.9);
+  border-radius:50%;transform:translate(-50%,-50%);animation:geiWaterWave 1.15s cubic-bezier(.15,.7,.25,1) forwards;
+}
+.gei-completion-flash{
+  position:absolute;inset:0;background:radial-gradient(circle at 50% 52%,rgba(47,210,255,.2),transparent 38%);
+  animation:geiFlash .75s ease-out forwards;
+}
+@keyframes geiSonicRipple{to{transform:translate(-50%,-50%) scale(5);opacity:0}}
+@keyframes geiSonicHit{0%{transform:scale(1)}35%{transform:scale(1.045)}100%{transform:scale(1)}}
+@keyframes geiAdamHit{0%{transform:translateY(0) rotate(0) scale(1)}30%{transform:translateY(-9px) rotate(-3deg) scale(1.04)}62%{transform:translateY(1px) rotate(2deg) scale(.99)}100%{transform:translateY(0) rotate(0) scale(1)}}
+@keyframes geiWaterBurst{0%{transform:translate(-50%,-50%) scale(.4);opacity:0}12%{opacity:1}100%{transform:translate(calc(-50% + var(--x)),calc(-50% + var(--y))) scale(var(--scale));opacity:0}}
+@keyframes geiWaterWave{0%{width:20px;height:20px;opacity:.95}100%{width:82vw;height:82vw;opacity:0}}
+@keyframes geiFlash{0%{opacity:0}25%{opacity:1}100%{opacity:0}}
+@media(prefers-reduced-motion:reduce){
+  .gei-sonic-ripple,.gei-sonic-hit,.gei-mascot-button.gei-sonic-hit .gei-mascot-image,.academy-mascot.gei-sonic-hit .gei-mascot-image,
+  .gei-water-burst,.gei-water-wave,.gei-completion-flash{animation:none!important}
+  .gei-water-celebration{display:none}
+}
