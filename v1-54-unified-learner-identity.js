@@ -40,6 +40,9 @@ function notify(source){
  const snapshot={...state};
  listeners.forEach(fn=>{try{fn(snapshot)}catch{}});
  emit("gei:identity-updated",{...snapshot,source:source||"identity-engine"});
+ emit("gei:learner-identity-updated",{...snapshot,source:source||"identity-engine"});
+ if(source!=="academy-gate")emit("gei:dam-name-updated",{damName:snapshot.damName,updatedAt:snapshot.updatedAt,source:source||"identity-engine"});
+ if(source!=="profile-avatar")emit("gei:dam-avatar-updated",{avatar:snapshot.avatar,source:source||"identity-engine"});
 }
 function setIdentity(patch,source){
  const next={...state};
