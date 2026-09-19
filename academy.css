@@ -434,10 +434,10 @@ body.academy-guide-open { overflow:hidden; }
 @media(max-width:340px){
   .gei-stage-link{grid-template-columns:36px minmax(0,1fr)!important;min-height:96px!important}
   .gei-stage-top{grid-row:1 / span 3}
-  .gei-stage-achievement{grid-column:2;grid-row:3;align-items:flex-start;text-align:left;min-width:0;max-width:none;flex-direction:row;gap:5px}
+  .gei-stage-achievement{grid-column:2;grid-row:4;align-items:flex-start;text-align:left;min-width:0;max-width:none;flex-direction:row;gap:5px}
   .gei-stage-achievement.is-earned{padding:3px 6px;width:max-content}
   .gei-stage-achievement b{font-size:6px}
   .gei-stage-achievement strong{font-size:8px}
   .gei-stage-link .academy-day-status{grid-column:2;grid-row:3}
-  .gei-stage-achievement{transform:translateY(17px)}
+  .gei-stage-achievement{transform:none}
 }
