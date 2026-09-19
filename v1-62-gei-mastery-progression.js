@@ -20,11 +20,17 @@ function render(){
   home.querySelectorAll(".day-pill").forEach((pill,i)=>{pill.classList.toggle("is-complete",i<s.completed);pill.classList.toggle("is-current",i===s.completed&&s.completed<6)});
  }
 }
+function showMilestone(m){
+ const box=document.createElement("div");box.className="gei-mastery-milestone-pop";
+ box.innerHTML="<strong>"+(m.day===6?"🏆 BLUEPRINT MASTER":"+"+m.xp+" XP")+"</strong><span>"+(m.day===6?"666 XP • 6 / 6 MILESTONES":"DAY "+m.day+" MASTERY MILESTONE")+"</span>";
+ document.body.appendChild(box);window.setTimeout(()=>box.remove(),1900);
+ if(m.day<6) window.GEI_SONIC_FX?.answer?.(true);
+}
 function notifyMilestone(xp){
  const m=milestoneFor(xp);if(!m)return;
  const seen=load();if(seen.includes(m.day))return;
  seen.push(m.day);save(seen);
- window.dispatchEvent(new CustomEvent("gei:mastery-milestone",{detail:{...m,totalXP:xp}}));
+ window.dispatchEvent(new CustomEvent("gei:mastery-milestone",{detail:{...m,totalXP:xp}}));showMilestone(m);
 }
 function sync(){
  const xp=state().xp;render();
