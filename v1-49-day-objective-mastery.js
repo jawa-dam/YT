@@ -3,7 +3,7 @@
   "use strict";
   const STORAGE_KEY = "geiAdamObjectiveMasteryV1";
   const XP_LEDGER_KEY = "geiObjectiveXPRewardsV1";
-  const XP_PER_OBJECTIVE = 15;
+  const XP_PER_OBJECTIVE = 37;
   const PHRASES = Object.freeze(["LET’S GO DAM IT","DAM IT {name}","YOU KNOW DAM WELL","ANSWER THE DAM QUESTION","THAT’S A DAM SHAME"]);
   const QUESTIONS = Object.freeze({
     1:[["What is the first condition described before light appears?",["A dry land","Darkness upon the deep","A completed dam"],1],["In the GEI Day 1 model, what does light represent?",["Released water","A mountain","A mill gear"],0],["What is the key engineering action established on Day 1?",["Separation","Harvesting","Animal operation"],0]],
@@ -18,7 +18,25 @@
   function readXPLedger(){try{const p=JSON.parse(localStorage.getItem(XP_LEDGER_KEY)||"{}");return p&&typeof p==="object"?p:{}}catch(_){return{}}}
   function saveXPLedger(s){try{localStorage.setItem(XP_LEDGER_KEY,JSON.stringify(s));}catch(_){}}
   function awardObjectiveXP(day,index,source="objective-mastery"){const ledger=readXPLedger(),k=key(day,index);if(ledger[k])return false;const awarded=window.GEI_PROGRESS?.addXP?.(XP_PER_OBJECTIVE,source);if(!awarded)return false;ledger[k]={amount:XP_PER_OBJECTIVE,awardedAt:new Date().toISOString()};saveXPLedger(ledger);window.dispatchEvent(new CustomEvent("gei:objective-xp-awarded",{detail:{day,index:index+1,amount:XP_PER_OBJECTIVE,total:window.GEI_PROGRESS?.getState?.()?.xp||0}}));return true}
-  function reconcileObjectiveXP(){const state=read(),ledger=readXPLedger();Object.keys(state.mastered).forEach(()=>{});state.mastered.forEach(k=>{if(ledger[k])return;const parts=k.split("-"),day=Number(parts[0]),index=Number(parts[1]);if(day>=1&&day<=6&&index>=0&&index<3)awardObjectiveXP(day,index,"objective-mastery-reconcile")})}
+  function reconcileObjectiveXP(){const state=read(),ledger=readXPLedger();
+    state.mastered.forEach(k=>{
+      const parts=k.split("-"),day=Number(parts[0]),index=Number(parts[1]);
+      if(day<1||day>6||index<0||index>=3)return;
+      if(ledger[k]){
+        const recorded=Math.max(0,Number(ledger[k].amount)||0);
+        if(recorded<XP_PER_OBJECTIVE){
+          const delta=XP_PER_OBJECTIVE-recorded;
+          if(window.GEI_PROGRESS?.addXP?.(delta,"objective-mastery-upgrade")){
+            ledger[k]={amount:XP_PER_OBJECTIVE,upgradedAt:new Date().toISOString(),previousAmount:recorded};
+            saveXPLedger(ledger);
+            window.dispatchEvent(new CustomEvent("gei:objective-xp-awarded",{detail:{day,index:index+1,amount:delta,total:window.GEI_PROGRESS?.getState?.()?.xp||0,source:"objective-mastery-upgrade"}}));
+          }
+        }
+        return;
+      }
+      awardObjectiveXP(day,index,"objective-mastery-reconcile");
+    });
+  }
   function getDay(){return Math.min(6,Math.max(1,Number(document.querySelector(".day-app")?.dataset.geiDay)||1));}
   function key(day,index){return day+"-"+index;}
   function isMastered(s,day,index){return s.mastered.includes(key(day,index));}
@@ -29,7 +47,7 @@
     const section=document.createElement("section"); section.className="v1-49-day-objective-mastery";
     const identity=window.GEI_IDENTITY;
     const learnerName=identity?.getDamName?.()||"LEARNER"; section.setAttribute("aria-labelledby","v1-49-mastery-title");
-    section.innerHTML=`<div class="v1-49-mastery-head"><div><span class="v1-49-mastery-kicker">ADAM • OBJECTIVE MASTERY • @${learnerName}</span><h2 id="v1-49-mastery-title">Day ${day} mastery</h2></div><span class="v1-49-mastery-badge">+15 XP EACH</span></div><p class="v1-49-mastery-copy">Answer the three checkpoints for this specific day to demonstrate what you learned.</p><div class="v1-49-mastery-progress" role="progressbar" aria-label="Day ${day} objective mastery" aria-valuemin="0" aria-valuemax="3" aria-valuenow="${done}"><div><span>DAY ${day} OBJECTIVES</span><b>${done} / 3</b></div><span class="v1-49-mastery-bar"><i style="width:${Math.round(done/3*100)}%"></i></span></div><div id="v1-49-question"></div>`;
+    section.innerHTML=`<div class="v1-49-mastery-head"><div><span class="v1-49-mastery-kicker">ADAM • OBJECTIVE MASTERY • @${learnerName}</span><h2 id="v1-49-mastery-title">Day ${day} mastery</h2></div><span class="v1-49-mastery-badge">+37 XP EACH</span></div><p class="v1-49-mastery-copy">Answer the three checkpoints for this specific day to demonstrate what you learned.</p><div class="v1-49-mastery-progress" role="progressbar" aria-label="Day ${day} objective mastery" aria-valuemin="0" aria-valuemax="3" aria-valuenow="${done}"><div><span>DAY ${day} OBJECTIVES</span><b>${done} / 3</b></div><span class="v1-49-mastery-bar"><i style="width:${Math.round(done/3*100)}%"></i></span></div><div id="v1-49-question"></div>`;
     root.appendChild(section);
     let index=0; while(index<items.length&&isMastered(state,day,index))index++;
     const host=section.querySelector("#v1-49-question");
@@ -43,7 +61,7 @@
       btn.classList.add(isCorrect?"gei-answer-correct":"gei-answer-wrong");
       if(!isCorrect){if(feedback){const phrase=PHRASES[(index+day)%PHRASES.length].replace("{name}",learnerName?"@"+learnerName:"LEARNER");feedback.textContent=phrase+" — Adam says: review the objective, then try again.";}buttons.forEach(b=>b.disabled=false);return;}
       const k=key(day,index); if(!current.mastered.includes(k)){current.mastered.push(k);current.mastered=[...new Set(current.mastered)];save(current);awardObjectiveXP(day,index,"adam-objective-mastery");}
-      if(feedback){const phrase=PHRASES[(index+day+1)%PHRASES.length].replace("{name}",learnerName?"@"+learnerName:"LEARNER");feedback.textContent=phrase+" — Objective demonstrated! +15 XP";} window.dispatchEvent(new CustomEvent("gei:objective-mastery-updated",{detail:{day,index:index+1}})); window.setTimeout(render,420);
+      if(feedback){const phrase=PHRASES[(index+day+1)%PHRASES.length].replace("{name}",learnerName?"@"+learnerName:"LEARNER");feedback.textContent=phrase+" — Objective demonstrated! +37 XP";} window.dispatchEvent(new CustomEvent("gei:objective-mastery-updated",{detail:{day,index:index+1}})); window.setTimeout(render,420);
     }));
   }
   function ensureStyles(){
