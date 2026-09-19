@@ -1,0 +1,38 @@
+/* V1.53 — GEI Academy Dam Name Gate */
+(()=>{"use strict";
+if(window.GEI_V153)return;
+const KEY="geiDamNameIdentityV1";
+const readName=()=>{try{const p=JSON.parse(localStorage.getItem(KEY)||"null");return typeof p?.damName==="string"?p.damName.trim():""}catch{return""}};
+const hasName=()=>readName().length>=3;
+const emit=(name,detail)=>window.dispatchEvent(new CustomEvent(name,{detail}));
+function mount(){
+ const screen=document.getElementById("screen-academy");if(!screen||screen.querySelector(".v1-53-academy-gate"))return;
+ const gate=document.createElement("div");gate.className="v1-53-academy-gate";gate.hidden=hasName();gate.setAttribute("aria-hidden",String(hasName()));
+ gate.innerHTML='<div class="v1-53-gate-backdrop"></div><section class="v1-53-gate-card" role="dialog" aria-modal="true" aria-labelledby="v1-53-gate-title"><img class="v1-53-gate-mascot" src="'+(window.GEI_MASCOT?.url||"")+'" alt="Adam, the YallToo mascot"/><span class="v1-53-gate-kicker">GEI ACADEMY • LEARNER IDENTITY</span><h2 id="v1-53-gate-title">Set your Dam Name.</h2><p>Your Dam Name is required before you can begin the GEI Academy blueprint.</p><label for="v1-53-gate-input">DAM NAME</label><div class="v1-53-gate-input-row"><span>@</span><input id="v1-53-gate-input" type="text" inputmode="text" maxlength="20" autocomplete="nickname" placeholder="WaterArchitect" spellcheck="false"/></div><button id="v1-53-gate-save" type="button">ENTER ACADEMY</button><small>3–20 characters • letters, numbers, _ or -</small><div class="v1-53-gate-error" id="v1-53-gate-error" role="alert" hidden></div></section></div>';
+ screen.appendChild(gate);
+}
+function show(){mount();const gate=document.querySelector(".v1-53-academy-gate");if(!gate)return;gate.hidden=false;gate.setAttribute("aria-hidden","false");const input=gate.querySelector("#v1-53-gate-input");input.value=readName();requestAnimationFrame(()=>input.focus())}
+function hide(){const gate=document.querySelector(".v1-53-academy-gate");if(!gate)return;gate.hidden=true;gate.setAttribute("aria-hidden","true")}
+function submit(){
+ const input=document.querySelector("#v1-53-gate-input"),err=document.querySelector("#v1-53-gate-error");if(!input)return;
+ const name=input.value.trim().replace(/^@+/,"");
+ if(name.length<3){err.textContent="Dam Name must be at least 3 characters.";err.hidden=false;return}
+ if(name.length>20||!/^[A-Za-z0-9_-]+$/.test(name)){err.textContent="Use 3–20 characters: letters, numbers, _ or -.";err.hidden=false;return}
+ let state={damName:"",avatar:"adam",version:"1.52",updatedAt:null};try{state={...state,...JSON.parse(localStorage.getItem(KEY)||"null")}}catch{}
+ state.damName=name;state.updatedAt=new Date().toISOString();
+ try{localStorage.setItem(KEY,JSON.stringify(state))}catch{}
+ hide();emit("gei:dam-name-updated",{damName:name,updatedAt:state.updatedAt,source:"v1-53-gate"});emit("gei:learner-identity-updated",{damName:name,avatar:state.avatar,source:"v1-53-gate"});emit("gei:academy-identity-unlocked",{damName:name});
+}
+function sync(){if(hasName())hide();else if(location.hash==="#academy")show()}
+function init(){
+ mount();
+ window.addEventListener("gei:navigation",e=>{if(e.detail?.id==="academy")sync()});
+ window.addEventListener("gei:dam-name-updated",sync);
+ window.addEventListener("gei:learner-identity-ready",sync);
+ window.GEI_V153=Object.freeze({version:"1.53",hasDamName:hasName,show,hide});
+ if(location.hash==="#academy")show();
+ document.addEventListener("keydown",e=>{if(e.key==="Enter"&&e.target?.id==="v1-53-gate-input"){e.preventDefault();submit()}});
+ document.addEventListener("click",e=>{if(e.target.closest?.("#v1-53-gate-save")){e.preventDefault();submit()}},true);
+}
+if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",init,{once:true});else init();
+})();
