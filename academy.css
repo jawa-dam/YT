@@ -356,12 +356,13 @@ body.academy-guide-open { overflow:hidden; }
 }
 .gei-stage-link.is-locked{opacity:.56}
 .gei-stage-top{
-  grid-column:1;grid-row:1 / span 3;
-  display:grid!important;place-items:center!important;align-self:center!important;
+  display:contents!important;
 }
 .gei-stage-icon{
-  width:42px;height:42px;display:grid;place-items:center;border-radius:13px;
-  background:rgba(47,210,255,.1);border:1px solid rgba(47,210,255,.22);font-size:21px;
+  grid-column:1;grid-row:1 / span 3;
+  width:42px;height:42px;display:grid;place-items:center;align-self:center;
+  border-radius:13px;background:rgba(47,210,255,.1);
+  border:1px solid rgba(47,210,255,.22);font-size:21px;
 }
 .gei-stage-link .academy-day-number{
   grid-column:2;grid-row:1;align-self:end;
@@ -381,20 +382,23 @@ body.academy-guide-open { overflow:hidden; }
   grid-column:3;grid-row:1 / span 3;
   min-width:116px;max-width:132px;
   display:flex;flex-direction:column;align-items:flex-end;justify-content:center;gap:3px;
-  text-align:right;
+  padding:8px 9px;border:1px solid rgba(255,20,147,.38);border-radius:12px;
+  background:linear-gradient(145deg,rgba(255,20,147,.10),rgba(10,15,26,.94));
+  text-align:right;box-sizing:border-box;
 }
 .gei-stage-achievement b{
-  color:#7f8da5;font-size:8px;font-weight:1000;letter-spacing:.09em;line-height:1.1;
+  color:#ff72cf;font-size:8px;font-weight:1000;letter-spacing:.09em;line-height:1.1;
 }
 .gei-stage-achievement strong{
-  color:#66748b;font-size:10px;font-weight:1000;line-height:1.15;letter-spacing:.02em;
+  color:#f6f8ff;font-size:10px;font-weight:1000;line-height:1.15;letter-spacing:.02em;
 }
 .gei-stage-achievement.is-earned{
-  padding:7px 8px;border:1px solid rgba(255,20,147,.38);border-radius:11px;
-  background:rgba(255,20,147,.08);
+  border-color:rgba(255,20,147,.58);
+  background:linear-gradient(145deg,rgba(255,20,147,.12),rgba(13,18,30,.96));
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.04);
 }
-.gei-stage-achievement.is-earned b{color:#ff9df2}
-.gei-stage-achievement.is-earned strong{color:#fff}
+.gei-stage-achievement.is-earned b{color:#ff72cf}
+.gei-stage-achievement.is-earned strong{color:#f6f8ff}
 .gei-stage-achievement.is-locked{opacity:.72}
 .gei-stage-flow{grid-column:2;grid-row:4;display:none!important}
 .gei-blueprint-status{
@@ -423,7 +427,7 @@ body.academy-guide-open { overflow:hidden; }
   .gei-stage-link .academy-day-number{font-size:10px!important}
   .gei-stage-link h3{font-size:16px!important}
   .gei-stage-link .academy-day-status{font-size:10px!important}
-  .gei-stage-achievement{min-width:100px;max-width:112px}
+  .gei-stage-achievement{min-width:100px;max-width:112px;padding:7px 7px}
   .gei-stage-achievement b{font-size:7px}
   .gei-stage-achievement strong{font-size:9px}
   .gei-stage-achievement.is-earned{padding:6px 6px}
