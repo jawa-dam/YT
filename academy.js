@@ -23,9 +23,8 @@
 
   function syncDayState() {
     const completion = readCompletion();
-    const achievementState = (() => {
-      try { return JSON.parse(localStorage.getItem("geiAcademyAchievementsV1") || "{}"); } catch (_) { return {}; }
-    })();
+    const badgeState = window.GEI_BADGES?.getState?.() || { earned: [] };
+    const earnedBadges = new Set(Array.isArray(badgeState.earned) ? badgeState.earned : []);
     let completedCount = 0;
 
     document.querySelectorAll("#screen-academy .academy-day-card").forEach((card) => {
@@ -48,20 +47,20 @@
 
       const achievement = card.querySelector(".gei-stage-achievement");
       if (achievement) {
-        const earned = achievementState[day]?.earned === true;
-        const item = [
+        const badge = [
           null,
-          { title: "THE OBSERVER" },
-          { title: "THE BUILDER" },
-          { title: "THE RESERVOIR" },
-          { title: "THE FLOW ENGINEER" },
-          { title: "THE WATERWHEEL" },
-          { title: "BLUEPRINT MASTER" }
+          { id: "day-1", title: "WATER OBSERVER" },
+          { id: "day-2", title: "DAM ENGINEER" },
+          { id: "day-3", title: "RESERVOIR BUILDER" },
+          { id: "day-4", title: "GATE OPERATOR" },
+          { id: "day-5", title: "WATERWHEEL ENGINEER" },
+          { id: "day-6", title: "SYSTEM ARCHITECT" }
         ][day];
+        const earned = earnedBadges.has(badge.id);
         achievement.classList.toggle("is-earned", earned);
         achievement.classList.toggle("is-locked", !earned);
-        achievement.querySelector("b").textContent = earned ? "ACHIEVEMENT EARNED" : "ACHIEVEMENT";
-        achievement.querySelector("strong").textContent = earned ? item.title : "LOCKED";
+        achievement.querySelector("b").textContent = earned ? "MASTERY BADGE" : "BADGE LOCKED";
+        achievement.querySelector("strong").textContent = earned ? badge.title : "LOCKED";
       }
     });
 
@@ -70,7 +69,7 @@
 
     const guide = document.querySelector("#screen-academy .academy-guide-action");
     if (guide) {
-      const nextDay = Math.min(6, completedCount + 1);
+      const nextDay = completedCount >= 6 ? 1 : completedCount + 1;
       guide.href = "day-" + nextDay + ".html";
       guide.target = "_self";
       guide.rel = "";
@@ -83,8 +82,8 @@
     if (xpEl) xpEl.textContent = xp + " / 666 XP";
     if (daysEl) daysEl.textContent = completedCount + " / 6 STAGES";
     if (achievementsEl) {
-      const earnedCount = Object.keys(achievementState).filter((key) => achievementState[key]?.earned === true).length;
-      achievementsEl.textContent = earnedCount + " / 6 ACHIEVEMENTS";
+      const earnedCount = ["day-1","day-2","day-3","day-4","day-5","day-6"].filter((id) => earnedBadges.has(id)).length;
+      achievementsEl.textContent = earnedCount + " / 6 MASTERY BADGES";
     }
   }
 
@@ -280,6 +279,8 @@
     window.addEventListener("storage", () => { syncDayState(); });
     window.addEventListener("gei:day-completion", () => { syncDayState(); });
     window.addEventListener("gei:achievement-updated", () => { syncDayState(); });
+    window.addEventListener("gei:badges-updated", () => { syncDayState(); });
+    window.addEventListener("gei:badges-ready", () => { syncDayState(); });
     window.addEventListener("gei:progress-updated", () => { syncDayState(); });
   }
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", init, { once: true }); else init();
