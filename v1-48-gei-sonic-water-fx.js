@@ -3,7 +3,7 @@
 (()=>{"use strict";
 if(window.GEI_SONIC_FX)return;
 const AudioCtx=window.AudioContext||window.webkitAudioContext;
-let ctx=null,lastTap=0;
+let ctx=null,lastTap=0,lastCompletionSignature="";
 const reduced=()=>window.matchMedia?.("(prefers-reduced-motion: reduce)")?.matches;
 const ensure=()=>{if(!AudioCtx)return null;if(!ctx)ctx=new AudioCtx();if(ctx.state==="suspended")ctx.resume().catch(()=>{});return ctx};
 const tone=(freq,dur,type="sine",gain=.045,delay=0,endFreq=freq)=>{
@@ -67,6 +67,6 @@ function onClick(e){
  else iconSound();
 }
 document.addEventListener("click",onClick,{capture:true});
-window.addEventListener("gei:day-completion",e=>{waterCelebration(Number(e.detail?.day||e.detail?.dayId||0));});
+window.addEventListener("gei:day-completion",e=>{const day=Number(e.detail?.day||e.detail?.dayId||0);if(day<1||day>6)return;const record=e.detail?.completion?.[day]||{};const signature=`${day}:${record.completedAt||"event"}`;if(signature===lastCompletionSignature)return;lastCompletionSignature=signature;waterCelebration(day);});
 window.GEI_SONIC_FX=Object.freeze({unlockAudio:ensure,mascot:mascotSound,icon:iconSound,wheel:wheelSound,celebrate:waterCelebration});
 })();
