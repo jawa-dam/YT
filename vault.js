@@ -17,7 +17,7 @@
     return { joinedAt: state.joinedAt, visits: state.visits, daysCompleted: progress.completed?.length || 0, xp: progress.xp || 0, achievements: achievements.earned?.length || 0 };
   }
   function markup() {
-    return `<section class="gei-vault-card" id="gei-vault-card" aria-labelledby="gei-vault-title"><div class="gei-vault-head"><div><span class="gei-vault-kicker">LEARNER IDENTITY</span><h2 id="gei-vault-title">Achievement Vault</h2></div><span class="gei-vault-badge" id="gei-vault-badge">0 / 4</span></div><div class="gei-vault-identity"><span class="gei-vault-avatar" aria-hidden="true">A</span><div><strong>GEI LEARNER</strong><span id="gei-vault-since">Building your learning identity</span></div><span class="gei-vault-complete" id="gei-vault-complete" hidden>BLUEPRINT COMPLETE</span></div><div class="gei-vault-grid" id="gei-vault-grid"></div><div class="gei-vault-history"><span>ACHIEVEMENT HISTORY</span><strong id="gei-vault-last-earned">No achievements yet</strong></div><p class="gei-vault-status" id="gei-vault-status">Complete GEI learning days to build your achievement record.</p></section>`;
+    return `<section class="gei-vault-card" id="gei-vault-card" aria-labelledby="gei-vault-title"><div class="gei-vault-head"><div><span class="gei-vault-kicker">LEARNER IDENTITY</span><h2 id="gei-vault-title">Achievement Vault</h2></div><span class="gei-vault-badge" id="gei-vault-badge">0 / 4</span></div><div class="gei-vault-identity"><span class="gei-vault-avatar" id="gei-vault-avatar" aria-hidden="true"></span><div><strong id="gei-vault-name">GEI LEARNER</strong><span id="gei-vault-since">Building your learning identity</span></div><span class="gei-vault-complete" id="gei-vault-complete" hidden>BLUEPRINT COMPLETE</span></div><div class="gei-vault-grid" id="gei-vault-grid"></div><div class="gei-vault-history"><span>ACHIEVEMENT HISTORY</span><strong id="gei-vault-last-earned">No achievements yet</strong></div><p class="gei-vault-status" id="gei-vault-status">Complete GEI learning days to build your achievement record.</p></section>`;
   }
   function ensure() {
     const screen = document.getElementById("screen-home");
@@ -36,7 +36,14 @@
     if (grid) grid.innerHTML = list.map((item) => `<div class="gei-vault-item ${item.earned ? "is-earned" : "is-locked"}" aria-label="${item.earned ? "Earned" : "Locked"}: ${item.days}-day ${item.name}"><span>${item.earned ? item.icon : "🔒"}</span><strong>${item.days}-DAY</strong><small>${item.name}</small><em>${item.earned ? `+${item.reward} XP` : "LOCKED"}</em></div>`).join("");
     const badge = card.querySelector("#gei-vault-badge"); if (badge) badge.textContent = `${earned.length} / ${list.length || 4}`;
     if (!state.joinedAt) { state.joinedAt = new Date().toISOString(); save(); }
-    const since = card.querySelector("#gei-vault-since"); if (since) since.textContent = `Learner since ${new Date(state.joinedAt).toLocaleDateString(undefined, { month: "short", year: "numeric" })}`;
+    const identity=(()=>{try{return JSON.parse(localStorage.getItem("geiDamNameIdentityV1")||"null")||{}}catch{return{}}})();
+    const damName=typeof identity.damName==="string"?identity.damName.trim():"";
+    const avatar=identity.avatar||"adam";
+    const avatarIcons={water:"💧",mountain:"⛰️",dam:"🧱",wheel:"⚙️",gate:"🚪",current:"🌊"};
+    const avatarEl=card.querySelector("#gei-vault-avatar");
+    if(avatarEl){if(avatar==="adam"&&window.GEI_MASCOT?.url) avatarEl.innerHTML='<img class="gei-vault-avatar-image" src="'+window.GEI_MASCOT.url+'" alt="Adam, the YallToo mascot" />'; else avatarEl.textContent=avatarIcons[avatar]||"🦫";}
+    const nameEl=card.querySelector("#gei-vault-name"); if(nameEl) nameEl.textContent=damName?"@"+damName:"GEI LEARNER";
+    const since = card.querySelector("#gei-vault-since"); if (since) since.textContent = damName ? "Learner since "+new Date(state.joinedAt).toLocaleDateString(undefined, { month: "short", year: "numeric" }) : "Set your Dam Name in Profile";
     const complete = card.querySelector("#gei-vault-complete"); if (complete) complete.hidden = !achievementState.earned?.includes(6);
     const last = card.querySelector("#gei-vault-last-earned");
     if (last) { const latest = list.find((item) => item.days === achievementState.lastEarned); last.textContent = latest ? `${latest.days}-DAY ${latest.name} • +${latest.reward} XP` : "No achievements yet"; }
@@ -48,6 +55,9 @@
     window.addEventListener("gei:achievement-earned", render);
     window.addEventListener("gei:progress-ready", render);
     window.addEventListener("gei:progress-updated", render);
+    window.addEventListener("gei:dam-name-updated", render);
+    window.addEventListener("gei:dam-avatar-updated", render);
+    window.addEventListener("gei:learner-identity-ready", render);
     window.GEI_VAULT = Object.freeze({ getIdentity: () => ({ ...getIdentity(), visits: state.visits }), render });
   }
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", init, { once: true }); else init();
