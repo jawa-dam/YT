@@ -1,0 +1,66 @@
+/* V1.49 — Academy Interaction Polish & Vault Integrity */
+#gei-quick-access .gei-quick-button{
+  position:relative;
+  overflow:hidden;
+  -webkit-tap-highlight-color:transparent;
+  transition:transform .16s ease,border-color .2s ease,box-shadow .2s ease,background .2s ease;
+}
+#gei-quick-access .gei-quick-button::after{
+  content:"";
+  position:absolute;
+  inset:1px;
+  border-radius:inherit;
+  background:radial-gradient(circle at center,rgba(47,210,255,.24),transparent 62%);
+  opacity:0;
+  transform:scale(.65);
+  pointer-events:none;
+}
+#gei-quick-access .gei-quick-button.is-sonic-active{
+  transform:translateY(-2px) scale(1.015);
+  border-color:#2fd2ff;
+  box-shadow:0 0 0 2px rgba(47,210,255,.12),0 8px 22px rgba(47,210,255,.16);
+}
+#gei-quick-access .gei-quick-button.is-sonic-active::after{
+  animation:v149QuickPulse .48s ease-out both;
+}
+#gei-quick-access .gei-quick-button.is-sonic-active .gei-quick-icon{
+  animation:v149IconLift .42s ease-out both;
+}
+.v1-45-vault-item{
+  position:relative;
+  overflow:hidden;
+  -webkit-tap-highlight-color:transparent;
+}
+.v1-45-vault-item::after{
+  content:"";
+  position:absolute;
+  inset:0;
+  border-radius:inherit;
+  background:linear-gradient(115deg,transparent 20%,rgba(255,255,255,.10) 50%,transparent 80%);
+  transform:translateX(-130%);
+  pointer-events:none;
+}
+.v1-45-vault-item.is-earned{
+  border-color:rgba(255,20,147,.52);
+  box-shadow:0 0 0 1px rgba(255,20,147,.08),0 8px 24px rgba(255,20,147,.10);
+}
+.v1-45-vault-item.is-locked{
+  filter:saturate(.55);
+}
+.v1-45-vault-item.is-vault-tapped::after{
+  animation:v149VaultSweep .55s ease-out both;
+}
+.v1-45-vault-item.is-vault-tapped{
+  transform:translateY(-2px) scale(1.01);
+  border-color:#ff1493;
+}
+@keyframes v149QuickPulse{0%{opacity:0;transform:scale(.65)}35%{opacity:1}100%{opacity:0;transform:scale(1.2)}}
+@keyframes v149IconLift{0%{transform:scale(1)}45%{transform:scale(1.14) rotate(-3deg)}100%{transform:scale(1)}}
+@keyframes v149VaultSweep{0%{transform:translateX(-130%)}100%{transform:translateX(130%)}}
+@media(prefers-reduced-motion:reduce){
+  #gei-quick-access .gei-quick-button,
+  .v1-45-vault-item{transition:none}
+  #gei-quick-access .gei-quick-button.is-sonic-active .gei-quick-icon,
+  #gei-quick-access .gei-quick-button.is-sonic-active::after,
+  .v1-45-vault-item.is-vault-tapped::after{animation:none}
+}
