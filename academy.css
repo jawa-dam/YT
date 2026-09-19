@@ -320,8 +320,40 @@ body.academy-guide-open { overflow:hidden; }
 }
 
 
+/* V1.63.6 — Unified GEI Path + Learning Progress */
+.gei-path-header{
+  display:flex;align-items:flex-end;justify-content:space-between;gap:12px;
+  padding-top:2px;
+}
+.gei-path-title{min-width:0}
+.gei-path-title h2{
+  margin:4px 0 0;color:#f6f8ff!important;font-size:23px!important;
+  line-height:1.04!important;letter-spacing:-.035em;
+}
+.gei-path-progress-summary{
+  flex:0 0 auto;display:flex;flex-direction:column;align-items:flex-end;gap:2px;
+}
+.gei-path-progress-summary strong{
+  color:#f6f8ff;font-size:17px;font-weight:1000;line-height:1;
+  letter-spacing:.02em;white-space:nowrap;
+}
+.gei-path-progress-summary span{
+  color:#2fd2ff;font-size:8px;font-weight:1000;letter-spacing:.12em;line-height:1.1;
+}
+.gei-path-progress{
+  height:9px;margin-top:10px;border:1px solid rgba(255,255,255,.08);
+  border-radius:99px;background:#172235;overflow:hidden;
+}
+.gei-path-progress span{
+  display:block;width:0;height:100%;border-radius:inherit;
+  background:linear-gradient(90deg,#2fd2ff,#3d3dea 52%,#ff1493);
+  box-shadow:0 0 14px rgba(47,210,255,.28);transition:width .4s ease;
+}
+.gei-path-progress-status{
+  margin:7px 0 1px;color:#aebbd0!important;font-size:12px!important;
+  line-height:1.35!important;
+}
 /* V1.63.5 — Unified Hydraulic Path + Integrated Achievement Collection */
-.academy-path-heading h2{color:#f6f8ff!important}
 .gei-hydraulic-path{
   grid-template-columns:1fr!important;
   grid-auto-rows:auto!important;
@@ -434,6 +466,14 @@ body.academy-guide-open { overflow:hidden; }
   .gei-blueprint-status{padding:11px 10px}
   .gei-blueprint-status span{font-size:8px}
   .gei-blueprint-status strong{font-size:12px}
+}
+@media(max-width:420px){
+  .gei-path-header{gap:8px}
+  .gei-path-title h2{font-size:21px!important}
+  .gei-path-progress-summary strong{font-size:15px}
+  .gei-path-progress-summary span{font-size:7px}
+  .gei-path-progress{height:8px;margin-top:8px}
+  .gei-path-progress-status{font-size:11px!important;margin-top:6px}
 }
 @media(max-width:340px){
   .gei-stage-link{grid-template-columns:36px minmax(0,1fr)!important;min-height:96px!important}
