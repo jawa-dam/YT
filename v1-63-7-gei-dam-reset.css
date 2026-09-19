@@ -1,0 +1,64 @@
+/* V1.63.7 — GEI Dam Reset visual + flood warning */
+.gei-reset-confirm{
+  position:fixed;inset:0;z-index:2000;display:grid;place-items:center;padding:18px;
+  background:rgba(3,6,12,.72);backdrop-filter:blur(9px);-webkit-backdrop-filter:blur(9px);
+}
+.gei-reset-dialog{
+  width:min(100%,380px);box-sizing:border-box;padding:22px;border:2px solid rgba(255,20,147,.48);
+  border-radius:24px;background:linear-gradient(145deg,#101827,#070b14);color:#f6f8ff;
+  box-shadow:0 28px 80px rgba(0,0,0,.55),0 0 35px rgba(255,20,147,.12);text-align:center;
+}
+.gei-reset-dialog-icon{display:block;font-size:36px;line-height:1;margin-bottom:8px}
+.gei-reset-dialog-kicker{display:block;color:#ff72cf;font-size:11px;font-weight:1000;letter-spacing:.14em}
+.gei-reset-dialog h2{margin:7px 0;color:#fff;font-size:28px;line-height:1.05}
+.gei-reset-dialog p{margin:0 auto 10px;color:#d9e3ef;font-size:14px;line-height:1.45;max-width:310px}
+.gei-reset-dialog>strong{display:block;color:#2fd2ff;font-size:13px;line-height:1.35}
+.gei-reset-actions{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:17px}
+.gei-reset-actions button{min-height:46px;border-radius:13px;font-size:11px;font-weight:1000;letter-spacing:.04em;cursor:pointer}
+.gei-reset-cancel{border:1px solid rgba(255,255,255,.18);background:#151d2c;color:#f6f8ff}
+.gei-reset-confirm-action{border:1px solid rgba(255,20,147,.72);background:linear-gradient(135deg,#ff1493,#b80069);color:#fff}
+.gei-reset-actions button:focus-visible{outline:3px solid #2fd2ff;outline-offset:2px}
+
+.gei-dam-reset-effect{
+  position:fixed;inset:0;z-index:2100;overflow:hidden;pointer-events:none;
+  background:linear-gradient(180deg,rgba(6,7,13,0) 0%,rgba(6,7,13,.08) 42%,rgba(47,210,255,.22) 100%);
+  animation:geiResetFlash 2.4s ease-out forwards;
+}
+.gei-reset-crack{
+  position:absolute;top:9%;left:50%;width:5px;height:72%;transform-origin:top center;
+  background:linear-gradient(180deg,#f6f8ff,#aeb8cb 20%,rgba(255,255,255,0));
+  filter:drop-shadow(0 0 6px rgba(255,255,255,.55));opacity:0;
+}
+.gei-reset-crack-a{transform:rotate(7deg);animation:geiCrackA .65s ease-out forwards}
+.gei-reset-crack-b{transform:rotate(-9deg);height:62%;animation:geiCrackB .72s .05s ease-out forwards}
+.gei-reset-water{
+  position:absolute;left:-10%;width:120%;height:34%;bottom:-36%;
+  border-radius:50% 50% 0 0;background:linear-gradient(180deg,rgba(47,210,255,.78),rgba(61,61,234,.7));
+  box-shadow:0 -10px 35px rgba(47,210,255,.28);
+}
+.gei-reset-water-a{animation:geiFloodA 1.65s .35s cubic-bezier(.2,.8,.2,1) forwards}
+.gei-reset-water-b{height:26%;bottom:-30%;opacity:.55;animation:geiFloodB 1.8s .55s cubic-bezier(.2,.8,.2,1) forwards}
+.gei-reset-warning{
+  position:absolute;top:43%;left:50%;transform:translate(-50%,-50%);width:min(88%,360px);
+  display:grid;gap:4px;text-align:center;padding:15px;border:1px solid rgba(255,255,255,.24);
+  border-radius:18px;background:rgba(5,8,15,.82);box-shadow:0 12px 40px rgba(0,0,0,.35);
+  animation:geiWarning .4s ease-out forwards;
+}
+.gei-reset-warning span{color:#ff9df2;font-size:12px;font-weight:1000;letter-spacing:.12em}
+.gei-reset-warning strong{color:#fff;font-size:24px;line-height:1.05}
+.gei-reset-warning small{color:#cbd7e6;font-size:10px;font-weight:900;letter-spacing:.08em}
+@keyframes geiResetFlash{0%,100%{opacity:0}10%{opacity:1}75%{opacity:1}}
+@keyframes geiCrackA{0%{height:0;opacity:0}100%{height:72%;opacity:.92}}
+@keyframes geiCrackB{0%{height:0;opacity:0}100%{height:62%;opacity:.68}}
+@keyframes geiFloodA{0%{bottom:-36%}100%{bottom:-3%}}
+@keyframes geiFloodB{0%{bottom:-30%}100%{bottom:2%}}
+@keyframes geiWarning{0%{opacity:0;transform:translate(-50%,-50%) scale(.82)}100%{opacity:1;transform:translate(-50%,-50%) scale(1)}}
+@media(prefers-reduced-motion:reduce){
+  .gei-dam-reset-effect{animation:none;opacity:1;background:rgba(47,210,255,.12)}
+  .gei-reset-crack,.gei-reset-water,.gei-reset-warning{animation:none;opacity:1}
+}
+@media(max-width:360px){
+  .gei-reset-dialog{padding:18px;border-radius:20px}
+  .gei-reset-dialog h2{font-size:25px}
+  .gei-reset-actions button{font-size:10px}
+}
