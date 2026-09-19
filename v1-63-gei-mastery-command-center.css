@@ -24,3 +24,12 @@
 .dashboard-shell .member-status-copy small{font-size:13px!important}
 .dashboard-shell .welcome-copy p,.dashboard-shell .day1-preview-copy small,.dashboard-shell .cta-copy small{font-size:15px!important}
 @media(max-width:420px){.gei-xp-card{padding:17px!important}.gei-xp-title{font-size:27px!important}.gei-xp-score strong{font-size:48px!important}.gei-xp-score span{font-size:14px!important}.gei-xp-stat strong{font-size:30px!important}.gei-xp-stat span{font-size:14px!important}.gei-xp-history{font-size:16px!important}}
+
+/* V1.63.1 — Rewards collection popout */
+.gei-rewards-card{padding:18px;border-radius:24px;background:var(--skin-surface,#fff);border:2px solid rgba(47,210,255,.18)}
+.gei-rewards-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px}
+.gei-rewards-kicker{display:block;font-size:13px;font-weight:1000;letter-spacing:.1em;color:#ff1493}
+.gei-rewards-head h2{margin:5px 0 0;font-size:26px;line-height:1.05;color:#102a43}
+.gei-rewards-head strong{font-size:16px;color:#155eef;white-space:nowrap}
+.gei-rewards-copy{margin:10px 0 0;font-size:15px;line-height:1.4;color:#526b82}
+.gei-rewards-grid{margin-top:14px}
