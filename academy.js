@@ -76,6 +76,20 @@
     }
 
     const xp = Math.min(666, Math.max(0, Number(window.GEI_PROGRESS?.getState?.()?.xp) || 0));
+    const pathCount = document.getElementById("academy-path-count");
+    const pathLabel = document.getElementById("gei-path-progress-label");
+    const pathFill = document.getElementById("gei-path-progress-fill");
+    const pathTrack = document.querySelector(".gei-path-progress");
+    const pathStatus = document.getElementById("gei-path-progress-status");
+    if (pathCount) pathCount.textContent = completedCount + " / 06";
+    if (pathLabel) pathLabel.textContent = completedCount >= 6 ? "COMPLETE" : completedCount === 0 ? "START HERE" : "IN PROGRESS";
+    if (pathFill) pathFill.style.width = ((completedCount / 6) * 100) + "%";
+    if (pathTrack) pathTrack.setAttribute("aria-valuenow", String(completedCount));
+    if (pathStatus) pathStatus.textContent = completedCount >= 6
+      ? "Six-day blueprint mastered."
+      : completedCount === 0
+        ? "Build the six-day blueprint one hydraulic stage at a time."
+        : "Stage " + Math.min(6, completedCount + 1) + " is your next hydraulic checkpoint.";
     const xpEl = document.getElementById("gei-blueprint-xp");
     const daysEl = document.getElementById("gei-blueprint-days");
     const achievementsEl = document.getElementById("gei-blueprint-achievements");
@@ -178,7 +192,14 @@
         </section>
 
         <section class="academy-path" aria-labelledby="academy-path-title">
-          <div class="academy-path-heading"><div><span class="academy-section-label">THE PATH</span><h2 id="academy-path-title">Six Hydraulic Stages</h2></div><span class="academy-path-count" id="academy-path-count">01 / 06</span></div>
+          <div class="gei-path-header">
+            <div class="gei-path-title"><span class="academy-section-label">YOUR GEI PATH</span><h2 id="academy-path-title">Six Hydraulic Stages</h2></div>
+            <div class="gei-path-progress-summary"><strong id="academy-path-count">00 / 06</strong><span id="gei-path-progress-label">BUILDING</span></div>
+          </div>
+          <div class="gei-path-progress" role="progressbar" aria-label="GEI six-day path progress" aria-valuemin="0" aria-valuemax="6" aria-valuenow="0">
+            <span id="gei-path-progress-fill"></span>
+          </div>
+          <p class="gei-path-progress-status" id="gei-path-progress-status">Build the six-day blueprint one hydraulic stage at a time.</p>
           <div class="academy-day-grid gei-hydraulic-path">
             ${ACADEMY_DAYS.map((day) => `<a class="academy-day-card gei-stage-link${day.active ? " is-active" : ""}${day.id > 1 ? " is-locked" : ""}" data-day="${day.id}" href="${day.url}" aria-label="Open ${day.label}: ${day.title}"><span class="gei-stage-top"><span class="academy-day-number">${day.label}</span><span class="gei-stage-icon" aria-hidden="true">${["💧","🧱","🌊","🚪","⚙️","🏗️"][day.id-1]}</span></span><h3>${day.title}</h3><span class="academy-day-status">${day.status}</span><span class="gei-stage-achievement" data-achievement-day="${day.id}">🏆 <b>ACHIEVEMENT</b><strong>—</strong></span><span class="gei-stage-flow" aria-hidden="true"><i></i><i></i><i></i></span></a>`).join("")}
           </div>
