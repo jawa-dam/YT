@@ -485,3 +485,31 @@ body.academy-guide-open { overflow:hidden; }
   .gei-stage-link .academy-day-status{grid-column:2;grid-row:3}
   .gei-stage-achievement{transform:none}
 }
+
+
+/* V1.63.6.1 — Academy readability contrast hardening */
+.gei-stage-achievement{
+  color:#f6f8ff!important;
+  background:linear-gradient(145deg,#111827,#080d17)!important;
+  border-color:rgba(255,20,147,.62)!important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.06),0 8px 20px rgba(0,0,0,.18)!important;
+}
+.gei-stage-achievement b{
+  color:#ff9df2!important;
+  text-shadow:0 1px 2px rgba(0,0,0,.55);
+}
+.gei-stage-achievement strong{
+  color:#ffffff!important;
+  text-shadow:0 1px 2px rgba(0,0,0,.65);
+}
+/* Compatibility contrast for any cached/legacy Academy progress header. */
+.gei-learning-progress{
+  background:linear-gradient(145deg,#101827,#080d17)!important;
+  color:#f6f8ff!important;
+}
+.gei-learning-progress h2,
+.gei-learning-progress .gei-learning-progress-count,
+.gei-learning-progress .gei-learning-progress-status{
+  color:#f6f8ff!important;
+  text-shadow:0 1px 2px rgba(0,0,0,.55);
+}
