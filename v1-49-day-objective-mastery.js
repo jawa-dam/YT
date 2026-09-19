@@ -2,6 +2,7 @@
 (() => {
   "use strict";
   const STORAGE_KEY = "geiAdamObjectiveMasteryV1";
+  const PHRASES = Object.freeze(["LET’S GO DAM IT","DAM IT {name}","YOU KNOW DAM WELL","ANSWER THE DAM QUESTION","THAT’S A DAM SHAME"]);
   const QUESTIONS = Object.freeze({
     1:[["What is the first condition described before light appears?",["A dry land","Darkness upon the deep","A completed dam"],1],["In the GEI Day 1 model, what does light represent?",["Released water","A mountain","A mill gear"],0],["What is the key engineering action established on Day 1?",["Separation","Harvesting","Animal operation"],0]],
     2:[["What does the firmament represent in the Day 2 model?",["A dam wall","A waterwheel","Dry land"],0],["Why is separation important before controlled movement?",["Structure must contain and direct flow","Water must disappear","The mill must be removed"],0],["What engineering role does Day 2 establish?",["Structural containment","Mechanical generation","Final operation"],0]],
@@ -19,19 +20,21 @@
   function render(){
     const root=document.getElementById("day-objective-mastery-root"); if(!root)return;
     const day=getDay(),items=QUESTIONS[day],state=read(),done=count(state,day); root.innerHTML="";
-    const section=document.createElement("section"); section.className="v1-49-day-objective-mastery"; section.setAttribute("aria-labelledby","v1-49-mastery-title");
-    section.innerHTML=`<div class="v1-49-mastery-head"><div><span class="v1-49-mastery-kicker">ADAM • OBJECTIVE MASTERY</span><h2 id="v1-49-mastery-title">Day ${day} mastery</h2></div><span class="v1-49-mastery-badge">+15 XP EACH</span></div><p class="v1-49-mastery-copy">Answer the three checkpoints for this specific day to demonstrate what you learned.</p><div class="v1-49-mastery-progress" role="progressbar" aria-label="Day ${day} objective mastery" aria-valuemin="0" aria-valuemax="3" aria-valuenow="${done}"><div><span>DAY ${day} OBJECTIVES</span><b>${done} / 3</b></div><span class="v1-49-mastery-bar"><i style="width:${Math.round(done/3*100)}%"></i></span></div><div id="v1-49-question"></div>`;
+    const section=document.createElement("section"); section.className="v1-49-day-objective-mastery";
+    const identity=window.GEI_IDENTITY;
+    const learnerName=identity?.getDamName?.()||"LEARNER"; section.setAttribute("aria-labelledby","v1-49-mastery-title");
+    section.innerHTML=`<div class="v1-49-mastery-head"><div><span class="v1-49-mastery-kicker">ADAM • OBJECTIVE MASTERY • @${learnerName}</span><h2 id="v1-49-mastery-title">Day ${day} mastery</h2></div><span class="v1-49-mastery-badge">+15 XP EACH</span></div><p class="v1-49-mastery-copy">Answer the three checkpoints for this specific day to demonstrate what you learned.</p><div class="v1-49-mastery-progress" role="progressbar" aria-label="Day ${day} objective mastery" aria-valuemin="0" aria-valuemax="3" aria-valuenow="${done}"><div><span>DAY ${day} OBJECTIVES</span><b>${done} / 3</b></div><span class="v1-49-mastery-bar"><i style="width:${Math.round(done/3*100)}%"></i></span></div><div id="v1-49-question"></div>`;
     root.appendChild(section);
     let index=0; while(index<items.length&&isMastered(state,day,index))index++;
     const host=section.querySelector("#v1-49-question");
-    if(index>=items.length){host.innerHTML=`<div class="v1-49-complete"><span>✓</span><div><strong>Day ${day} objectives mastered</strong><small>All three checkpoints demonstrated.</small></div></div>`;return;}
+    if(index>=items.length){host.innerHTML=`<div class="v1-49-complete"><span>✓</span><div><strong>Day ${day} objectives mastered</strong><small>All three checkpoints demonstrated.</small></div></div>`;window.dispatchEvent(new CustomEvent("gei:day-objectives-mastered",{detail:{day,learnerName,mastered:3}}));return;}
     const [question,choices,correct]=items[index];
     host.innerHTML=`<div class="v1-49-question-meta"><span>CHECKPOINT ${index+1} / 3</span><b>${done} MASTERED</b></div><h3>${question}</h3><div class="v1-49-choices">${choices.map((choice,i)=>`<button type="button" data-choice="${i}">${choice}</button>`).join("")}</div><p class="v1-49-feedback" aria-live="polite"></p>`;
     host.querySelectorAll("[data-choice]").forEach(btn=>btn.addEventListener("click",()=>{
       const current=read(),feedback=host.querySelector(".v1-49-feedback"),buttons=[...host.querySelectorAll("button")]; buttons.forEach(b=>b.disabled=true);
-      if(Number(btn.dataset.choice)!==correct){if(feedback)feedback.textContent="Not quite. Adam says: review the objective, then try again.";buttons.forEach(b=>b.disabled=false);return;}
+      if(Number(btn.dataset.choice)!==correct){if(feedback){const phrase=PHRASES[(index+day)%PHRASES.length].replace("{name}",learnerName?"@"+learnerName:"LEARNER");feedback.textContent=phrase+" — Adam says: review the objective, then try again.";}buttons.forEach(b=>b.disabled=false);return;}
       const k=key(day,index); if(!current.mastered.includes(k)){current.mastered.push(k);current.mastered=[...new Set(current.mastered)];save(current);window.GEI_PROGRESS?.addXP?.(15,"adam-objective-mastery");}
-      if(feedback)feedback.textContent="Objective demonstrated! +15 XP"; window.dispatchEvent(new CustomEvent("gei:objective-mastery-updated",{detail:{day,index:index+1}})); window.setTimeout(render,420);
+      if(feedback){const phrase=PHRASES[(index+day+1)%PHRASES.length].replace("{name}",learnerName?"@"+learnerName:"LEARNER");feedback.textContent=phrase+" — Objective demonstrated! +15 XP";} window.dispatchEvent(new CustomEvent("gei:objective-mastery-updated",{detail:{day,index:index+1}})); window.setTimeout(render,420);
     }));
   }
   function ensureStyles(){
