@@ -264,9 +264,9 @@
     vaultScript.defer = true;
     document.head.appendChild(vaultScript);
     renderAcademy();
-    window.addEventListener("storage", syncDayState);
+    window.addEventListener("storage", () => { syncDayState(); renderLearningProgress(); });
     window.addEventListener("gei:day-completion", () => { syncDayState(); renderLearningProgress(); });
-    window.setInterval(syncDayState, 1000);
+    window.addEventListener("gei:progress-updated", () => { syncDayState(); renderLearningProgress(); });
   }
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", init, { once: true }); else init();
 })();
