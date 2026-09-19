@@ -39,6 +39,20 @@ function ripple(target){
  target.appendChild(r);setTimeout(()=>r.remove(),700);
  target.classList.remove("gei-sonic-hit");void target.offsetWidth;target.classList.add("gei-sonic-hit");setTimeout(()=>target.classList.remove("gei-sonic-hit"),760);
 }
+function blueprintFinale(learnerName){
+ const c=ensure();if(!c)return;
+ const t=c.currentTime;
+ tone(72,.9,"sine",.08,0,42);tone(144,.8,"triangle",.06,.08,220);tone(288,.7,"triangle",.055,.18,392);
+ tone(523.25,.65,"sine",.05,.28,659.25);tone(783.99,.85,"triangle",.055,.4,1046.5);tone(1318.5,1.05,"sine",.045,.52,1760);
+ noise(.8,.04,.1);noise(.45,.025,.55);
+ if(reduced())return;
+ const layer=document.createElement("div");layer.className="gei-blueprint-finale";layer.setAttribute("aria-hidden","true");
+ const title=document.createElement("div");title.className="gei-blueprint-finale-title";title.textContent=learnerName?"@"+learnerName+" • BLUEPRINT COMPLETE":"BLUEPRINT COMPLETE";layer.appendChild(title);
+ const sub=document.createElement("div");sub.className="gei-blueprint-finale-sub";sub.textContent="DAY 6 OBJECTIVES MASTERED • 6 / 6";layer.appendChild(sub);
+ const wave=document.createElement("div");wave.className="gei-blueprint-finale-wave";layer.appendChild(wave);
+ for(let i=0;i<72;i++){const p=document.createElement("span");p.className="gei-blueprint-finale-particle";const a=Math.PI*2*i/72+(Math.random()-.5)*.2,d=100+Math.random()*Math.min(window.innerWidth,window.innerHeight)*.5;p.style.setProperty("--x",Math.cos(a)*d+"px");p.style.setProperty("--y",Math.sin(a)*d+"px");p.style.setProperty("--delay",Math.random()*220+"ms");layer.appendChild(p)}
+ document.body.appendChild(layer);window.setTimeout(()=>layer.remove(),3600);
+}
 function waterCelebration(day){
  completionSound();
  if(reduced())return;
@@ -67,6 +81,7 @@ function onClick(e){
  else iconSound();
 }
 document.addEventListener("click",onClick,{capture:true});
+window.addEventListener("gei:day-objectives-mastered",e=>{const day=Number(e.detail?.day||0);if(day===6)blueprintFinale(e.detail?.learnerName||"");});
 window.addEventListener("gei:day-completion",e=>{const day=Number(e.detail?.day||e.detail?.dayId||0);if(day<1||day>6)return;const record=e.detail?.completion?.[day]||{};const signature=`${day}:${record.completedAt||"event"}`;if(signature===lastCompletionSignature)return;lastCompletionSignature=signature;waterCelebration(day);});
-window.GEI_SONIC_FX=Object.freeze({unlockAudio:ensure,mascot:mascotSound,icon:iconSound,wheel:wheelSound,celebrate:waterCelebration});
+window.GEI_SONIC_FX=Object.freeze({unlockAudio:ensure,mascot:mascotSound,icon:iconSound,wheel:wheelSound,celebrate:waterCelebration,blueprintFinale});
 })();
