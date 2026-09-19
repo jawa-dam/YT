@@ -19,3 +19,16 @@
   #gei-quick-access .gei-quick-label{font-size:9px}
   .gei-popout-dialog .gei-rewards-head h2{font-size:24px!important}
 }
+
+/* V1.63.7 — Reset Dam destination */
+#gei-quick-access .gei-quick-button[data-gei-popout="gei-dam-reset"]{
+  border-color:rgba(47,210,255,.42);
+  background:linear-gradient(145deg,rgba(47,210,255,.09),rgba(61,61,234,.06));
+  color:var(--skin-text,#102a43);
+}
+#gei-quick-access .gei-quick-button[data-gei-popout="gei-dam-reset"] .gei-quick-icon{
+  filter:drop-shadow(0 2px 5px rgba(47,210,255,.25));
+}
+#gei-quick-access .gei-quick-button[data-gei-popout="gei-dam-reset"] .gei-quick-label{
+  color:#155eef;
+}
