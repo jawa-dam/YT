@@ -45,7 +45,7 @@ function setIdentity(patch,source){
  const next={...state};
  if(Object.prototype.hasOwnProperty.call(patch||{},"damName")){
   const name=cleanName(patch.damName);
-  if(name&&!validName(name))return false;
+  if(!validName(name))return false;
   next.damName=name;
  }
  if(Object.prototype.hasOwnProperty.call(patch||{},"avatar")){
