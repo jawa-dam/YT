@@ -121,7 +121,7 @@
   }
 
   function journeyMarkup() {
-    return `<section class="gei-journey-card" id="gei-journey-card" aria-labelledby="gei-journey-title"><div class="gei-journey-top"><div><span class="gei-journey-kicker">GEI PROGRESS</span><h2 class="gei-journey-title" id="gei-journey-title">Continue Your Journey</h2></div><span class="gei-journey-count" id="gei-journey-count">0 / 6</span></div><p class="gei-journey-copy" id="gei-journey-copy">You're ready for Day 1. Start with the source, water, engineering and interpretation.</p><div class="gei-journey-track" role="progressbar" aria-label="GEI learning progress" aria-valuemin="0" aria-valuemax="6" aria-valuenow="0"><span class="gei-journey-fill" id="gei-journey-fill"></span></div><div class="gei-journey-milestone" id="gei-journey-milestone"><span id="gei-journey-milestone-text">DAY 1 COMPLETE</span><span class="gei-journey-xp" id="gei-journey-xp">+100 XP</span></div><div class="gei-journey-actions"><a class="gei-journey-primary" id="gei-journey-primary" href="day-1.html">START DAY 1 →</a><button class="gei-journey-complete" id="gei-journey-complete" type="button">MARK COMPLETE</button></div></section>`;
+    return `<section class="gei-journey-card" id="gei-journey-card" aria-labelledby="gei-journey-title"><div class="gei-journey-top"><div><span class="gei-journey-kicker">GEI PROGRESS</span><h2 class="gei-journey-title" id="gei-journey-title">Continue Your Journey</h2></div><span class="gei-journey-count" id="gei-journey-count">0 / 6</span></div><p class="gei-journey-copy" id="gei-journey-copy">You're ready for Day 1. Start with the source, water, engineering and interpretation.</p><div class="gei-journey-track" role="progressbar" aria-label="GEI learning progress" aria-valuemin="0" aria-valuemax="6" aria-valuenow="0"><span class="gei-journey-fill" id="gei-journey-fill"></span></div><div class="gei-journey-milestone" id="gei-journey-milestone"><span id="gei-journey-milestone-text">DAY 1 COMPLETE</span><span class="gei-journey-xp" id="gei-journey-xp">+111 XP</span></div><div class="gei-journey-actions"><a class="gei-journey-primary" id="gei-journey-primary" href="day-1.html">START DAY 1 →</a><button class="gei-journey-complete" id="gei-journey-complete" type="button">MARK COMPLETE</button></div></section>`;
   }
 
   function ensureJourneyCard() {
@@ -163,7 +163,7 @@
       if (primary) { primary.textContent = `CONTINUE ${day.title.toUpperCase()} →`; primary.href = day.url; }
       if (complete) { complete.textContent = `MARK ${day.title.toUpperCase()} COMPLETE`; complete.classList.remove("is-done"); }
       if (milestoneText) milestoneText.textContent = `${previous?.title.toUpperCase() || "DAY 1"} COMPLETE`;
-      if (xp) xp.textContent = `+${count * 100} XP TOTAL`;
+      if (xp) xp.textContent = `+${count * 111} XP TOTAL`;
       milestone?.classList.add("is-visible");
     } else {
       if (copyEl) copyEl.textContent = "You've completed the six-day GEI blueprint. Your full learning path is complete.";
