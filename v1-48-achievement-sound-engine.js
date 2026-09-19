@@ -14,9 +14,9 @@ function play(day){if(!enabled())return;resume().then(c=>{if(!c)return;const now
 function button(){return document.querySelector(".v1-48-sound-toggle")}
 function updateButton(){const b=button();if(!b)return;b.setAttribute("aria-pressed",String(enabled()));b.textContent=enabled()?"🔊 SOUND ON":"🔇 SOUND OFF";b.title=enabled()?"Achievement sounds are on":"Achievement sounds are off"}
 function mountControl(){const vault=document.querySelector("#screen-academy .v1-45-achievement-vault");if(!vault)return;let b=button();if(!b){b=document.createElement("button");b.className="v1-48-sound-toggle";b.type="button";b.addEventListener("click",async()=>{const next=!enabled();setEnabled(next);updateButton();if(next){const c=await resume();if(c)tone(c,659.25,c.currentTime+.02,.16,"sine",.035)}});vault.querySelector(".v1-45-vault-head")?.appendChild(b)}updateButton()}
-function boot(){mountControl();window.setInterval(mountControl,1000)}
+function boot(){mountControl()}
 window.addEventListener("gei:achievement-reward-revealed",e=>play(Number(e.detail?.day||1)));
-window.addEventListener("gei:achievement-updated",mountControl);window.addEventListener("pageshow",mountControl);
+window.addEventListener("gei:achievement-updated",mountControl);window.addEventListener("gei:day-completion",mountControl);window.addEventListener("gei:navigation",mountControl);window.addEventListener("pageshow",mountControl);
 if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",boot,{once:true});else boot();
 window.GEIAchievementSound={play,enabled,setEnabled};
 })();
