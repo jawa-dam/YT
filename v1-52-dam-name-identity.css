@@ -1,0 +1,16 @@
+/* V1.52 — Dam Name & Learner Identity */
+.v1-52-dam-name{display:grid;gap:8px;padding:10px 11px;border:1px solid color-mix(in srgb,var(--skin-accent,#2fd2ff) 28%,transparent);border-radius:15px;background:color-mix(in srgb,var(--skin-accent,#2fd2ff) 5%,var(--skin-surface,#fff))}
+.v1-52-dam-name-head{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.v1-52-label{display:block;color:var(--skin-accent,#2fd2ff);font-size:8px;font-weight:900;letter-spacing:.14em}
+.v1-52-value{display:block;margin-top:2px;font-size:14px;letter-spacing:.01em}
+.v1-52-value.is-empty{color:#ff1493}
+.v1-52-edit,.v1-52-input-row button{border:0;border-radius:9px;padding:7px 9px;background:#ff1493;color:#fff;font:inherit;font-size:8px;font-weight:900;letter-spacing:.05em;cursor:pointer}
+.v1-52-editor{display:grid;gap:6px}
+.v1-52-editor label{font-size:9px;font-weight:800}
+.v1-52-input-row{display:grid;grid-template-columns:20px minmax(0,1fr) auto;gap:5px;align-items:center}
+.v1-52-input-row>span{font-weight:900;text-align:center;color:var(--skin-accent,#2fd2ff)}
+.v1-52-input-row input{width:100%;min-width:0;box-sizing:border-box;border:1px solid color-mix(in srgb,var(--skin-muted,#526b82) 28%,transparent);border-radius:9px;padding:8px 9px;background:var(--skin-surface,#fff);color:var(--skin-text,#102a43);font:inherit;font-size:11px;outline:none}
+.v1-52-input-row input:focus{border-color:#2fd2ff;box-shadow:0 0 0 2px rgba(47,210,255,.14)}
+.v1-52-editor small{color:var(--skin-muted,#526b82);font-size:8px}
+.v1-52-error{color:#d10b63;font-size:8px;font-weight:800}
+@media(max-width:360px){.v1-52-dam-name{padding:9px}.v1-52-value{font-size:13px}.v1-52-edit,.v1-52-input-row button{padding:7px 8px}}
