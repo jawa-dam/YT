@@ -13,6 +13,11 @@ if(!head){head=document.createElement("div");head.className="v1-45-vault-head";h
 if(!subtitle){subtitle=document.createElement("p");subtitle.className="v1-45-vault-subtitle";vault.appendChild(subtitle)}
 if(!grid){grid=document.createElement("div");grid.className="v1-45-vault-grid";vault.appendChild(grid)}
 const earned=validDays(),count=earned.length;
+const identity=(()=>{try{return JSON.parse(localStorage.getItem("geiDamNameIdentityV1")||"null")||{}}catch{return{}}})();
+const damName=typeof identity.damName==="string"?identity.damName.trim():"";
+const avatar=identity.avatar||"adam";
+const avatarIcons={water:"💧",mountain:"⛰️",dam:"🧱",wheel:"⚙️",gate:"🚪",current:"🌊"};
+const avatarHtml=avatar==="adam"&&window.GEI_MASCOT?.url ? '<img class="v1-45-learner-avatar-image" src="'+window.GEI_MASCOT.url+'" alt="Adam, the YallToo mascot" />' : '<span class="v1-45-learner-avatar-icon" aria-hidden="true">'+(avatarIcons[avatar]||"🦫")+"</span>";
 const countEl=head.querySelector(".v1-45-vault-count");if(countEl)countEl.textContent=count+" / 6";
 subtitle.textContent=count===6?"All six achievements mastered. Blueprint Master unlocked.":count+" of 6 achievements unlocked. Complete each lesson to build the collection.";
 for(const [key,item] of Object.entries(items)){
