@@ -13,7 +13,8 @@
     { id: 5, title: "Day 5", url: "day-5.html" },
     { id: 6, title: "Day 6", url: "day-6.html" }
   ];
-  const MAX_XP = 666;\n  const DEFAULT_STATE = { completed: [], xp: 0 };
+  const MAX_XP = 666;
+  const DEFAULT_STATE = { completed: [], xp: 0 };
   let state = loadState();
 
   function loadState() {
