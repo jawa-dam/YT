@@ -33,27 +33,8 @@
   function completedDays(){const p=progress(),ledger=completionLedger(),set=new Set((p.completed||[]).filter(n=>n>=1&&n<=6));Object.keys(ledger).forEach(k=>{const day=Number(k);if(day>=1&&day<=6&&ledger[k]?.completed===true)set.add(day);});return set;}
   function qualifies(b){const days=completedDays();if(b.id.indexOf("day-")===0)return days.has(Number(b.id.split("-")[1]));if(b.id==="streak-2")return streak()>=2;if(b.id==="streak-3")return streak()>=3;if(b.id==="streak-5")return streak()>=5;if(b.id==="first-spark")return masteryCount()>=1;if(b.id==="six-day-flow")return days.size>=6;if(b.id==="blueprint-master")return days.size>=6&&progress().xp>=666;return false;}
   function sync(){const state=load(),before=state.earned.length;BADGES.forEach(b=>{if(qualifies(b))state.earned.push(b.id);});state.earned=[...new Set(state.earned)];if(state.earned.length!==before)save(state);window.GEI_BADGES_STATE=state;window.dispatchEvent(new CustomEvent("gei:badges-updated",{detail:{earned:state.earned.slice(),total:BADGES.length,newlyEarned:state.earned.length-before}}));return state;}
-  function ensureRewardsCard(){
-    const academy=document.getElementById("screen-academy");
-    const view=academy?.querySelector(".academy-view")||academy;
-    if(!view||document.getElementById("gei-rewards-card"))return;
-    const card=document.createElement("section");
-    card.className="gei-rewards-card";
-    card.id="gei-rewards-card";
-    card.setAttribute("aria-labelledby","gei-rewards-title");
-    card.innerHTML='<div class="gei-rewards-head"><div><span class="gei-rewards-kicker">🏆 BADGES</span><h2 id="gei-rewards-title">Badge Collection</h2></div><strong data-gei-badge-count>0 / 12</strong></div><p class="gei-rewards-copy">12 achievement badges record mastery, streaks and major GEI milestones.</p><div class="gei-badge-grid gei-rewards-grid"></div>';
-    view.appendChild(card);
-  }
-  function renderRewards(){
-    ensureRewardsCard();
-    const card=document.getElementById("gei-rewards-card");
-    if(!card)return;
-    const state=window.GEI_BADGES_STATE||sync();
-    const grid=card.querySelector(".gei-rewards-grid");
-    if(grid)grid.innerHTML=BADGES.map(b=>'<div class="gei-badge '+(state.earned.includes(b.id)?"is-earned":"is-locked")+'" data-gei-badge-id="'+b.id+'"><span class="gei-badge-icon" aria-hidden="true">'+b.icon+'</span><span class="gei-badge-name">'+b.name+'</span><span class="gei-badge-rule">'+b.rule+'</span><span class="gei-badge-status">'+(state.earned.includes(b.id)?"EARNED":"LOCKED")+'</span></div>').join("");
-    const count=card.querySelector("[data-gei-badge-count]");
-    if(count)count.textContent=state.earned.length+" / "+BADGES.length;
-  }
+  function ensureRewardsCard(){ return; }
+  function renderRewards(){ return; }
   function render(root=document){const state=window.GEI_BADGES_STATE||sync();root.querySelectorAll("[data-gei-badge-id]").forEach(el=>{const b=BADGES.find(x=>x.id===el.dataset.geiBadgeId);if(!b)return;const earned=state.earned.includes(b.id);el.classList.toggle("is-earned",earned);el.classList.toggle("is-locked",!earned);el.setAttribute("aria-label",earned?b.name+" earned":b.name+" locked");});root.querySelectorAll("[data-gei-badge-count]").forEach(el=>{el.textContent=state.earned.length+" / "+BADGES.length;});}
   function init(){sync();window.GEI_BADGES=Object.freeze({version:"1.63",getState:()=>({earned:[...(window.GEI_BADGES_STATE?.earned||[])]}),getBadges:()=>BADGES.map(b=>({...b,earned:(window.GEI_BADGES_STATE?.earned||[]).includes(b.id)})),sync,render});render();renderRewards();window.dispatchEvent(new CustomEvent("gei:badges-ready",{detail:window.GEI_BADGES.getState()}));["gei:progress-updated","gei:xp-updated","gei:day-completion","gei:objective-mastery-updated","gei:day-objectives-mastered","gei:streak-updated"].forEach(event=>window.addEventListener(event,()=>{sync();render();renderRewards();}));window.addEventListener("storage",event=>{if([STORAGE_KEY,MASTERY_KEY,COMPLETION_KEY,XP_KEY,STREAK_KEY].includes(event.key)){sync();render();renderRewards();}});}
   if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",init,{once:true});else init();
