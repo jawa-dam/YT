@@ -11,6 +11,6 @@ function show(day){const host=vault();if(!host)return;document.querySelector(".v
 function process(){const stored=read(REVEAL_KEY),before={...stored},unseen=[];for(let day=1;day<=6;day++){if(earned(day)&&!stored[day])unseen.push(day)}if(unseen.length){const state={...before};unseen.forEach(day=>{state[day]={revealedAt:new Date().toISOString(),dismissed:false}});write(REVEAL_KEY,state);show(unseen[unseen.length-1]);window.dispatchEvent(new CustomEvent("gei:achievement-reward-revealed",{detail:{day:unseen[unseen.length-1]}}));return}sync()}
 let lastSignature="";
 function watch(){const c=read(COMPLETION_KEY),a=read(ACHIEVEMENT_KEY);const sig=JSON.stringify([c,a]);if(sig!==lastSignature){lastSignature=sig;process()}}
-function boot(){sync();watch();window.setInterval(watch,1000)}
-window.addEventListener("gei:achievement-updated",watch);window.addEventListener("gei:day-completion",watch);window.addEventListener("storage",watch);window.addEventListener("pageshow",watch);if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",boot,{once:true});else boot();
+function boot(){sync();watch()}
+window.addEventListener("gei:achievement-updated",watch);window.addEventListener("gei:day-completion",watch);window.addEventListener("gei:navigation",watch);window.addEventListener("storage",watch);window.addEventListener("pageshow",watch);if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",boot,{once:true});else boot();
 })();
