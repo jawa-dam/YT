@@ -34,6 +34,7 @@ const answerSound=(correct)=>{
  }
 };
 const answerTap=()=>{tone(360,.055,"sine",.025,0,280)};
+const xpRewardSound=()=>{tone(660,.09,"triangle",.035,0,880);tone(1046,.14,"sine",.028,.05,1320);tone(1568,.2,"sine",.018,.11,1760)};
 const completionSound=()=>{
   tone(110,.55,"sine",.05,0,62);noise(.34,.028,.02);
   tone(392,.48,"triangle",.045,.12,440);tone(523.25,.52,"triangle",.05,.19,587.33);tone(659.25,.7,"sine",.048,.27,783.99);
@@ -89,7 +90,8 @@ function onClick(e){
  else iconSound();
 }
 document.addEventListener("click",onClick,{capture:true});
+window.addEventListener("gei:objective-xp-awarded",e=>{xpRewardSound();const amount=Number(e.detail?.amount||0),pop=document.createElement("div");pop.className="gei-xp-reward-pop";pop.textContent=`+${amount} XP`;document.body.appendChild(pop);window.setTimeout(()=>pop.remove(),850);});
 window.addEventListener("gei:day-objectives-mastered",e=>{const day=Number(e.detail?.day||0),name=e.detail?.learnerName||"",signature=day+":"+name;if(day===6&&signature!==lastBlueprintFinaleSignature){lastBlueprintFinaleSignature=signature;blueprintFinale(name);}});
 window.addEventListener("gei:day-completion",e=>{const day=Number(e.detail?.day||e.detail?.dayId||0);if(day<1||day>6)return;const record=e.detail?.completion?.[day]||{};const signature=`${day}:${record.completedAt||"event"}`;if(signature===lastCompletionSignature)return;lastCompletionSignature=signature;waterCelebration(day);});
-window.GEI_SONIC_FX=Object.freeze({unlockAudio:ensure,mascot:mascotSound,icon:iconSound,wheel:wheelSound,answer:answerSound,answerTap,celebrate:waterCelebration,blueprintFinale});
+window.GEI_SONIC_FX=Object.freeze({unlockAudio:ensure,mascot:mascotSound,icon:iconSound,wheel:wheelSound,answer:answerSound,answerTap,celebrate:waterCelebration,blueprintFinale,xpRewardSound});
 })();
