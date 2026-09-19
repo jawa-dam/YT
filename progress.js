@@ -95,7 +95,8 @@
   }
 
   function addXP(amount, source = "reward") {
-    const value = Math.max(0, Math.floor(Number(amount) || 0));
+    const requested = Math.max(0, Math.floor(Number(amount) || 0));
+    const value = Math.min(requested, Math.max(0, MAX_XP - state.xp));
     if (!value) return false;
     state.xp += value;
     saveState();
