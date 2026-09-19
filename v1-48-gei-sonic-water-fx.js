@@ -26,6 +26,14 @@ const noise=(dur=.22,gain=.028,delay=0)=>{
 const mascotSound=()=>{tone(180,.22,"sine",.055,0,105);tone(520,.34,"triangle",.038,.04,760);tone(1040,.18,"sine",.022,.11,1320);noise(.12,.018,.02)};
 const iconSound=()=>{tone(740,.11,"sine",.035,0,560);tone(1180,.16,"triangle",.028,.035,1450)};
 const wheelSound=()=>{noise(.16,.026);tone(92,.26,"sine",.045,0,58);tone(280,.2,"triangle",.026,.03,190)};
+const answerSound=(correct)=>{
+ if(correct){
+  tone(520,.12,"triangle",.042,0,660);tone(784,.18,"sine",.035,.06,1046);tone(1318,.24,"sine",.022,.13,1568);noise(.08,.012,.04);
+ }else{
+  tone(180,.24,"sawtooth",.055,0,92);tone(115,.3,"sine",.045,.02,62);noise(.16,.025,.01);
+ }
+};
+const answerTap=()=>{tone(360,.055,"sine",.025,0,280)};
 const completionSound=()=>{
   tone(110,.55,"sine",.05,0,62);noise(.34,.028,.02);
   tone(392,.48,"triangle",.045,.12,440);tone(523.25,.52,"triangle",.05,.19,587.33);tone(659.25,.7,"sine",.048,.27,783.99);
@@ -83,5 +91,5 @@ function onClick(e){
 document.addEventListener("click",onClick,{capture:true});
 window.addEventListener("gei:day-objectives-mastered",e=>{const day=Number(e.detail?.day||0),name=e.detail?.learnerName||"",signature=day+":"+name;if(day===6&&signature!==lastBlueprintFinaleSignature){lastBlueprintFinaleSignature=signature;blueprintFinale(name);}});
 window.addEventListener("gei:day-completion",e=>{const day=Number(e.detail?.day||e.detail?.dayId||0);if(day<1||day>6)return;const record=e.detail?.completion?.[day]||{};const signature=`${day}:${record.completedAt||"event"}`;if(signature===lastCompletionSignature)return;lastCompletionSignature=signature;waterCelebration(day);});
-window.GEI_SONIC_FX=Object.freeze({unlockAudio:ensure,mascot:mascotSound,icon:iconSound,wheel:wheelSound,celebrate:waterCelebration,blueprintFinale});
+window.GEI_SONIC_FX=Object.freeze({unlockAudio:ensure,mascot:mascotSound,icon:iconSound,wheel:wheelSound,answer:answerSound,answerTap,celebrate:waterCelebration,blueprintFinale});
 })();
