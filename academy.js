@@ -23,24 +23,69 @@
 
   function syncDayState() {
     const completion = readCompletion();
+    const achievementState = (() => {
+      try { return JSON.parse(localStorage.getItem("geiAcademyAchievementsV1") || "{}"); } catch (_) { return {}; }
+    })();
+    let completedCount = 0;
+
     document.querySelectorAll("#screen-academy .academy-day-card").forEach((card) => {
       const day = Number(card.dataset.day);
       const unlocked = day === 1 || !!completion[day - 1];
-      const complete = !!completion[day];
+      const complete = completion[day]?.completed === true && Number(completion[day]?.audioPercent || 0) >= 90;
+      if (complete) completedCount += 1;
+
       card.href = ACADEMY_DAYS[day - 1].url;
       card.target = "_self";
       card.rel = "";
       card.classList.toggle("is-locked", !unlocked);
       card.classList.toggle("is-complete", complete);
+      card.classList.toggle("is-active", !complete && unlocked);
       card.dataset.geiLocked = String(!unlocked);
       card.setAttribute("aria-disabled", String(!unlocked));
+
       const status = card.querySelector(".academy-day-status");
-      if (status) status.textContent = complete ? "COMPLETED" : unlocked ? (day === 1 ? "START HERE" : "UNLOCKED") : "LOCKED";
+      if (status) status.textContent = complete ? "MASTERED" : unlocked ? (day === 1 ? "START HERE" : "UNLOCKED") : "LOCKED";
+
+      const achievement = card.querySelector(".gei-stage-achievement");
+      if (achievement) {
+        const earned = achievementState[day]?.earned === true;
+        const item = [
+          null,
+          { title: "THE OBSERVER" },
+          { title: "THE BUILDER" },
+          { title: "THE RESERVOIR" },
+          { title: "THE FLOW ENGINEER" },
+          { title: "THE WATERWHEEL" },
+          { title: "BLUEPRINT MASTER" }
+        ][day];
+        achievement.classList.toggle("is-earned", earned);
+        achievement.classList.toggle("is-locked", !earned);
+        achievement.querySelector("b").textContent = earned ? "ACHIEVEMENT EARNED" : "ACHIEVEMENT";
+        achievement.querySelector("strong").textContent = earned ? item.title : "LOCKED";
+      }
     });
+
     const begin = document.querySelector("#screen-academy .academy-primary-action");
     if (begin) { begin.href = "day-1.html"; begin.target = "_self"; begin.rel = ""; }
+
     const guide = document.querySelector("#screen-academy .academy-guide-action");
-    if (guide) { guide.href = "day-1.html"; guide.target = "_self"; guide.rel = ""; }
+    if (guide) {
+      const nextDay = Math.min(6, completedCount + 1);
+      guide.href = "day-" + nextDay + ".html";
+      guide.target = "_self";
+      guide.rel = "";
+    }
+
+    const xp = Math.min(666, Math.max(0, Number(window.GEI_PROGRESS?.getState?.()?.xp) || 0));
+    const xpEl = document.getElementById("gei-blueprint-xp");
+    const daysEl = document.getElementById("gei-blueprint-days");
+    const achievementsEl = document.getElementById("gei-blueprint-achievements");
+    if (xpEl) xpEl.textContent = xp + " / 666 XP";
+    if (daysEl) daysEl.textContent = completedCount + " / 6 STAGES";
+    if (achievementsEl) {
+      const earnedCount = Object.keys(achievementState).filter((key) => achievementState[key]?.earned === true).length;
+      achievementsEl.textContent = earnedCount + " / 6 ACHIEVEMENTS";
+    }
   }
 
   function wheelMarkup() {
@@ -128,13 +173,6 @@
           </button>
         </header>
 
-        <section class="gei-learning-progress" aria-labelledby="gei-learning-progress-title">
-          <div class="gei-learning-progress-head"><div><span class="academy-section-label">YOUR LEARNING PROGRESS</span><h2 id="gei-learning-progress-title">Six-Day Academy Path</h2></div><strong class="gei-learning-progress-count" id="gei-learning-progress-count">0 / 6</strong></div>
-          <div class="gei-learning-progress-track" role="progressbar" aria-label="Six-day Academy progress" aria-valuemin="0" aria-valuemax="6" aria-valuenow="0"><span id="gei-learning-progress-fill"></span></div>
-          <p class="gei-learning-progress-status" id="gei-learning-progress-status">Build the blueprint one hydraulic stage at a time.</p>
-          <div class="gei-learning-progress-days" id="gei-learning-progress-days" aria-label="Academy day progress"></div>
-        </section>
-
         <section class="academy-hero academy-waterwheel-hero" aria-labelledby="academy-hero-title">
           <div class="academy-hero-copy"><span class="academy-section-label">EXPLORE THE WATER BLUEPRINT</span><h2 id="academy-hero-title">6-Day Water Blueprint</h2><p>Turn the wheel and enter the first stage of the Genesis Engineered Interpretations learning path.</p><a class="academy-primary-action" href="day-1.html"><span>Begin Day 1</span><strong aria-hidden="true">→</strong></a></div>
           ${wheelMarkup()}
@@ -143,7 +181,11 @@
         <section class="academy-path" aria-labelledby="academy-path-title">
           <div class="academy-path-heading"><div><span class="academy-section-label">THE PATH</span><h2 id="academy-path-title">Six Hydraulic Stages</h2></div><span class="academy-path-count" id="academy-path-count">01 / 06</span></div>
           <div class="academy-day-grid gei-hydraulic-path">
-            ${ACADEMY_DAYS.map((day) => `<a class="academy-day-card gei-stage-link${day.active ? " is-active" : ""}${day.id > 1 ? " is-locked" : ""}" data-day="${day.id}" href="${day.url}" aria-label="Open ${day.label}: ${day.title}"><span class="gei-stage-top"><span class="academy-day-number">${day.label}</span><span class="gei-stage-icon" aria-hidden="true">${["💧","🧱","🌊","🚪","⚙️","🏗️"][day.id-1]}</span></span><h3>${day.title}</h3><span class="academy-day-status">${day.status}</span><span class="gei-stage-flow" aria-hidden="true"><i></i><i></i><i></i></span></a>`).join("")}
+            ${ACADEMY_DAYS.map((day) => `<a class="academy-day-card gei-stage-link${day.active ? " is-active" : ""}${day.id > 1 ? " is-locked" : ""}" data-day="${day.id}" href="${day.url}" aria-label="Open ${day.label}: ${day.title}"><span class="gei-stage-top"><span class="academy-day-number">${day.label}</span><span class="gei-stage-icon" aria-hidden="true">${["💧","🧱","🌊","🚪","⚙️","🏗️"][day.id-1]}</span></span><h3>${day.title}</h3><span class="academy-day-status">${day.status}</span><span class="gei-stage-achievement" data-achievement-day="${day.id}">🏆 <b>ACHIEVEMENT</b><strong>—</strong></span><span class="gei-stage-flow" aria-hidden="true"><i></i><i></i><i></i></span></a>`).join("")}
+          </div>
+          <div class="gei-blueprint-status" id="gei-blueprint-status" aria-label="Blueprint status">
+            <div><span>BLUEPRINT STATUS</span><strong id="gei-blueprint-xp">0 / 666 XP</strong></div>
+            <div><strong id="gei-blueprint-days">0 / 6 STAGES</strong><span id="gei-blueprint-achievements">0 / 6 ACHIEVEMENTS</span></div>
           </div>
         </section>
         ${mascotGuideMarkup()}
@@ -232,41 +274,13 @@
     syncDayState();
   }
 
-  function renderLearningProgress() {
-    const completion = readCompletion();
-    const completed = Array.from({length:6},(_,i)=>i+1).filter(day => completion[day]?.completed === true && Number(completion[day]?.audioPercent || 0) >= 90);
-    const count = completed.length;
-    const countEl = document.getElementById("gei-learning-progress-count");
-    const fill = document.getElementById("gei-learning-progress-fill");
-    const track = document.querySelector(".gei-learning-progress-track");
-    const status = document.getElementById("gei-learning-progress-status");
-    const days = document.getElementById("gei-learning-progress-days");
-    if(countEl) countEl.textContent = count + " / 6";
-    if(fill) fill.style.width = (count / 6 * 100) + "%";
-    if(track) track.setAttribute("aria-valuenow", String(count));
-    if(status) status.textContent = count === 6 ? "Six-day blueprint complete. All hydraulic stages are mastered." : count ? "Stage " + Math.min(6,count+1) + " is the next hydraulic checkpoint." : "Build the blueprint one hydraulic stage at a time.";
-    if(days) days.innerHTML = ACADEMY_DAYS.map(day => {
-      const done = completed.includes(day.id);
-      const unlocked = day.id === 1 || completed.includes(day.id-1);
-      return "<span class=\"gei-progress-node "+(done?"is-complete":unlocked?"is-current":"is-locked")+"\"><b>"+day.id+"</b><small>"+(done?"✓":unlocked?"OPEN":"•")+"</small></span>";
-    }).join("");
-    const pathCount=document.getElementById("academy-path-count");
-    if(pathCount) pathCount.textContent=String(Math.min(6,count)).padStart(2,"0")+" / 06";
-  }
 
   function init() {
-    const vaultCss = document.createElement("link");
-    vaultCss.rel = "stylesheet";
-    vaultCss.href = "v1-45-academy-achievement-vault.css";
-    document.head.appendChild(vaultCss);
-    const vaultScript = document.createElement("script");
-    vaultScript.src = "v1-45-academy-achievement-vault.js";
-    vaultScript.defer = true;
-    document.head.appendChild(vaultScript);
     renderAcademy();
-    window.addEventListener("storage", () => { syncDayState(); renderLearningProgress(); });
-    window.addEventListener("gei:day-completion", () => { syncDayState(); renderLearningProgress(); });
-    window.addEventListener("gei:progress-updated", () => { syncDayState(); renderLearningProgress(); });
+    window.addEventListener("storage", () => { syncDayState(); });
+    window.addEventListener("gei:day-completion", () => { syncDayState(); });
+    window.addEventListener("gei:achievement-updated", () => { syncDayState(); });
+    window.addEventListener("gei:progress-updated", () => { syncDayState(); });
   }
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", init, { once: true }); else init();
 })();
