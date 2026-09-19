@@ -41,7 +41,7 @@
     card.className="gei-rewards-card";
     card.id="gei-rewards-card";
     card.setAttribute("aria-labelledby","gei-rewards-title");
-    card.innerHTML='<div class="gei-rewards-head"><div><span class="gei-rewards-kicker">🏆 REWARDS</span><h2 id="gei-rewards-title">Achievement Collection</h2></div><strong data-gei-badge-count>0 / 12</strong></div><p class="gei-rewards-copy">Badges record mastery, streaks and major GEI milestones. Badges do not add XP.</p><div class="gei-badge-grid gei-rewards-grid"></div>';
+    card.innerHTML='<div class="gei-rewards-head"><div><span class="gei-rewards-kicker">🏆 BADGES</span><h2 id="gei-rewards-title">Badge Collection</h2></div><strong data-gei-badge-count>0 / 12</strong></div><p class="gei-rewards-copy">12 achievement badges record mastery, streaks and major GEI milestones.</p><div class="gei-badge-grid gei-rewards-grid"></div>';
     view.appendChild(card);
   }
   function renderRewards(){
@@ -55,6 +55,6 @@
     if(count)count.textContent=state.earned.length+" / "+BADGES.length;
   }
   function render(root=document){const state=window.GEI_BADGES_STATE||sync();root.querySelectorAll("[data-gei-badge-id]").forEach(el=>{const b=BADGES.find(x=>x.id===el.dataset.geiBadgeId);if(!b)return;const earned=state.earned.includes(b.id);el.classList.toggle("is-earned",earned);el.classList.toggle("is-locked",!earned);el.setAttribute("aria-label",earned?b.name+" earned":b.name+" locked");});root.querySelectorAll("[data-gei-badge-count]").forEach(el=>{el.textContent=state.earned.length+" / "+BADGES.length;});}
-  function init(){sync();window.GEI_BADGES=Object.freeze({version:"1.63",getState:()=>({earned:[...(window.GEI_BADGES_STATE?.earned||[])]}),getBadges:()=>BADGES.map(b=>({...b,earned:(window.GEI_BADGES_STATE?.earned||[]).includes(b.id)})),sync,render});render();renderRewards();window.dispatchEvent(new CustomEvent("gei:badges-ready",{detail:window.GEI_BADGES.getState()}));["gei:progress-updated","gei:xp-updated","gei:day-completion","gei:objective-mastery-updated","gei:day-objectives-mastered","gei:streak-updated"].forEach(event=>window.addEventListener(event,()=>{sync();render();renderRewards();}));window.addEventListener("storage",event=>{if([STORAGE_KEY,MASTERY_KEY,COMPLETION_KEY,XP_KEY].includes(event.key)){sync();render();renderRewards();}});}
+  function init(){sync();window.GEI_BADGES=Object.freeze({version:"1.63",getState:()=>({earned:[...(window.GEI_BADGES_STATE?.earned||[])]}),getBadges:()=>BADGES.map(b=>({...b,earned:(window.GEI_BADGES_STATE?.earned||[]).includes(b.id)})),sync,render});render();renderRewards();window.dispatchEvent(new CustomEvent("gei:badges-ready",{detail:window.GEI_BADGES.getState()}));["gei:progress-updated","gei:xp-updated","gei:day-completion","gei:objective-mastery-updated","gei:day-objectives-mastered","gei:streak-updated"].forEach(event=>window.addEventListener(event,()=>{sync();render();renderRewards();}));window.addEventListener("storage",event=>{if([STORAGE_KEY,MASTERY_KEY,COMPLETION_KEY,XP_KEY,STREAK_KEY].includes(event.key)){sync();render();renderRewards();}});}
   if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",init,{once:true});else init();
 })();
