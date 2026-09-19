@@ -36,13 +36,10 @@
     if (grid) grid.innerHTML = list.map((item) => `<div class="gei-vault-item ${item.earned ? "is-earned" : "is-locked"}" aria-label="${item.earned ? "Earned" : "Locked"}: ${item.days}-day ${item.name}"><span>${item.earned ? item.icon : "🔒"}</span><strong>${item.days}-DAY</strong><small>${item.name}</small><em>${item.earned ? `+${item.reward} XP` : "LOCKED"}</em></div>`).join("");
     const badge = card.querySelector("#gei-vault-badge"); if (badge) badge.textContent = `${earned.length} / ${list.length || 4}`;
     if (!state.joinedAt) { state.joinedAt = new Date().toISOString(); save(); }
-    const identity=(()=>{try{return JSON.parse(localStorage.getItem("geiDamNameIdentityV1")||"null")||{}}catch{return{}}})();
-    const damName=typeof identity.damName==="string"?identity.damName.trim():"";
-    const avatar=identity.avatar||"adam";
-    const avatarIcons={water:"💧",mountain:"⛰️",dam:"🧱",wheel:"⚙️",gate:"🚪",current:"🌊"};
-    const avatarEl=card.querySelector("#gei-vault-avatar");
-    if(avatarEl){if(avatar==="adam"&&window.GEI_MASCOT?.url) avatarEl.innerHTML='<img class="gei-vault-avatar-image" src="'+window.GEI_MASCOT.url+'" alt="Adam, the YallToo mascot" />'; else avatarEl.textContent=avatarIcons[avatar]||"🦫";}
+    const api=window.GEI_IDENTITY;
+    const damName=api?.getDamName?.()||"";
     const nameEl=card.querySelector("#gei-vault-name"); if(nameEl) nameEl.textContent=damName?"@"+damName:"GEI LEARNER";
+    const avatarEl=card.querySelector("#gei-vault-avatar"); if(avatarEl&&api){avatarEl.innerHTML=api.avatarMarkup({className:"gei-vault-avatar-image",alt:"Adam, the YallToo mascot"});}
     const since = card.querySelector("#gei-vault-since"); if (since) since.textContent = damName ? "Learner since "+new Date(state.joinedAt).toLocaleDateString(undefined, { month: "short", year: "numeric" }) : "Set your Dam Name in Profile";
     const complete = card.querySelector("#gei-vault-complete"); if (complete) complete.hidden = !achievementState.earned?.includes(6);
     const last = card.querySelector("#gei-vault-last-earned");
@@ -55,8 +52,7 @@
     window.addEventListener("gei:achievement-earned", render);
     window.addEventListener("gei:progress-ready", render);
     window.addEventListener("gei:progress-updated", render);
-    window.addEventListener("gei:dam-name-updated", render);
-    window.addEventListener("gei:dam-avatar-updated", render);
+    window.addEventListener("gei:identity-updated", render);
     window.addEventListener("gei:learner-identity-ready", render);
     window.GEI_VAULT = Object.freeze({ getIdentity: () => ({ ...getIdentity(), visits: state.visits }), render });
   }
