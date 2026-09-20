@@ -1,0 +1,22 @@
+/* V1.63.12 — GEI Academy Chosen Avatar Guide */
+.day-top{position:relative;min-height:108px}
+.gei-day-avatar-button{position:relative;z-index:4;width:112px;height:112px;flex:0 0 112px;margin:-2px -2px 0 0;padding:4px;border:1px solid rgba(47,210,255,.22);border-radius:28px;background:radial-gradient(circle at 50% 38%,rgba(47,210,255,.1),rgba(6,7,13,.18) 65%,transparent);cursor:pointer;overflow:visible;animation:geiDayAvatarFloat 3.2s ease-in-out infinite;transition:transform .18s ease,filter .18s ease}
+.gei-day-avatar-button:hover{transform:translateY(-3px) scale(1.025);filter:brightness(1.08)}
+.gei-day-avatar-button:active{transform:scale(.96)}
+.gei-day-avatar-button:focus-visible{outline:3px solid #2fd2ff;outline-offset:4px}
+.gei-day-avatar-button .day-mascot{display:block;width:100%;height:100%;object-fit:contain;filter:drop-shadow(0 12px 18px rgba(0,0,0,.38));pointer-events:none}
+.gei-day-avatar-popout{position:fixed;inset:0;z-index:9999;display:flex;align-items:flex-start;justify-content:center;padding:92px 14px 24px;background:rgba(2,5,11,.58);backdrop-filter:blur(5px);-webkit-backdrop-filter:blur(5px);opacity:0;transition:opacity .18s ease}
+.gei-day-avatar-popout.is-open{opacity:1}
+.gei-day-avatar-popout-card{position:relative;width:min(100%,390px);padding:17px;border:1px solid rgba(47,210,255,.42);border-radius:22px;background:linear-gradient(145deg,#101522,#080b14);box-shadow:0 24px 70px rgba(0,0,0,.5);color:#fff;transform:translateY(-12px) scale(.97);transition:transform .22s cubic-bezier(.2,.8,.2,1)}
+.gei-day-avatar-popout.is-open .gei-day-avatar-popout-card{transform:translateY(0) scale(1)}
+.gei-day-avatar-close{position:absolute;top:10px;right:10px;width:40px;height:40px;border:1px solid rgba(255,20,147,.35);border-radius:50%;background:rgba(255,20,147,.12);color:#fff;font-size:25px;line-height:1;cursor:pointer}
+.gei-day-avatar-popout-head{display:grid;grid-template-columns:82px minmax(0,1fr);align-items:center;gap:12px;padding-right:40px}
+.gei-day-avatar-popout-image{width:82px;height:82px;border-radius:20px;overflow:hidden;border:1px solid rgba(47,210,255,.3);background:rgba(255,255,255,.05);display:grid;place-items:center}
+.gei-day-avatar-popout-art{width:100%;height:100%;object-fit:contain}
+.gei-day-avatar-popout-kicker{display:block;color:#2fd2ff;font-size:9px;font-weight:950;letter-spacing:.13em}
+.gei-day-avatar-popout-head strong{display:block;margin-top:3px;color:#fff;font-size:22px;line-height:1.05}
+.gei-day-avatar-popout-card p{margin:13px 0 11px;color:#c8d4e6;font-size:15px;line-height:1.45}
+.gei-day-avatar-popout-stage{display:inline-flex;padding:6px 9px;border-radius:999px;background:rgba(255,20,147,.1);color:#ff72cf;font-size:9px;font-weight:950;letter-spacing:.08em}
+@keyframes geiDayAvatarFloat{0%,100%{transform:translateY(0) rotate(0deg)}50%{transform:translateY(-7px) rotate(-1.2deg)}}
+@media(max-width:520px){.day-top{min-height:96px}.gei-day-avatar-button{width:102px;height:102px;flex-basis:102px}.gei-day-avatar-popout{padding:76px 10px 20px}.gei-day-avatar-popout-card{padding:15px;border-radius:20px}.gei-day-avatar-popout-head{grid-template-columns:72px minmax(0,1fr);gap:10px}.gei-day-avatar-popout-image{width:72px;height:72px}.gei-day-avatar-popout-head strong{font-size:19px}.gei-day-avatar-popout-card p{font-size:14px}}
+@media(prefers-reduced-motion:reduce){.gei-day-avatar-button,.gei-day-avatar-popout,.gei-day-avatar-popout-card{animation:none;transition:none}.gei-day-avatar-popout{opacity:1}.gei-day-avatar-popout-card{transform:none}}
