@@ -1,0 +1,145 @@
+/* V1.63.22 — Adam Dam Guide Interaction + Dark Mode */
+.gei-portfolio-guide{
+  grid-template-columns:150px minmax(0,1fr);
+  min-height:164px;
+  padding:7px 14px 7px 5px;
+  overflow:visible;
+  isolation:isolate;
+}
+.gei-portfolio-mascot{
+  width:150px;height:154px;
+  overflow:visible;
+}
+.gei-portfolio-mascot img{
+  width:158px;height:158px;
+  transform-origin:50% 85%;
+  animation:geiAdamGuideFloat 3.4s ease-in-out infinite;
+}
+.gei-portfolio-mascot:hover img,
+.gei-portfolio-mascot:focus-visible img{
+  animation:geiAdamGuideTap .55s ease-out 1;
+}
+.gei-portfolio-mascot-glow{
+  width:126px;height:126px;
+  animation:geiAdamGuidePulse 2.8s ease-in-out infinite;
+}
+.gei-portfolio-mascot-badge{display:none!important}
+.gei-portfolio-guide-copy h2{font-size:25px!important}
+.gei-portfolio-guide-copy p{font-size:13px!important}
+.gei-portfolio-guide-hint{font-size:8px!important}
+@keyframes geiAdamGuideFloat{
+  0%,100%{transform:translateY(2px) rotate(0deg)}
+  50%{transform:translateY(-6px) rotate(-1.2deg)}
+}
+@keyframes geiAdamGuideTap{
+  0%{transform:scale(1)}
+  35%{transform:scale(1.08) rotate(2deg)}
+  70%{transform:scale(.98) rotate(-1deg)}
+  100%{transform:scale(1)}
+}
+@media(max-width:520px){
+  .gei-portfolio-guide{
+    grid-template-columns:136px minmax(0,1fr);
+    min-height:156px;
+    padding:5px 8px 5px 2px;
+  }
+  .gei-portfolio-mascot{width:136px;height:150px}
+  .gei-portfolio-mascot img{width:150px;height:150px}
+  .gei-portfolio-mascot-glow{width:118px;height:118px}
+  .gei-portfolio-guide-copy h2{font-size:21px!important}
+  .gei-portfolio-guide-copy p{font-size:12px!important}
+}
+@media(max-width:360px){
+  .gei-portfolio-guide{
+    grid-template-columns:116px minmax(0,1fr);
+    min-height:138px;
+  }
+  .gei-portfolio-mascot{width:116px;height:132px}
+  .gei-portfolio-mascot img{width:132px;height:132px}
+  .gei-portfolio-mascot-glow{width:104px;height:104px}
+  .gei-portfolio-guide-copy h2{font-size:18px!important}
+  .gei-portfolio-guide-copy p{font-size:11px!important}
+}
+@media(prefers-reduced-motion:reduce){
+  .gei-portfolio-mascot img,.gei-portfolio-mascot-glow{animation:none!important}
+}
+:root[data-skin="dark"] #screen-portfolio{
+  background:#05060a!important;
+}
+:root[data-skin="dark"] #screen-portfolio .portfolio-header{
+  background:transparent!important;
+}
+:root[data-skin="dark"] #screen-portfolio .portfolio-title-wrap h1,
+:root[data-skin="dark"] #screen-portfolio .portfolio-title-wrap p{
+  color:#f6f8ff!important;
+}
+:root[data-skin="dark"] #screen-portfolio .portfolio-title-wrap .screen-kicker{
+  color:#2fd2ff!important;
+}
+:root[data-skin="dark"] #screen-portfolio .gei-portfolio-guide{
+  background:radial-gradient(circle at 18% 52%,rgba(47,210,255,.14),transparent 34%),linear-gradient(135deg,#0c1524,#11152a 58%,#1b0d1c)!important;
+  border-color:rgba(47,210,255,.34)!important;
+  box-shadow:0 16px 38px rgba(0,0,0,.4);
+}
+:root[data-skin="dark"] #screen-portfolio .gei-portfolio-guide-copy h2{
+  color:#ffffff!important;
+}
+:root[data-skin="dark"] #screen-portfolio .gei-portfolio-guide-copy p{
+  color:#d5e0ee!important;
+}
+:root[data-skin="dark"] #screen-portfolio .gei-portfolio-guide-hint{
+  color:#6fe5ff!important;
+}
+:root[data-skin="dark"] #screen-portfolio .research-overview{
+  background:linear-gradient(145deg,#0b111d,#101624 60%,#160d18)!important;
+  border-color:rgba(47,210,255,.24)!important;
+  box-shadow:0 18px 42px rgba(0,0,0,.42)!important;
+}
+:root[data-skin="dark"] #screen-portfolio .research-overview h2{
+  color:#ffffff!important;
+}
+:root[data-skin="dark"] #screen-portfolio .research-count{
+  color:#6fe5ff!important;
+  border-color:rgba(47,210,255,.34)!important;
+  background:rgba(47,210,255,.07)!important;
+}
+:root[data-skin="dark"] #screen-portfolio .research-work{
+  background:#111927!important;
+  border-color:rgba(255,255,255,.1)!important;
+  box-shadow:0 6px 14px rgba(0,0,0,.28)!important;
+}
+:root[data-skin="dark"] #screen-portfolio .research-work-copy strong{
+  color:#f6f8ff!important;
+}
+:root[data-skin="dark"] #screen-portfolio .research-work-copy small{
+  color:#aebed0!important;
+}
+:root[data-skin="dark"] #screen-portfolio .research-work-number{
+  color:#2fd2ff!important;
+}
+:root[data-skin="dark"] #screen-portfolio .portfolio-note{
+  background:#0b111d!important;
+  color:#d5e0ee!important;
+  border-color:rgba(255,255,255,.1)!important;
+}
+:root[data-skin="dark"] #screen-portfolio .portfolio-note p{
+  color:#c8d5e4!important;
+}
+:root[data-skin="dark"] #screen-portfolio .portfolio-footer{
+  color:#91a2b7!important;
+}
+:root[data-skin="dark"] .gei-portfolio-dialog-card{
+  background:linear-gradient(145deg,#0b1220,#11172a 58%,#180d19)!important;
+  border-color:rgba(47,210,255,.36)!important;
+}
+:root[data-skin="dark"] .gei-portfolio-dialog-copy h2{
+  color:#ffffff!important;
+}
+:root[data-skin="dark"] .gei-portfolio-guide-message{
+  color:#d7e2ef!important;
+}
+:root[data-skin="dark"] .gei-portfolio-paper-map span{
+  color:#dbe8f5!important;
+  background:rgba(47,210,255,.08)!important;
+  border-color:rgba(47,210,255,.2)!important;
+}
