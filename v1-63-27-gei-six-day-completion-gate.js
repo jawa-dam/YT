@@ -150,6 +150,11 @@
           <span>V1.63.27</span>
           <strong>UNLOCK ESTABLISHED — OPENING CEREMONY COMES NEXT</strong>
         </div>
+        <div class="gei-dam-gate-action-wrap" id="gei-dam-gate-action-wrap" hidden>
+          <button class="gei-dam-gate-open" id="gei-dam-gate-open" type="button">
+            <span>OPEN THE DAM</span><strong>666 XP</strong>
+          </button>
+        </div>
       </section>`;
   }
 
@@ -175,10 +180,18 @@
     const headline = gate.querySelector("#gei-dam-gate-headline");
     const message = gate.querySelector("#gei-dam-gate-message");
     const next = gate.querySelector("#gei-dam-gate-next");
+    const actionWrap = gate.querySelector("#gei-dam-gate-action-wrap");
+    const openButton = gate.querySelector("#gei-dam-gate-open");
 
     const daysReady = state.allDaysComplete;
     const xpReady = state.hasRequiredXP;
     const unlocked = state.unlocked;
+    const opened = Boolean(window.GEI_DAM_GATE_CEREMONY?.isOpened?.());
+    if (actionWrap) actionWrap.hidden = !unlocked || opened;
+    if (openButton) {
+      openButton.disabled = !unlocked || opened;
+      openButton.setAttribute("aria-disabled", String(!unlocked || opened));
+    }
 
     daysCheck?.classList.toggle("is-ready", daysReady);
     xpCheck?.classList.toggle("is-ready", xpReady);
@@ -210,6 +223,10 @@
       if (message) message.textContent = "Finish Days 1–6 and reach 666 XP. Your learning record remains intact when the gate is later opened.";
     }
 
+    if (openButton && openButton.dataset.bound !== "true") {
+      openButton.dataset.bound = "true";
+      openButton.addEventListener("click", () => window.GEI_DAM_GATE_CEREMONY?.confirm?.());
+    }
     gate.setAttribute("data-gate-unlocked", String(unlocked));
     gate.setAttribute("data-gate-eligible", String(state.eligible));
   }
