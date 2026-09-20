@@ -37,3 +37,12 @@
  .gei-video-section-head h2{font-size:19px!important}
  .gei-video-section-head p{font-size:12px!important}
 }
+/* V1.63.26 — Featured Video readability on light surfaces */
+:root:not([data-skin="dark"]) #screen-video .gei-video-feature-copy h2,
+:root:not([data-skin="dark"]) #screen-video .gei-video-section-head h2{
+  color:#102a43!important;
+}
+:root:not([data-skin="dark"]) #screen-video .gei-video-feature-copy p,
+:root:not([data-skin="dark"]) #screen-video .gei-video-section-head p{
+  color:#40566e!important;
+}
