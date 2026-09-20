@@ -5,7 +5,7 @@ const KEY="geiDamNameIdentityV1";
 const VERSION="1.54";
 const DEFAULT={damName:"",avatar:"adam",version:VERSION,updatedAt:null};
 const AVATARS=Object.freeze({
- adam:{label:"Adam",image:"https://assets.zyrosite.com/YZ9jg46Bljs5wOZR/yall-too-mascot-animated-UgmkGIe3sJES4tKm.gif",alt:"Adam, the YallToo beaver mascot"},
+ adam:{label:"Adam",image:true,alt:"Adam, the YallToo beaver mascot"},
  support:{label:"YallToo Support",image:"https://assets.zyrosite.com/YZ9jg46Bljs5wOZR/yall-too-support-xgGSevqqnPG0ltF3.png",alt:"YallToo Support"},
  damKids:{label:"Dam Kids",image:"https://assets.zyrosite.com/YZ9jg46Bljs5wOZR/halloween-is-for-dam-kids-IzkcYSwHxZ6lUmQa.png",alt:"Halloween Is For Dam Kids"},
  facts:{label:"YallToo Facts",image:"https://assets.zyrosite.com/YZ9jg46Bljs5wOZR/yalltoo-facts-cQxXmMvU0oaDhFPK.png",alt:"YallToo Facts"},
