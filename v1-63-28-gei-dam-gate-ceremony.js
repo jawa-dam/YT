@@ -118,7 +118,17 @@
         <p class="gei-gate-success-copy">The simulator wall is the next stage.</p><button type="button" class="gei-gate-simulator-link" id="gei-gate-simulator-link">ENTER THE SIMULATOR WALL</button>
       </div>`;
     document.body.appendChild(layer);
-    window.setTimeout(() => layer.remove(), 3200);
+
+    const simulatorLink = document.getElementById("gei-gate-simulator-link");
+    simulatorLink?.addEventListener("click", () => {
+      window.location.href = "simulator.html";
+    });
+
+    window.setTimeout(() => {
+      if (document.getElementById("gei-gate-success")) {
+        layer.remove();
+      }
+    }, 10000);
   }
 
   function openConfirmation() {
