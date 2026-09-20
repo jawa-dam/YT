@@ -115,7 +115,7 @@
         <h2>Flow Released.</h2>
         <p class="gei-gate-success-copy">666 XP has been consumed to open the gate. Your six-day Blueprint remains permanently recorded.</p>
         <div class="gei-gate-ceremony-cost">ACADEMY XP BALANCE<strong>0 XP</strong></div>
-        <p class="gei-gate-success-copy">The simulator wall is the next stage.</p>
+        <p class="gei-gate-success-copy">The simulator wall is the next stage.</p><button type="button" class="gei-gate-simulator-link" id="gei-gate-simulator-link">ENTER THE SIMULATOR WALL</button>
       </div>`;
     document.body.appendChild(layer);
     window.setTimeout(() => layer.remove(), 3200);
