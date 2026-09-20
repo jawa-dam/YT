@@ -97,12 +97,13 @@
   const fmt=(s)=>{if(!Number.isFinite(s))return '0:00';const m=Math.floor(s/60);return `${m}:${String(Math.floor(s%60)).padStart(2,'0')}`};
   const visible=()=>tracks.map((t,i)=>({...t,i})).filter(t=>activeGroup==='ALL'||t.group===activeGroup);
 
-  function openAdam(){adamModal.hidden=false;document.body.classList.add('video-adam-open');adamClose.focus()}
+  function playVideoGuideSound(){window.GEI_SONIC_FX?.icon?.()}
+  function openAdam(){playVideoGuideSound();adamModal.hidden=false;document.body.classList.add('video-adam-open');adamClose.focus()}
   function closeAdam(){adamModal.hidden=true;document.body.classList.remove('video-adam-open');adamOpen.focus()}
 
   adamOpen.addEventListener('click',openAdam);
-  adamClose.addEventListener('click',closeAdam);
-  adamDone.addEventListener('click',closeAdam);
+  adamClose.addEventListener('click',()=>{playVideoGuideSound();closeAdam()});
+  adamDone.addEventListener('click',()=>{playVideoGuideSound();closeAdam()});
   adamModal.addEventListener('click',e=>{if(e.target===adamModal)closeAdam()});
 
   function render(){
