@@ -1,0 +1,52 @@
+/* V1.63.28 — GEI Dam Gate Ceremony */
+.gei-dam-gate-action-wrap{position:relative;z-index:2;margin-top:14px}
+.gei-dam-gate-open{
+  width:100%;min-height:58px;display:flex;align-items:center;justify-content:space-between;gap:12px;
+  padding:13px 16px;border:1px solid rgba(255,20,147,.72);border-radius:17px;
+  background:linear-gradient(135deg,#ff1493,#b80069);color:#fff;cursor:pointer;
+  box-shadow:0 12px 30px rgba(255,20,147,.18);font:inherit;text-align:left;
+}
+.gei-dam-gate-open span{font-size:14px;font-weight:1000;letter-spacing:.08em}
+.gei-dam-gate-open strong{font-size:12px;color:#fff}
+.gei-dam-gate-open:hover{filter:brightness(1.08);transform:translateY(-1px)}
+.gei-dam-gate-open:focus-visible{outline:3px solid #2fd2ff;outline-offset:3px}
+.gei-dam-gate-open:disabled{cursor:default;opacity:.55;transform:none;filter:none}
+.gei-gate-ceremony{
+ position:fixed;inset:0;z-index:2500;display:grid;place-items:center;padding:18px;
+ background:rgba(3,6,12,.78);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
+}
+.gei-gate-ceremony-dialog{
+ width:min(100%,410px);box-sizing:border-box;padding:24px;border:2px solid rgba(47,210,255,.45);
+ border-radius:26px;background:linear-gradient(145deg,#101827,#070b14);color:#f6f8ff;
+ box-shadow:0 30px 90px rgba(0,0,0,.62),0 0 45px rgba(47,210,255,.10);text-align:center;
+}
+.gei-gate-ceremony-kicker{display:block;color:#2fd2ff;font-size:11px;font-weight:1000;letter-spacing:.14em}
+.gei-gate-ceremony-dialog h2{margin:8px 0;color:#fff;font-size:31px;line-height:1}
+.gei-gate-ceremony-dialog p{margin:11px auto;color:#d9e3ef;font-size:14px;line-height:1.5;max-width:330px}
+.gei-gate-ceremony-cost{
+ margin:15px auto;padding:13px;border:1px solid rgba(255,20,147,.28);border-radius:15px;
+ background:rgba(255,20,147,.07);color:#ff9df2;font-size:12px;font-weight:1000;letter-spacing:.08em
+}
+.gei-gate-ceremony-cost strong{display:block;margin-top:4px;color:#fff;font-size:27px}
+.gei-gate-ceremony-actions{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-top:17px}
+.gei-gate-ceremony-actions button{min-height:47px;border-radius:13px;font:inherit;font-size:11px;font-weight:1000;letter-spacing:.04em;cursor:pointer}
+.gei-gate-keep{border:1px solid rgba(255,255,255,.18);background:#151d2c;color:#fff}
+.gei-gate-open-confirm{border:1px solid rgba(47,210,255,.65);background:#12334a;color:#fff}
+.gei-gate-ceremony-actions button:focus-visible{outline:3px solid #ff1493;outline-offset:2px}
+.gei-gate-ceremony.is-success{background:rgba(3,6,12,.58)}
+.gei-gate-success-dialog{animation:geiGateRise .42s ease-out both}
+.gei-gate-success-dialog h2{font-size:34px}
+.gei-gate-success-mark{font-size:48px;line-height:1;margin-bottom:8px}
+.gei-gate-success-copy{color:#c9d5e5;font-size:13px;line-height:1.5}
+.gei-gate-success-copy strong{display:block;color:#2fd2ff;font-size:16px;margin-top:8px}
+@keyframes geiGateRise{from{opacity:0;transform:translateY(16px) scale(.96)}to{opacity:1;transform:none}}
+@media(max-width:520px){
+ .gei-gate-ceremony-dialog{padding:20px;border-radius:22px}
+ .gei-gate-ceremony-dialog h2{font-size:27px}
+ .gei-gate-ceremony-actions{grid-template-columns:1fr}
+ .gei-gate-open{min-height:54px}
+}
+@media(prefers-reduced-motion:reduce){
+ .gei-gate-success-dialog{animation:none}
+ .gei-dam-gate-open:hover{transform:none}
+}
