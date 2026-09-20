@@ -14,7 +14,8 @@
     "geiMasteryMilestonesV1",
     "geiAcademyStreakV1",
     "geiBadgeStateV1",
-    "geiAcademyAchievementsV1"
+    "geiAcademyAchievementsV1",
+    "geiDamGateV1"
   ];
 
   function playFloodWarning() {
