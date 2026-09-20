@@ -243,12 +243,23 @@
     };
 
     const activateClose = (event) => {
-      if (event) {
-        event.preventDefault();
-        event.stopPropagation();
-      }
+      event?.preventDefault?.();
+      event?.stopPropagation?.();
+      event?.stopImmediatePropagation?.();
       close();
     };
+
+    const isBackdropTap = (target) => target?.classList?.contains("home-adam-assistant-backdrop");
+
+    /* V1.63.23: pointerdown is the primary mobile close path; pointerup/click remain fallbacks. */
+    assistant.addEventListener("pointerdown", (event) => {
+      if (isBackdropTap(event.target)) {
+        activateClose(event);
+        return;
+      }
+      const closeButton = event.target.closest?.(".home-adam-assistant-close");
+      if (closeButton) activateClose(event);
+    }, { capture: true, passive: false });
 
     assistant.addEventListener("pointerup", (event) => {
       const closeButton = event.target.closest?.(".home-adam-assistant-close");
@@ -256,10 +267,33 @@
         activateClose(event);
         return;
       }
+      if (isBackdropTap(event.target)) {
+        activateClose(event);
+        return;
+      }
       const button = event.target.closest?.("[data-adam-action]");
       if (!button) return;
       activateAction(button, event);
     }, { passive: false });
+
+    assistant.addEventListener("click", (event) => {
+      const closeButton = event.target.closest?.(".home-adam-assistant-close");
+      if (closeButton || isBackdropTap(event.target)) {
+        activateClose(event);
+      }
+    }, { capture: true, passive: false });
+
+    /* Document-level fallback guarantees an exit even if another handler interferes. */
+    const documentDismiss = (event) => {
+      const active = document.getElementById("home-adam-assistant");
+      if (!active || active !== assistant) return;
+      const target = event.target;
+      if (target?.closest?.(".home-adam-assistant-close") || isBackdropTap(target)) {
+        activateClose(event);
+      }
+    };
+    document.addEventListener("pointerdown", documentDismiss, { capture: true, passive: false });
+    document.addEventListener("click", documentDismiss, { capture: true, passive: false });
 
     assistant.addEventListener("keydown", (event) => {
       const closeButton = event.target.closest?.(".home-adam-assistant-close");
