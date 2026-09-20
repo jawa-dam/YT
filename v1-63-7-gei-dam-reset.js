@@ -80,12 +80,14 @@
   }
 
   function resetData() {
+    try { localStorage.setItem("geiDamResetRecoveryV1", JSON.stringify({ version: 1, at: Date.now() })); } catch (_) {}
     RESET_KEYS.forEach((key) => {
       try { localStorage.removeItem(key); } catch (_) {}
     });
 
     // Preserve the learner's Dam Name, avatar and profile identity.
     window.GEI_PROGRESS?.resetProgress?.();
+    window.GEI_STREAK?.resetStreak?.();
 
     // resetProgress() intentionally owns the canonical XP/completion state.
     // Clear auxiliary progress again after its event so no stale ledger survives.
