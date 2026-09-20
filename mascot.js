@@ -324,6 +324,8 @@
     if (!home) return;
     event.preventDefault();
     event.stopImmediatePropagation();
+    /* V1.63.25: mascot.js owns the Home tap, so explicitly trigger the shared sonic engine before opening Adam. */
+    window.GEI_SONIC_FX?.mascot?.();
     openAssistant();
   }
 
