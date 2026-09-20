@@ -1,0 +1,44 @@
+/* V1.63.20 — Academy Path Text Contrast Fix */
+#screen-academy .gei-path-title h2{
+  color:#102a43!important;
+  -webkit-text-fill-color:#102a43!important;
+  text-shadow:none!important;
+}
+#screen-academy .gei-path-progress-summary strong{
+  color:#102a43!important;
+  -webkit-text-fill-color:#102a43!important;
+  text-shadow:none!important;
+}
+#screen-academy .gei-path-progress-summary span{
+  color:#155eef!important;
+  -webkit-text-fill-color:#155eef!important;
+  text-shadow:none!important;
+}
+#screen-academy .gei-path-progress-status{
+  color:#30465b!important;
+  -webkit-text-fill-color:#30465b!important;
+  text-shadow:none!important;
+  font-weight:600!important;
+}
+:root[data-skin="dark"] #screen-academy .gei-path-title h2{
+  color:#f6f8ff!important;
+  -webkit-text-fill-color:#f6f8ff!important;
+  text-shadow:0 1px 4px rgba(0,0,0,.7)!important;
+}
+:root[data-skin="dark"] #screen-academy .gei-path-progress-summary strong{
+  color:#ffffff!important;
+  -webkit-text-fill-color:#ffffff!important;
+}
+:root[data-skin="dark"] #screen-academy .gei-path-progress-summary span{
+  color:#2fd2ff!important;
+  -webkit-text-fill-color:#2fd2ff!important;
+}
+:root[data-skin="dark"] #screen-academy .gei-path-progress-status{
+  color:#c9d6e7!important;
+  -webkit-text-fill-color:#c9d6e7!important;
+}
+@media(max-width:420px){
+  #screen-academy .gei-path-title h2{font-size:22px!important}
+  #screen-academy .gei-path-progress-summary strong{font-size:16px!important}
+  #screen-academy .gei-path-progress-status{font-size:12px!important}
+}
