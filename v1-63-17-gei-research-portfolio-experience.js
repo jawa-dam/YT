@@ -23,7 +23,7 @@ function init(){
  '</button>'+
  '<div class="gei-portfolio-guide-copy"><span class="screen-kicker">THE DAM GUIDE</span><h2>Meet the Research Map</h2><p>Tap Wilbert to get a quick guide to the papers in this library.</p><span class="gei-portfolio-guide-hint">10 WORKS • RESEARCH • DISCOVERY</span></div>';
  const overview=main.querySelector(".research-overview");
- main.insertBefore(guide,overview);
+ root.insertBefore(guide,main);
  const dialog=document.createElement("div");
  dialog.className="gei-portfolio-dialog";
  dialog.hidden=true;
