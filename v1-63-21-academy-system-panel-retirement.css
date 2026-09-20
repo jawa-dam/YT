@@ -1,0 +1,7 @@
+/* V1.63.21 — Academy System Panel Retirement */
+#screen-academy .academy-progress-hub,
+#screen-academy .gei-state-verification,
+#screen-academy .gei-state-history,
+#screen-academy #gei-state-verification-slot{
+  display:none!important;
+}
