@@ -1,0 +1,182 @@
+/* V1.63.27 — GEI Six-Day Completion Gate */
+.gei-dam-gate{
+  position:relative;
+  overflow:hidden;
+  margin-top:18px;
+  padding:20px;
+  border:1px solid rgba(47,210,255,.26);
+  border-radius:24px;
+  background:
+    radial-gradient(circle at 92% 10%,rgba(61,61,234,.18),transparent 34%),
+    linear-gradient(145deg,#0b101b,#070a12 72%);
+  color:#f6f8ff;
+  box-shadow:0 18px 48px rgba(0,0,0,.24),inset 0 1px 0 rgba(255,255,255,.05);
+}
+.gei-dam-gate-glow{
+  position:absolute;
+  width:180px;height:180px;right:-90px;top:-90px;
+  border-radius:50%;
+  background:rgba(47,210,255,.14);
+  filter:blur(24px);
+  pointer-events:none;
+}
+.gei-dam-gate-top{
+  position:relative;
+  z-index:1;
+  display:flex;
+  align-items:flex-start;
+  justify-content:space-between;
+  gap:12px;
+}
+.gei-dam-gate-top .academy-section-label{
+  color:#2fd2ff!important;
+}
+.gei-dam-gate h2{
+  margin:5px 0 0;
+  color:#fff;
+  font-size:clamp(25px,5vw,34px);
+  line-height:1;
+  letter-spacing:-.03em;
+}
+.gei-dam-gate-state{
+  flex:0 0 auto;
+  padding:7px 10px;
+  border:1px solid rgba(255,20,147,.48);
+  border-radius:999px;
+  background:rgba(255,20,147,.09);
+  color:#ff9df2;
+  font-size:10px;
+  font-weight:1000;
+  letter-spacing:.1em;
+}
+.gei-dam-gate.is-unlocked{
+  border-color:rgba(255,20,147,.62);
+  box-shadow:0 18px 55px rgba(0,0,0,.28),0 0 34px rgba(255,20,147,.10),inset 0 1px 0 rgba(255,255,255,.06);
+}
+.gei-dam-gate.is-unlocked .gei-dam-gate-state{
+  border-color:rgba(47,210,255,.7);
+  background:rgba(47,210,255,.12);
+  color:#2fd2ff;
+}
+.gei-dam-gate-body{
+  position:relative;
+  z-index:1;
+  display:grid;
+  grid-template-columns:58px minmax(0,1fr);
+  gap:13px;
+  align-items:center;
+  margin-top:18px;
+}
+.gei-dam-gate-icon{
+  width:58px;height:58px;
+  display:grid;place-items:center;
+  border:1px solid rgba(47,210,255,.34);
+  border-radius:17px;
+  background:rgba(47,210,255,.08);
+  font-size:28px;
+}
+.gei-dam-gate-copy strong{
+  display:block;
+  color:#fff;
+  font-size:16px;
+  line-height:1.22;
+}
+.gei-dam-gate-copy p{
+  margin:5px 0 0;
+  color:#c9d5e5;
+  font-size:13px;
+  line-height:1.48;
+}
+.gei-dam-gate-checks{
+  position:relative;
+  z-index:1;
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:9px;
+  margin-top:16px;
+}
+.gei-dam-gate-check{
+  display:flex;
+  align-items:center;
+  gap:9px;
+  min-width:0;
+  padding:11px 12px;
+  border:1px solid rgba(255,255,255,.11);
+  border-radius:15px;
+  background:rgba(255,255,255,.035);
+}
+.gei-dam-gate-check>span:first-child{
+  flex:0 0 auto;
+  color:#77869b;
+  font-size:19px;
+}
+.gei-dam-gate-check b,.gei-dam-gate-check small{
+  display:block;
+}
+.gei-dam-gate-check b{
+  color:#f6f8ff;
+  font-size:10px;
+  letter-spacing:.07em;
+}
+.gei-dam-gate-check small{
+  margin-top:3px;
+  color:#9eacc0;
+  font-size:11px;
+  font-weight:800;
+}
+.gei-dam-gate-check.is-ready{
+  border-color:rgba(47,210,255,.34);
+  background:rgba(47,210,255,.07);
+}
+.gei-dam-gate-check.is-ready>span:first-child{
+  color:#2fd2ff;
+}
+.gei-dam-gate-check.is-ready>span:first-child::before{
+  content:"✓";
+}
+.gei-dam-gate-check.is-ready>span:first-child{
+  font-size:0;
+}
+.gei-dam-gate-check.is-ready>span:first-child::before{
+  font-size:19px;
+}
+.gei-dam-gate-next{
+  position:relative;
+  z-index:1;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:10px;
+  margin-top:12px;
+  padding:10px 12px;
+  border-radius:13px;
+  background:rgba(255,20,147,.07);
+  border:1px solid rgba(255,20,147,.16);
+}
+.gei-dam-gate-next span{
+  color:#ff9df2;
+  font-size:9px;
+  font-weight:1000;
+  letter-spacing:.1em;
+}
+.gei-dam-gate-next strong{
+  color:#fff;
+  font-size:10px;
+  letter-spacing:.05em;
+  text-align:right;
+}
+@media(max-width:520px){
+  .gei-dam-gate{padding:17px;border-radius:21px}
+  .gei-dam-gate-top{align-items:flex-start}
+  .gei-dam-gate-state{font-size:9px;padding:6px 8px}
+  .gei-dam-gate-body{grid-template-columns:50px minmax(0,1fr);gap:10px}
+  .gei-dam-gate-icon{width:50px;height:50px;font-size:24px;border-radius:15px}
+  .gei-dam-gate-copy strong{font-size:14px}
+  .gei-dam-gate-copy p{font-size:12px}
+  .gei-dam-gate-checks{grid-template-columns:1fr}
+  .gei-dam-gate-next{align-items:flex-start;flex-direction:column}
+  .gei-dam-gate-next strong{text-align:left}
+}
+@media(prefers-reduced-motion:reduce){
+  .gei-dam-gate,.gei-dam-gate *{scroll-behavior:auto}
+}
