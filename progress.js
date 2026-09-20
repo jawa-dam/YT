@@ -108,6 +108,24 @@
     return true;
   }
 
+  function spendXP(amount, source = "spend") {
+    const requested = Math.max(0, Math.floor(Number(amount) || 0));
+    if (!requested || state.xp < requested) return false;
+    state.xp -= requested;
+    saveState();
+    updateJourney();
+    window.dispatchEvent(new CustomEvent("gei:xp-spent", {
+      detail: { amount: requested, source, xp: state.xp }
+    }));
+    window.dispatchEvent(new CustomEvent("gei:xp-updated", {
+      detail: { amount: -requested, source, xp: state.xp }
+    }));
+    window.dispatchEvent(new CustomEvent("gei:progress-updated", {
+      detail: { ...state, currentDay: currentDayId(), xpSpent: requested, source }
+    }));
+    return true;
+  }
+
   function resetProgress() {
     state = { ...DEFAULT_STATE };
     try {
@@ -287,6 +305,7 @@
       getDayUrl: (id) => DAYS.find((day) => day.id === Number(id))?.url || null,
       completeDay,
       addXP,
+      spendXP,
       resetProgress
     });
     window.dispatchEvent(new CustomEvent("gei:progress-ready", {
