@@ -1,0 +1,23 @@
+/* V1.63.29 — GEI Simulator Wall */
+(() => {
+  "use strict";
+  const GATE_KEY="geiDamGateV1";
+  const DAYS=[[1,"💧","Water & Light","Separation"],[2,"▣","The Firmament","Dam wall"],[3,"◒","Reservoir & Dry Land","Containment"],[4,"⚙","The Sluice","Controlled release"],[5,"◉","The Waterwheel","Power transfer"],[6,"◈","The Beast System","System control"]];
+  function gateOpen(){try{const v=JSON.parse(localStorage.getItem(GATE_KEY)||"{}");return v&&v.opened===true}catch(_){return false}}
+  function academy(){window.location.href="index.html#academy"}
+  function render(){
+    if(document.getElementById("gei-simulator-wall"))return;
+    const stages=DAYS.map(function(x){return '<article class="gei-simulator-stage'+(x[0]===1?" is-live":"")+'" data-stage="'+x[0]+'"><div class="gei-simulator-stage-top"><span class="gei-simulator-stage-day">DAY '+x[0]+'</span><span class="gei-simulator-stage-icon" aria-hidden="true">'+x[1]+'</span></div><strong>'+x[2]+'</strong><small>'+x[3]+'</small></article>'}).join("");
+    document.body.innerHTML='<main class="gei-simulator-wall" id="gei-simulator-wall" aria-label="GEI Simulator Wall"><span class="gei-simulator-glow cyan" aria-hidden="true"></span><span class="gei-simulator-glow magenta" aria-hidden="true"></span><div class="gei-simulator-shell"><header class="gei-simulator-top"><div class="gei-simulator-brand"><span class="gei-simulator-mark" aria-hidden="true">🌊</span><div><span class="gei-simulator-kicker">GENESIS ENGINEERED INTERPRETATIONS</span><strong>SIMULATOR WALL</strong></div></div><div class="gei-simulator-top-actions"><button type="button" id="gei-simulator-academy">ACADEMY</button><button type="button" id="gei-simulator-reset-view">RESET VIEW</button></div></header><section class="gei-simulator-main"><article class="gei-simulator-hero"><div><span class="gei-simulator-eyebrow">THE NEXT HYDRAULIC STAGE</span><h1>BUILD THE<br><span>WATER SYSTEM.</span></h1><p>The GEI Simulator turns the six-day blueprint into a hydraulic engineering challenge. Learn the wall, control the flow, manage pressure and advance through the system.</p></div><div class="gei-simulator-command" aria-label="Simulator status"><div class="gei-simulator-stat"><span>Academy XP</span><strong class="cyan" id="sim-xp">0</strong></div><div class="gei-simulator-stat"><span>Simulator Score</span><strong class="pink" id="sim-score">0</strong></div><div class="gei-simulator-stat"><span>Level</span><strong id="sim-level">1 / 6</strong></div></div></article><aside class="gei-simulator-panel" aria-labelledby="sim-stage-title"><div class="gei-simulator-panel-head"><div><span>SIX HYDRAULIC STAGES</span><h2 id="sim-stage-title">Genesis 1 → 6</h2></div><span class="gei-simulator-lock" id="sim-gate-state">GATE OPEN</span></div><div class="gei-simulator-stage-list">'+stages+'</div></aside></section><footer class="gei-simulator-bottom"><div class="gei-simulator-bottom-copy"><strong>SIMULATOR ENGINE</strong><span>Wall shell online • gameplay engine arrives next</span></div><button class="gei-simulator-enter" id="gei-simulator-enter" type="button">ENTER LEVEL 1</button></footer></div><section class="gei-simulator-locked" id="gei-simulator-locked" hidden><div class="gei-simulator-lock-card"><div class="icon">🔒</div><h2>Dam Gate Closed</h2><p>The Simulator Wall opens only after the six-day Blueprint is complete and the Dam Gate ceremony has consumed the 666 XP unlock balance.</p><button class="gei-simulator-return" id="gei-simulator-return" type="button">RETURN TO ACADEMY</button></div></section></main>';
+    document.getElementById("gei-simulator-academy").onclick=academy;
+    document.getElementById("gei-simulator-return").onclick=academy;
+    document.getElementById("gei-simulator-reset-view").onclick=function(){window.scrollTo(0,0)};
+    document.getElementById("gei-simulator-enter").onclick=function(){window.dispatchEvent(new CustomEvent("gei:simulator-level-requested",{detail:{level:1,source:"v1.63.29"}}));window.location.href="simulator.html?level=1"};
+    const open=gateOpen();
+    document.getElementById("gei-simulator-locked").hidden=open;
+    document.getElementById("gei-simulator-enter").disabled=!open;
+    document.getElementById("sim-gate-state").textContent=open?"GATE OPEN":"GATE LOCKED";
+    try{const p=JSON.parse(localStorage.getItem("geiAcademyProgressV1")||"{}");document.getElementById("sim-xp").textContent=String(Math.max(0,Number(p.xp)||0))}catch(_){}
+  }
+  if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",render,{once:true});else render();
+})();
