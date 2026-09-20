@@ -80,16 +80,36 @@ function waterCelebration(day){
  document.body.appendChild(layer);
  window.setTimeout(()=>layer.remove(),1900);
 }
-function onClick(e){
- const target=e.target.closest?.(".academy-mascot,.gei-mascot-button,.home-mascot-button,.nav-icon,.gei-quick-button,.academy-wheel-tap,.academy-day-card,.academy-primary-action,.academy-cta,.gei-journey-primary,.gei-journey-complete");
+const SOUND_TARGETS=".academy-mascot,.gei-mascot-button,.home-mascot-button,.nav-icon,.nav-button,.nav-item,[data-nav-id],.gei-quick-button,.academy-wheel-tap,.academy-day-card,.academy-primary-action,.academy-cta,.gei-journey-primary,.gei-journey-complete,.home-adam-assistant-choice,.home-adam-assistant-close";
+let lastPointerSoundTarget=null,lastPointerSoundAt=0;
+function playForTarget(target){
  if(!target)return;
- const now=performance.now();if(now-lastTap<55)return;lastTap=now;
  ensure();ripple(target);
  if(target.matches(".academy-mascot,.gei-mascot-button,.home-mascot-button"))mascotSound();
  else if(target.matches(".academy-wheel-tap"))wheelSound();
  else iconSound();
 }
-document.addEventListener("click",onClick,{capture:true});
+function resolveSoundTarget(target){
+ return target?.closest?.(SOUND_TARGETS)||null;
+}
+function onPointerDown(e){
+ const target=resolveSoundTarget(e.target);
+ if(!target)return;
+ const now=performance.now();
+ if(now-lastPointerSoundAt<90&&target===lastPointerSoundTarget)return;
+ lastPointerSoundTarget=target;lastPointerSoundAt=now;
+ playForTarget(target);
+}
+function onClick(e){
+ const target=resolveSoundTarget(e.target);
+ if(!target)return;
+ const now=performance.now();
+ if(target===lastPointerSoundTarget&&now-lastPointerSoundAt<450)return;
+ lastPointerSoundTarget=target;lastPointerSoundAt=now;
+ playForTarget(target);
+}
+document.addEventListener("pointerdown",onPointerDown,{capture:true,passive:true});
+document.addEventListener("click",onClick,{capture:true,passive:true});
 window.addEventListener("gei:objective-xp-awarded",e=>{xpRewardSound();const amount=Number(e.detail?.amount||0),pop=document.createElement("div");pop.className="gei-xp-reward-pop";pop.textContent=`+${amount} XP`;document.body.appendChild(pop);window.setTimeout(()=>pop.remove(),850);});
 window.addEventListener("gei:day-objectives-mastered",e=>{const day=Number(e.detail?.day||0),name=e.detail?.learnerName||"",signature=day+":"+name;if(day===6&&signature!==lastBlueprintFinaleSignature){lastBlueprintFinaleSignature=signature;blueprintFinale(name);}});
 window.addEventListener("gei:day-completion",e=>{const day=Number(e.detail?.day||e.detail?.dayId||0);if(day<1||day>6)return;const record=e.detail?.completion?.[day]||{};const signature=`${day}:${record.completedAt||"event"}`;if(signature===lastCompletionSignature)return;lastCompletionSignature=signature;waterCelebration(day);});
