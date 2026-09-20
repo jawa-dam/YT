@@ -97,13 +97,13 @@
   const fmt=(s)=>{if(!Number.isFinite(s))return '0:00';const m=Math.floor(s/60);return `${m}:${String(Math.floor(s%60)).padStart(2,'0')}`};
   const visible=()=>tracks.map((t,i)=>({...t,i})).filter(t=>activeGroup==='ALL'||t.group===activeGroup);
 
-  function playVideoGuideSound(){window.GEI_SONIC_FX?.icon?.()}
+  function playVideoGuideSound(){window.GEI_SONIC_FX?.mascotImmediate?.()||window.GEI_SONIC_FX?.mascot?.()}
   function openAdam(){playVideoGuideSound();adamModal.hidden=false;document.body.classList.add('video-adam-open');adamClose.focus()}
   function closeAdam(){adamModal.hidden=true;document.body.classList.remove('video-adam-open');adamOpen.focus()}
 
   adamOpen.addEventListener('click',openAdam);
-  adamClose.addEventListener('click',()=>{playVideoGuideSound();closeAdam()});
-  adamDone.addEventListener('click',()=>{playVideoGuideSound();closeAdam()});
+  adamClose.addEventListener('click',()=>{window.GEI_SONIC_FX?.iconImmediate?.()||window.GEI_SONIC_FX?.icon?.();closeAdam()});
+  adamDone.addEventListener('click',()=>{window.GEI_SONIC_FX?.iconImmediate?.()||window.GEI_SONIC_FX?.icon?.();closeAdam()});
   adamModal.addEventListener('click',e=>{if(e.target===adamModal)closeAdam()});
 
   function render(){
