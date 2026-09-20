@@ -81,11 +81,11 @@ function waterCelebration(day){
  window.setTimeout(()=>layer.remove(),1900);
 }
 function onClick(e){
- const target=e.target.closest?.(".academy-mascot,.gei-mascot-button,.nav-icon,.gei-quick-button,.academy-wheel-tap,.academy-day-card,.academy-primary-action,.academy-cta,.gei-journey-primary,.gei-journey-complete");
+ const target=e.target.closest?.(".academy-mascot,.gei-mascot-button,.home-mascot-button,.nav-icon,.gei-quick-button,.academy-wheel-tap,.academy-day-card,.academy-primary-action,.academy-cta,.gei-journey-primary,.gei-journey-complete");
  if(!target)return;
  const now=performance.now();if(now-lastTap<55)return;lastTap=now;
  ensure();ripple(target);
- if(target.matches(".academy-mascot,.gei-mascot-button"))mascotSound();
+ if(target.matches(".academy-mascot,.gei-mascot-button,.home-mascot-button"))mascotSound();
  else if(target.matches(".academy-wheel-tap"))wheelSound();
  else iconSound();
 }
