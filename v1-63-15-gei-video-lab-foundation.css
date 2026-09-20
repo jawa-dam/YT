@@ -46,3 +46,20 @@
 :root:not([data-skin="dark"]) #screen-video .gei-video-section-head p{
   color:#40566e!important;
 }
+
+/* V1.63.26.2 — Video Lab action-link contrast */
+:root:not([data-skin="dark"]) #screen-video .gei-video-watch-link{
+  color:#102a43!important;
+  background:rgba(47,210,255,.12)!important;
+  border-color:rgba(47,210,255,.5)!important;
+  text-shadow:none!important;
+}
+:root:not([data-skin="dark"]) #screen-video .gei-video-watch-link:hover,
+:root:not([data-skin="dark"]) #screen-video .gei-video-watch-link:focus-visible{
+  color:#06121f!important;
+  background:rgba(47,210,255,.22)!important;
+  border-color:#2fd2ff!important;
+}
+:root[data-skin="dark"] #screen-video .gei-video-watch-link{
+  color:#ffffff!important;
+}
