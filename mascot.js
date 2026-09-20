@@ -226,7 +226,9 @@
     /* V1.36.3: mount at document.body so Home-screen overflow, stacking and inertness cannot disable the dialog. */
     document.body.appendChild(assistant);
 
+    let detachDismiss = () => {};
     const close = () => {
+      detachDismiss();
       assistant.remove();
       document.querySelector("#screen-home .home-mascot-button")?.focus({ preventScroll: true });
     };
@@ -294,6 +296,11 @@
     };
     document.addEventListener("pointerdown", documentDismiss, { capture: true, passive: false });
     document.addEventListener("click", documentDismiss, { capture: true, passive: false });
+    detachDismiss = () => {
+      document.removeEventListener("pointerdown", documentDismiss, true);
+      document.removeEventListener("click", documentDismiss, true);
+      detachDismiss = () => {};
+    };
 
     assistant.addEventListener("keydown", (event) => {
       const closeButton = event.target.closest?.(".home-adam-assistant-close");
