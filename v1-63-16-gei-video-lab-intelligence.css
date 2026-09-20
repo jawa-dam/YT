@@ -1,0 +1,33 @@
+/* V1.63.16 — GEI Video Lab Intelligence */
+.gei-video-intelligence{display:grid;gap:10px;padding:13px;border:1px solid rgba(47,210,255,.2);border-radius:18px;background:linear-gradient(135deg,rgba(47,210,255,.055),rgba(61,61,234,.045),rgba(243,16,186,.04));box-shadow:0 12px 35px rgba(0,0,0,.16)}
+.gei-video-intelligence-head{padding:0 2px}
+.gei-video-intelligence-head h2{margin:5px 0 4px;color:#fff;font-size:22px!important;line-height:1.08;letter-spacing:-.03em}
+.gei-video-intelligence-head p{margin:0;color:#98a5b9;font-size:12px!important;line-height:1.45}
+.gei-video-input-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.gei-video-input-card{position:relative;display:grid;gap:5px;min-width:0;padding:11px;border:1px solid rgba(255,255,255,.09);border-radius:14px;background:rgba(255,255,255,.035)}
+.gei-video-input-number{color:#2fd2ff;font-size:9px;font-weight:950;letter-spacing:.1em}
+.gei-video-input-card strong{color:#fff;font-size:10px!important;letter-spacing:.08em}
+.gei-video-input-card small{color:#8996aa;font-size:10px!important;line-height:1.35}
+.gei-video-input-card textarea{width:100%;min-height:94px;resize:vertical;box-sizing:border-box;padding:9px;border:1px solid rgba(255,255,255,.1);border-radius:10px;background:#070a12;color:#fff;font:inherit;font-size:12px!important;line-height:1.45;outline:none}
+.gei-video-input-card textarea::placeholder{color:#58667a}
+.gei-video-input-card textarea:focus{border-color:rgba(47,210,255,.6);box-shadow:0 0 0 2px rgba(47,210,255,.08)}
+.gei-video-count{color:#65738a;text-align:right;font-size:8px!important;font-weight:800}
+.gei-video-intelligence-footer{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.gei-video-save-status{margin-right:auto;color:#2fd2ff;font-size:9px!important;font-weight:950;letter-spacing:.1em}
+.gei-video-save,.gei-video-continue{display:inline-flex;align-items:center;justify-content:center;min-height:40px;padding:0 12px;border-radius:10px;font-size:9px!important;font-weight:950;letter-spacing:.07em;text-decoration:none;cursor:pointer}
+.gei-video-save{border:1px solid rgba(47,210,255,.35);background:rgba(47,210,255,.09);color:#fff}
+.gei-video-save:hover,.gei-video-save:focus-visible{border-color:#2fd2ff;background:rgba(47,210,255,.16);outline:none}
+.gei-video-continue{border:0;background:linear-gradient(135deg,#2fd2ff,#3d3dea,#f310ba);color:#fff}
+@media(max-width:620px){
+ .gei-video-input-grid{grid-template-columns:1fr}
+ .gei-video-input-card textarea{min-height:86px}
+ .gei-video-intelligence-footer{display:grid;grid-template-columns:1fr 1fr}
+ .gei-video-save-status{grid-column:1 / -1;margin:0}
+ .gei-video-save,.gei-video-continue{width:100%}
+}
+@media(max-width:360px){
+ .gei-video-intelligence{padding:10px}
+ .gei-video-intelligence-head h2{font-size:19px!important}
+ .gei-video-intelligence-head p{font-size:11px!important}
+ .gei-video-input-card textarea{font-size:11px!important}
+}
