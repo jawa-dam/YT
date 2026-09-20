@@ -5,13 +5,13 @@ const KEY="geiDamNameIdentityV1";
 const VERSION="1.54";
 const DEFAULT={damName:"",avatar:"adam",version:VERSION,updatedAt:null};
 const AVATARS=Object.freeze({
- adam:{label:"Adam",icon:"",image:true},
- water:{label:"Water",icon:"💧",image:false},
- mountain:{label:"Mountain",icon:"⛰️",image:false},
- dam:{label:"Dam",icon:"🧱",image:false},
- wheel:{label:"Waterwheel",icon:"⚙️",image:false},
- gate:{label:"Sluice Gate",icon:"🚪",image:false},
- current:{label:"Water Current",icon:"🌊",image:false}
+ adam:{label:"Adam",image:"https://assets.zyrosite.com/YZ9jg46Bljs5wOZR/yall-too-mascot-animated-UgmkGIe3sJES4tKm.gif",alt:"Adam, the YallToo beaver mascot"},
+ support:{label:"YallToo Support",image:"https://assets.zyrosite.com/YZ9jg46Bljs5wOZR/yall-too-support-xgGSevqqnPG0ltF3.png",alt:"YallToo Support"},
+ damKids:{label:"Dam Kids",image:"https://assets.zyrosite.com/YZ9jg46Bljs5wOZR/halloween-is-for-dam-kids-IzkcYSwHxZ6lUmQa.png",alt:"Halloween Is For Dam Kids"},
+ facts:{label:"YallToo Facts",image:"https://assets.zyrosite.com/YZ9jg46Bljs5wOZR/yalltoo-facts-cQxXmMvU0oaDhFPK.png",alt:"YallToo Facts"},
+ wilbertYallToo:{label:"Wilbert Bouie Jr • GEI Y'allToo",image:"https://assets.zyrosite.com/YZ9jg46Bljs5wOZR/wilbert-bouie-jr-gei-y-all-too-WNMWb3MfHDWZOOZM.png",alt:"Wilbert Bouie Jr • GEI Y'allToo"},
+ wilbertGEI:{label:"Wilbert Bouie Jr • GEI",image:"https://assets.zyrosite.com/YZ9jg46Bljs5wOZR/wilbert-bouie-jr-gei-oWhYiGHWJRjLUSlW.png",alt:"Wilbert Bouie Jr • GEI"},
+ bibleGuide:{label:"Read the Bible Like Wilbert",image:"https://assets.zyrosite.com/YZ9jg46Bljs5wOZR/read-the-bible-like-wilbert-bouie-jr-VKE1Tnftzc8CWmjH.png",alt:"Read the Bible Like Wilbert Bouie Jr"}
 });
 const cleanName=value=>String(value??"").trim().replace(/^@+/,"");
 const validName=value=>/^[A-Za-z0-9_-]{3,20}$/.test(cleanName(value));
@@ -65,8 +65,8 @@ function hasIdentity(){return validName(state.damName)}
 function getAvatarDefinition(id=state.avatar){return AVATARS[id]||AVATARS.adam}
 function avatarMarkup({className="gei-identity-avatar",alt=""}={}){
  const a=getAvatarDefinition();
- if(a.image&&window.GEI_MASCOT?.url)return '<img class="'+className+'" src="'+window.GEI_MASCOT.url+'" alt="'+(alt||"Adam, the YallToo mascot")+'" />';
- return '<span class="'+className+'" aria-hidden="true">'+a.icon+"</span>";
+ if(a.image)return '<img class="'+className+'" src="'+a.image+'" alt="'+(alt||a.alt||a.label)+'" loading="eager" decoding="async" />';
+ return '<span class="'+className+'" aria-hidden="true"></span>';
 }
 window.GEI_IDENTITY=Object.freeze({
  version:VERSION,
