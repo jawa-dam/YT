@@ -41,7 +41,7 @@ function init(){
  root.appendChild(dialog);
  const message=dialog.querySelector(".gei-portfolio-guide-message");
  let index=0;
- const open=()=>{window.GEI_SONIC_FX?.mascot?.();message.textContent=GUIDE_MESSAGES[index];dialog.hidden=false;document.body.classList.add("gei-portfolio-guide-open");dialog.querySelector(".gei-portfolio-dialog-close").focus()};
+ const open=()=>{message.textContent=GUIDE_MESSAGES[index];dialog.hidden=false;document.body.classList.add("gei-portfolio-guide-open");dialog.querySelector(".gei-portfolio-dialog-close").focus()};
  const close=()=>{dialog.hidden=true;document.body.classList.remove("gei-portfolio-guide-open")};
  guide.querySelector(".gei-portfolio-mascot").addEventListener("click",open);
  dialog.querySelector(".gei-portfolio-dialog-close").addEventListener("click",close);
