@@ -43,7 +43,7 @@ function init(){
  let index=0;
  const open=()=>{message.textContent=GUIDE_MESSAGES[index];dialog.hidden=false;document.body.classList.add("gei-portfolio-guide-open");dialog.querySelector(".gei-portfolio-dialog-close").focus()};
  const close=()=>{dialog.hidden=true;document.body.classList.remove("gei-portfolio-guide-open")};
- guide.querySelector(".gei-portfolio-mascot").addEventListener("click",open);
+ guide.querySelector(".gei-portfolio-mascot").addEventListener("click",()=>{window.GEI_SONIC_FX?.mascot?.();open()});
  dialog.querySelector(".gei-portfolio-dialog-close").addEventListener("click",close);
  dialog.querySelector("[data-close-guide]").addEventListener("click",close);
  dialog.querySelector(".gei-portfolio-next").addEventListener("click",()=>{window.GEI_SONIC_FX?.icon?.();index=(index+1)%GUIDE_MESSAGES.length;message.textContent=GUIDE_MESSAGES[index]});
