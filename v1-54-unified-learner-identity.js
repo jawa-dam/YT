@@ -65,7 +65,10 @@ function hasIdentity(){return validName(state.damName)}
 function getAvatarDefinition(id=state.avatar){return AVATARS[id]||AVATARS.adam}
 function avatarMarkup({className="gei-identity-avatar",alt=""}={}){
  const a=getAvatarDefinition();
- if(a.image)return '<img class="'+className+'" src="'+a.image+'" alt="'+(alt||a.alt||a.label)+'" loading="eager" decoding="async" />';
+ if(a.image){
+ const src=a.image===true?(window.GEI_MASCOT?.url||""):a.image;
+ return src?'<img class="'+className+'" src="'+src+'" alt="'+(alt||a.alt||a.label)+'" loading="eager" decoding="async" />':'<span class="'+className+'" aria-hidden="true">🦫</span>';
+}
  return '<span class="'+className+'" aria-hidden="true"></span>';
 }
 window.GEI_IDENTITY=Object.freeze({
