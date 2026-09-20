@@ -25,15 +25,22 @@
       try { localStorage.removeItem(key); } catch (_) {}
     });
 
-    // Re-establish the canonical zero state explicitly.
+    // Re-establish the canonical zero state and refresh any in-memory progress engine.
+    if (window.GEI_PROGRESS?.resetProgress) {
+      window.GEI_PROGRESS.resetProgress();
+    } else {
+      try {
+        localStorage.setItem("geiAcademyProgressV1", JSON.stringify({ completed: [], xp: 0 }));
+      } catch (_) {}
+    }
     try {
-      localStorage.setItem("geiAcademyProgressV1", JSON.stringify({ completed: [], xp: 0 }));
       localStorage.setItem("geiDayCompletionV1", "{}");
       localStorage.setItem("geiDayAudioProgressV1", "{}");
       localStorage.setItem("geiAdamObjectiveMasteryV1", JSON.stringify({ mastered: [] }));
       localStorage.setItem("geiAcademyStreakV1", JSON.stringify({ streak: 0, best: 0, lastActivityDate: null, milestone: 0 }));
       localStorage.setItem("geiBadgeStateV1", JSON.stringify({ earned: [] }));
       localStorage.setItem("geiMasteryMilestonesV1", "[]");
+      localStorage.setItem("geiBadgeStateV1", JSON.stringify({ earned: [] }));
     } catch (_) {}
 
     try { localStorage.removeItem(MARKER); } catch (_) {}
