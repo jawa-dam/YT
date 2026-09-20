@@ -47,3 +47,16 @@ body.gei-portfolio-guide-open{overflow:hidden}
  .gei-portfolio-dialog-copy h2{font-size:23px!important}
  .gei-portfolio-guide-message{font-size:14px!important}
 }
+/* V1.63.19 — Keep Dam Guide hint fully visible */
+.gei-portfolio-guide{min-height:150px;max-height:none}
+.gei-portfolio-guide-copy{padding:4px 0;overflow:visible}
+.gei-portfolio-guide-hint{display:block;margin-top:10px;line-height:1.25;white-space:normal}
+@media(max-width:520px){
+ .gei-portfolio-guide{min-height:148px;max-height:none}
+ .gei-portfolio-guide-copy{padding:3px 0}
+ .gei-portfolio-guide-hint{margin-top:8px;font-size:8px!important;line-height:1.3}
+}
+@media(max-width:360px){
+ .gei-portfolio-guide{min-height:132px;max-height:none}
+ .gei-portfolio-guide-hint{margin-top:6px;font-size:7px!important}
+}
