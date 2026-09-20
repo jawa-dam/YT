@@ -50,3 +50,6 @@
  .gei-gate-success-dialog{animation:none}
  .gei-dam-gate-open:hover{transform:none}
 }
+/* V1.63.29 Simulator Wall handoff */
+.gei-gate-simulator-link{display:inline-flex;align-items:center;justify-content:center;width:100%;margin-top:14px;padding:12px 15px;border:1px solid rgba(47,210,255,.5);border-radius:13px;background:linear-gradient(135deg,#2fd2ff,#3d3dea);color:#fff;font:900 11px/1.1 'Plus Jakarta Sans',Inter,system-ui,sans-serif;letter-spacing:.05em;cursor:pointer;box-shadow:0 8px 24px rgba(47,210,255,.16)}
+.gei-gate-simulator-link:hover,.gei-gate-simulator-link:focus-visible{filter:brightness(1.08);outline:3px solid rgba(47,210,255,.28);outline-offset:2px}
