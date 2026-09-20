@@ -207,6 +207,7 @@
             <div><span>BLUEPRINT STATUS</span><strong id="gei-blueprint-xp">0 / 666 XP</strong></div>
             <div><strong id="gei-blueprint-days">0 / 6 STAGES</strong><span id="gei-blueprint-achievements">0 / 6 ACHIEVEMENTS</span></div>
           </div>
+          <div id="gei-state-verification-slot"></div>
         </section>
         ${mascotGuideMarkup()}
       </div>`;
@@ -292,6 +293,7 @@
     ["gei:progress-ready","gei:progress-updated","gei:day-completion"].forEach((name) => window.addEventListener(name, refreshGuide));
 
     syncDayState();
+    window.GEI_STATE_VERIFY?.render?.();
   }
 
 
