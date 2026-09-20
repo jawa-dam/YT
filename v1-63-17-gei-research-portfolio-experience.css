@@ -19,3 +19,31 @@ body.gei-portfolio-guide-open{overflow:hidden}
 @media(max-width:520px){.gei-portfolio-guide{grid-template-columns:122px minmax(0,1fr);min-height:130px;padding-right:8px}.gei-portfolio-mascot,.gei-portfolio-mascot img{width:116px;height:116px}.gei-portfolio-mascot-glow{width:94px;height:94px}.gei-portfolio-guide-copy h2{font-size:19px!important}.gei-portfolio-guide-copy p{font-size:11px!important}.gei-portfolio-dialog-card{grid-template-columns:1fr;gap:2px;max-height:88vh;padding:14px}.gei-portfolio-dialog-mascot{min-height:112px}.gei-portfolio-dialog-mascot img{width:115px;height:115px}.gei-portfolio-dialog-copy{padding:0 5px 4px}.gei-portfolio-dialog-copy h2{font-size:21px!important}.gei-portfolio-paper-map{grid-template-columns:1fr 1fr}}
 @media(max-width:360px){.gei-portfolio-guide{grid-template-columns:100px minmax(0,1fr);min-height:112px}.gei-portfolio-mascot,.gei-portfolio-mascot img{width:96px;height:96px}.gei-portfolio-mascot-badge{font-size:6px!important}.gei-portfolio-guide-copy h2{font-size:17px!important}.gei-portfolio-guide-copy p{font-size:10px!important}.gei-portfolio-guide-hint{font-size:7px!important}}
 @media(prefers-reduced-motion:reduce){.gei-portfolio-mascot-glow,.gei-portfolio-mascot img{animation:none;transition:none}}
+/* V1.63.18 — Portfolio guide layering + readable guide dialog */
+.gei-portfolio-guide{min-height:124px;max-height:124px;margin:0 0 8px;box-sizing:border-box}
+.gei-portfolio-guide-copy h2{font-size:24px!important}
+.gei-portfolio-guide-copy p{font-size:13px!important}
+.gei-portfolio-dialog-copy h2{font-size:30px!important;line-height:1.08}
+.gei-portfolio-guide-message{font-size:16px!important;line-height:1.55}
+.gei-portfolio-paper-map span{font-size:10px!important;padding:8px}
+.gei-portfolio-next{min-height:44px;font-size:11px!important}
+.gei-portfolio-dialog-close{width:40px;height:40px;font-size:28px}
+@media(max-width:520px){
+ .gei-portfolio-guide{min-height:112px;max-height:112px}
+ .gei-portfolio-guide-copy h2{font-size:21px!important}
+ .gei-portfolio-guide-copy p{font-size:12px!important}
+ .gei-portfolio-dialog-card{width:min(680px,calc(100vw - 24px));padding:18px}
+ .gei-portfolio-dialog-copy h2{font-size:26px!important}
+ .gei-portfolio-guide-message{font-size:15px!important;line-height:1.5}
+ .gei-portfolio-paper-map span{font-size:9px!important;padding:8px}
+ .gei-portfolio-next{min-height:46px;font-size:11px!important}
+}
+@media(max-width:360px){
+ .gei-portfolio-guide{min-height:100px;max-height:100px}
+ .gei-portfolio-guide-copy h2{font-size:18px!important}
+ .gei-portfolio-guide-copy p{font-size:11px!important}
+ .gei-portfolio-guide-hint{margin-top:5px}
+ .gei-portfolio-dialog-card{padding:16px}
+ .gei-portfolio-dialog-copy h2{font-size:23px!important}
+ .gei-portfolio-guide-message{font-size:14px!important}
+}
