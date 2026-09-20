@@ -72,7 +72,7 @@
   }
 
   function completedCount() { return state.completed.length; }
-  function currentDayId() { return DAYS.find((day) => !state.completed.includes(day.id))?.id || 6; }
+  function currentDayId() { return DAYS.find((day) => !state.completed.includes(day.id))?.id || 1; }
   function isComplete(id) { return state.completed.includes(id); }
   function isUnlocked(id) { return id === 1 || state.completed.includes(id - 1); }
 
